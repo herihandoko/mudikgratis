@@ -35,12 +35,8 @@ class AppServiceProvider extends ServiceProvider
                     'timeout' => 30,
                 ]
             ];
-
-
         Config::set('captcha', $config);
-
         Paginator::useBootstrap();
-
         URL::forceScheme('https');
     }
 }
