@@ -1,0 +1,150 @@
+@php
+    $page_title = 'Verifikasi Mudik';
+@endphp
+@extends('admin.layouts.master')
+@section('content')
+    {{-- Main Content --}}
+    <div class="main-content">
+        <section class="section">
+            <div class="section-header">
+                <h1>Verifikasi Peserta Mudik</h1>
+            </div>
+            <a class="btn btn-primary mb-4" href="{{ URL::previous() }}" role="button"><i class="fas fa-arrow-circle-left"></i>
+                {{ trans('admin.Back') }}</a>
+            <div class="section-body">
+                <div class="card bg-white">
+                    <div class="card-header">Informasi Peserta</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>No KK</td>
+                                    <td colspan="2">{{ $user->no_kk }}</td>
+                                </tr>
+                                <tr>
+                                    <td>NIK</td>
+                                    <td colspan="2">{{ $user->nik }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Nama</td>
+                                    <td colspan="2">{{ $user->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td colspan="2">{{ $user->email }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Phone</td>
+                                    <td colspan="2">{{ $user->phone }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tujuan</td>
+                                    <td colspan="2">{{ $user->mudiktujuan->name ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Kota Tujuan</td>
+                                    <td colspan="2">{{ $user->kotatujuan->name ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Alamat</td>
+                                    <td colspan="2" rowspan="3">
+                                        {{ $user->address->address }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card bg-white">
+                    <div class="card-header">Dokumen Pendukung</div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Foto KK</td>
+                                    <td colspan="2"><a href="{{ url($user->foto_kk) }}"
+                                            target="_blank">Lihat/Download</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Foto KTP</td>
+                                    <td colspan="2"><a href="{{ url($user->foto_ktp) }}"
+                                            target="_blank">Lihat/Download</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Foto Selfie</td>
+                                    <td colspan="2"><a href="{{ url($user->foto_selfie) }}"
+                                            target="_blank">Lihat/Download</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">Peserta Mudik</div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.mudik-verifikasi.update', $user->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-group">
+                                <label for="">Status Permohonan Mudik Gratis<span
+                                        class="text-danger">*</span></label>
+                                <select class="form-control" name="status_mudik">
+                                    <option disabled selected>Pilih Status Permohonan Mudik</option>
+                                    <option value="ditolak" @if(old('status_mudik') == 'ditolak') selected @endif>Di Tolak</option>
+                                    <option value="diterima" @if(old('status_mudik') == 'diterima') selected @endif>Di Terima</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Bus Peserta <span class="text-danger">*</span></label>
+                                <select class="form-control" name="bus_mudik">
+                                    <option disabled selected>Pilih Bus</option>
+                                    @if (isset($kotatujuan->bus))
+                                        @foreach ($kotatujuan->bus as $bus)
+                                            <option value="{{ $bus->id }}" @if(old('bus_mudik') == $bus->id) selected @endif>{{ $bus->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>NIK</th>
+                                        <th>Nama</th>
+                                        <th>Tanggal Lahir</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Kategori</th>
+                                        <th>Kursi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $no = 1; ?>
+                                    @foreach ($user->peserta as $peserta)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $peserta->nik }}</td>
+                                            <td>{{ $peserta->nama_lengkap }}</td>
+                                            <td>{{ date('d M Y', strtotime($peserta->tgl_lahir)) }}</td>
+                                            <td>{{ $peserta->jenis_kelamin == 'L' ? 'Laki-Laki' : 'Perempuan' }}</td>
+                                            <td>{{ $peserta->kategori }}</td>
+                                            <td>
+                                                <select class="form-control" name="kursi_peserta[{{ $peserta->id }}]">
+                                                    <option disabled selected>Pilih Kursi</option>
+                                                    @foreach ($kursi as $seat)
+                                                        <option value="{{ $seat->no_kursi }}">{{ $seat->no_kursi }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <button type="submit" class="btn btn-primary btn-block" role="button"> {{ trans('admin.Save') }} </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+@endsection
