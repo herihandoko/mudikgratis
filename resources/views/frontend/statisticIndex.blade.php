@@ -40,52 +40,56 @@
                                     <div class="inDiv login-box-body addMarginBottom20">
                                         <h4 class="noMargin"><strong><i class="fa fa-bus"></i> Rute Bus</strong></h4>
                                         <hr>
+                                        {{-- <h4 class="noMargin"><strong><i class="fa fa-bus"></i> Rute Bus</strong></h4>
+                                        <hr> --}}
                                         @foreach ($tujuans as $item => $tujuan)
-                                            <div class="row text-center">
-                                                <h4>{{ $tujuan->name }}</h4>
+                                        <div class="row text-center mt-5">
+                                            <h4>{{ $tujuan->name }}</h4>
+                                        </div>
+                                        <?php $no = 1; ?>
+                                        @foreach ($tujuan->provinsis as $key => $provinsi)
+                                            <div class="row text-sm-right text-md-center mt-3">
+                                                <h5>{{ $no++ }} . {{ $provinsi->name }}</h5>
                                             </div>
-                                            <?php $no = 1; ?>
-                                            @foreach ($tujuan->provinsis as $key => $provinsi)
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered table-condensed table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-left" colspan="6">{{ $no++ }} .
-                                                                    {{ $provinsi->name }}
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th class="text-center">#</th>
+                                            <div class="table-responsive">
+                                                <table cellspacing="0" cellpadding="0" class="table table-condensed table-striped table-statistic">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">#</th>
+                                                            @if($tujuan->id == 1)
                                                                 <th class="text-center">Kota Tujuan</th>
-                                                                <th class="text-center">Total Bus</th>
-                                                                <th class="text-center">Total Kuota</th>
-                                                                <th class="text-center">Total Pendaftar</th>
-                                                                <th class="text-center">Sisa Kuota</th>
+                                                            @else
+                                                                <th class="text-center">Kota Asal</th>
+                                                            @endif
+                                                            <th class="text-center">Total Bus</th>
+                                                            <th class="text-center">Total Kuota</th>
+                                                            <th class="text-center">Total Pendaftar</th>
+                                                            <th class="text-center">Sisa Kuota</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php $nox = 1; ?>
+                                                        @foreach ($provinsi->kota as $keyx => $val)
+                                                            <tr>
+                                                                <td class="text-left">{{ $nox++ }}</td>
+                                                                <td class="text-left">{{ $val->name }}</td>
+                                                                <td class="text-right">{{ $val->bus->count() }} Bus</td>
+                                                                <td class="text-right">
+                                                                    <?php $jumlahKursi = 0; ?>
+                                                                    @foreach ($val->bus as $keybus => $busx)
+                                                                        <?php $jumlahKursi += $busx->jumlah_kursi; ?>
+                                                                    @endforeach
+                                                                    {{ $jumlahKursi }} Kursi
+                                                                </td>
+                                                                <td class="text-right">{{ $val->pesertaKota->count() }} Peserta</td>
+                                                                <td class="text-right">{{ $jumlahKursi - $val->pesertaKota->count() }} Kursi</td>
                                                             </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php $nox = 1; ?>
-                                                            @foreach ($provinsi->kota as $keyx => $val)
-                                                                <tr>
-                                                                    <td class="text-left">{{ $nox++ }}</td>
-                                                                    <td class="text-left">{{ $val->name }}</td>
-                                                                    <td class="text-right">{{ $val->bus->count() }} Bus</td>
-                                                                    <td class="text-right">
-                                                                        <?php $jumlahKursi = 0; ?>
-                                                                        @foreach ($val->bus as $keybus => $busx)
-                                                                            <?php $jumlahKursi += $busx->jumlah_kursi; ?>
-                                                                        @endforeach
-                                                                        {{ $jumlahKursi }} Kursi
-                                                                    </td>
-                                                                    <td class="text-right">{{ $val->pesertaKota->count() }} Peserta</td>
-                                                                    <td class="text-right">{{ $jumlahKursi - $val->pesertaKota->count() }} Kursi</td>
-                                                                </tr>
-                                                            @endforeach
-                                                            </body>
-                                                    </table>
-                                                </div>
-                                            @endforeach
+                                                        @endforeach
+                                                        </body>
+                                                </table>
+                                            </div>
                                         @endforeach
+                                    @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -98,3 +102,26 @@
     </div>
     <!-- end wrapper -->
 @endsection
+@push('scripts')
+<link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/datatables.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
+@endpush
+@push('scripts')
+    <script src="{{url('assets/admin/bundles/datatables/datatables.min.js')}}"></script>
+    <script src="{{url('assets/admin/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}">
+    <script src="{{asset('vendor/datatables/buttons.server-side.js')}}"></script>
+    <script>
+    $(document).ready(function() {
+        $('table.table-statistic').DataTable( {
+            responsive: true,
+            bLengthChange:false,
+            bPaginate:false,
+            searching:false,
+            info:false,
+            scrollX:false,
+            scrollY:false,
+            ordering:false
+        });
+    });
+    </script>
+@endpush
