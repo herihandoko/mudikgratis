@@ -6,7 +6,7 @@
     <!-- Meta Tags -->
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <link href="https://ams.bantendev.id/assets/img/favicon.png" rel="icon">
+    <link href="{{ url(GetSetting('footer_logo')) }}" rel="icon">
     <meta name="csrf-token" content="{{csrf_token()}}" />
 
     <meta name="description" content="{{GetSetting('site_name')}} - {{@$description ? $description :  GetSetting('site_description')}}" />

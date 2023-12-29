@@ -114,9 +114,9 @@
 
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
-                                        <label for="form_username_kota_tujuan">Kota Tujuan <span style="margin-left:5px; color:red;">*</span></label>
+                                        <label for="form_username_kota_tujuan" id="label-kota-tujuan">Kota Tujuan <span style="margin-left:5px; color:red;">*</span></label>
                                         <select class="form-control sel-kota-tujuan" name="kota_tujuan" required id="form_username_kota_tujuan">
-                                            <option value="">Pilih Kota Tujuan Mudik</option>
+                                            <option value="">Pilih Kota</option>
                                         </select>
                                     </div>
                                 </div>
@@ -247,9 +247,11 @@
         if((_tujuan.length > 0) && (_tujuan == 2)){
             $('.row-tempat-lahir').show();
             $('.row-tgl-lahir').show();
+            $('label#label-kota-tujuan').html('Kota Asal <span style="margin-left:5px; color:red;">*</span>');
         }else{
             $('.row-tempat-lahir').hide();
             $('.row-tgl-lahir').hide();
+            $('label#label-kota-tujuan').html('Kota Tujuan <span style="margin-left:5px; color:red;">*</span>');
         }
         onChangeSelect('{{ route('user.register.cities') }}', $('.sel-tujuan').val());
         $('.sel-tujuan').on('change', function() {
@@ -257,9 +259,11 @@
             if(parseInt($(this).val()) === 1){
                 $('.row-tempat-lahir').hide();
                 $('.row-tgl-lahir').hide();
+                $('label#label-kota-tujuan').html('Kota Tujuan <span style="margin-left:5px; color:red;">*</span>');
             }else{
                 $('.row-tempat-lahir').show();
                 $('.row-tgl-lahir').show();
+                $('label#label-kota-tujuan').html('Kota Asal <span style="margin-left:5px; color:red;">*</span>');
             }
         });
 
@@ -272,7 +276,7 @@
                 },
                 success: function(data) {
                     $('.sel-kota-tujuan').empty();
-                    $('.sel-kota-tujuan').append('<option>Pilih Kota Tujuan Mudik</option>');
+                    $('.sel-kota-tujuan').append('<option>Silahkan Pilih Kota</option>');
                     var sel_content = '';
                     $.each(data, function(key, value) {
                         sel_content = '<optgroup label="' + value.name + '">';
