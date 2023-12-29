@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app['request']->server->set('HTTPS', true);
+        // $this->app['request']->server->set('HTTPS', true);
     }
 
     /**
@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
             ];
         Config::set('captcha', $config);
         Paginator::useBootstrap();
-        $url->formatScheme('https');
+        // $url->formatScheme('https');
         // URL::forceScheme('https');
     }
 }
