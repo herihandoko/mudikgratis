@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>@if (!empty($page_title)) {{$page_title}} @endif</title>
-    <link href="{{ url(GetSetting('footer_logo')) }}" rel="icon">
+    <link href="{{ url(GetSetting('site_favicon')) }}" rel="icon">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="csrf-token" content="{{csrf_token()}}">
     @include('admin.layouts.styles')
