@@ -6,6 +6,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Routing\UrlGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app['request']->server->set('HTTPS', true);
     }
 
     /**
@@ -24,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(UrlGenerator $url)
     {
 
         $config =
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
             ];
         Config::set('captcha', $config);
         Paginator::useBootstrap();
-        URL::forceScheme('https');
+        $url->formatScheme('https');
+        // URL::forceScheme('https');
     }
 }
