@@ -108,6 +108,7 @@ class UserRegisterController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
         $password = $this->generatePassword();
+        $period = MudikPeriod::where('status', 'active')->first();
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -120,7 +121,8 @@ class UserRegisterController extends Controller
             'jumlah' => $data['jumlah'],
             'password' => Hash::make($password),
             'email_verified_at' => now(),
-            'pass_code' => $password
+            'pass_code' => $password,
+            'periode' => isset($period->tahun) ? $period->tahun : ''
         ]);
 
         // $template = EmailTemplate::find(3);
