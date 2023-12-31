@@ -24,7 +24,14 @@
 <script src="{{asset('assets/toastr/toastr.min.js')}}"></script>
 
 @include('sweetalert::alert')
-
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JLHSHNT5JC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JLHSHNT5JC');
+</script>
 <script>
     "use strict";
     const Toast = Swal.mixin({
