@@ -26,20 +26,21 @@ $page_title =  'Forgot password';
                         <div class="col-md-6 offset-md-3 mb-40">
                             <h4 class="text-gray mt-0 pt-10">{{trans('frontend.Reset Password')}}</h4>
                             <hr>
-                            <p>{{trans('frontend.Enter your registered email.')}}</p>
-                            <form name="login-form" class="clearfix" method="POST"
-                                action="{{route('user.forgot')}}">
+                            <p>Masukan NIK dan Nomor Telepon Anda Saat Registrasi</p>
+                            <form name="login-form" class="clearfix" method="POST" action="{{route('user.forgot')}}">
                                 @csrf
-
-
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
-                                        <label for="form_username_email">{{trans('frontend.Email')}}</label>
-                                        <input id="form_username_email" name="email" class="form-control" type="text">
+                                        <label for="form_username_nik">NIK (Nomor Induk Kependudukan)</label>
+                                        <input id="form_username_nik" name="nik" class="form-control" type="text" required>
                                     </div>
                                 </div>
-
-
+                                <div class="row">
+                                    <div class="mb-3 col-md-12">
+                                        <label for="form_username_phone">Nomor Telepon </label>
+                                        <input id="form_username_phone" name="phone" class="form-control" type="text" required>
+                                    </div>
+                                </div>
                                 <div class="mb-3 tm-sc-button mt-10">
                                    <button type="submit" class="btn btn-primary">{{trans('frontend.Reset')}}</button>
                                 </div>

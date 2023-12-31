@@ -28,22 +28,24 @@
                                     <li>
                                         <a href="{{ route('user.profile') }}">{{ trans('frontend.Profile') }}</a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('user.peserta.cancel') }}" style="background-color:#9d161690 !important;">Pembatalan</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-10 mt-5">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-9 col-sm-12">
                                 <h4><i class="fa fa-users"></i> Peserta Mudik Lainnya (Maksimal {{ auth()->user()->jumlah }} Orang)</h4>
                             </div>
-                            <div class="col-md-4 text-right">
+                            <div class="col-md-3 col-sm-12 text-right">
                                 @if(($user->peserta->count() < auth()->user()->jumlah) && ($user->status_profile == 1))
-                                    <a href="{{ route('user.peserta.create') }}" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> Tambah Peserta</a>
+                                    <a href="{{ route('user.peserta.create') }}" class="btn btn-success btn-xs w-100"><i class="fa fa-plus"></i> Tambah Peserta</a>
                                 @endif
                                 @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')
-                                    <a target="_blank" href="{{ route('user.peserta.eticket', $user->id) }}"
-                                        class="btn btn-success btn-xs"><i class="fa fa-download"></i> Download E-Tiket</a>
+                                    <a target="_blank" href="{{ route('user.peserta.eticket', $user->id) }}" class="btn btn-success btn-xs w-100"><i class="fa fa-download"></i> Download E-Tiket</a>
                                 @endif
                             </div>
                         </div>
@@ -57,14 +59,15 @@
                             @endif
                             @if($user->status_profile == 1 && $user->status_mudik == 'waiting')
                             <div class="alert alert-warning mt-2" role="alert"> 
-                                Data yang sudah di Submit akan diperiksa terlebih dahulu oleh Admin Kami. Kami akan beritahu Anda (via Email atau selalu cek dashboard aplikasi Anda) apabila data Anda memenuhi syarat sebagai Peserta Mudik.
+                                Data yang sudah di Submit akan diperiksa terlebih dahulu oleh Admin Kami. Kami akan beritahu Anda (via Whatsapp atau selalu cek dashboard aplikasi Anda) apabila data Anda memenuhi syarat sebagai Peserta Mudik.
                             </div>
                             @endif
                             @if($user->status_profile == 0 || $user->status_profile == null)
                             <div class="alert alert-danger" role="alert"> Anda belum memiliki tiket mudik. Silahkan lengkapi data mudik Anda dan jangan lupa klik button <b>{{ trans('frontend.Save') }}</b> untuk mendapatkan tiket mudik. Waktu yang tersisa <b><span id="demo"></span></b><a href="{{ route('user.profile') }}"> {{ trans('frontend.Profile') }}</a>
                             </div>
                             @endif
-                            <table class="table table-bordered w-100 mt-4 mb-4">
+                            {{-- <table class="table table-bordered w-100 mt-4 mb-4"> --}}
+                            <table cellspacing="0" cellpadding="0" class="table table-condensed table-striped table-statistic">    
                                 <thead class="thead-inverse">
                                     <tr>
                                         <th>#</th>
@@ -72,7 +75,9 @@
                                         <th>NIK</th>
                                         <th>Tanggal Lahir</th>
                                         <th>Kategori</th>
+                                        @if ($user->status_profile == 1 && $user->status_mudik !== 'diterima')
                                         <th>Actions</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -94,10 +99,12 @@
                                                 <td>
                                                     <span class="badge bg-success"> Dewasa </span>
                                                 </td>
+                                                @if ($user->status_profile == 1 && $user->status_mudik !== 'diterima')
                                                 <td>
                                                     <a href="{{ route('user.peserta.edit',$peserta->id) }}" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Edit</a>
                                                     <a href="{{ route('user.peserta.delete',['uid'=>$peserta->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> Hapus</a>
                                                 </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     @else
@@ -162,4 +169,27 @@
             }, 1000);
         </script>
     @endif
+@endpush
+@push('scripts')
+<link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/datatables.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
+@endpush
+@push('scripts')
+    <script src="{{url('assets/admin/bundles/datatables/datatables.min.js')}}"></script>
+    <script src="{{url('assets/admin/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}">
+    <script src="{{asset('vendor/datatables/buttons.server-side.js')}}"></script>
+    <script>
+    $(document).ready(function() {
+        $('table.table-statistic').DataTable( {
+            responsive: true,
+            bLengthChange:false,
+            bPaginate:false,
+            searching:false,
+            info:false,
+            scrollX:false,
+            scrollY:false,
+            ordering:false
+        });
+    });
+    </script>
 @endpush

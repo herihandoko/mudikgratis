@@ -21,14 +21,14 @@
                                     <li>
                                         <a href="{{ route('user.dashboard') }}">{{ trans('frontend.Dashboard') }}</a>
                                     </li>
-                                    {{-- <li>
-                                        <a href="{{ route('user.kendaraan') }}">Kendaraan</a>
-                                    </li> --}}
                                     <li>
                                         <a href="{{ route('user.peserta') }}">{{ trans('frontend.Peserta') }}</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('user.profile') }}" class="active">{{ trans('frontend.Profile') }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('user.peserta.cancel') }}" style="background-color:#9d161690 !important;">Pembatalan</a>
                                     </li>
                                 </ul>
                             </div>
@@ -48,7 +48,7 @@
                                     <div class="upload-preview">
                                         <img src="{{ @$user->avatar ? asset(@$user->avatar) : asset('assets/frontend/images/user.png') }}" alt="Avatar" class="avatar-preview">
                                     </div>
-                                    <input class="form-control" name="avatar" type="file" id="formFile" onchange="previewFile(this)">
+                                    <input class="form-control" name="avatar" type="file" id="formFile" onchange="previewFile(this)" accept="image/*">
                                 </div>
                                 <h3 class="mt-4">{{ trans('frontend.Data Diri') }}</h3>
                                 <hr>
@@ -93,7 +93,6 @@
                                         <div class="form-group mb-2">
                                             <label for="">{{ trans('frontend.Country') }}</label>
                                             <select class="form-control" name="country" required>
-                                                <option>-- {{ trans('frontend.Country') }} ---</option>
                                                 @foreach (Countries() as $item)
                                                     <option @if (@$user->address->country == $item) selected @endif value="{{ $item }}"> {{ $item }} </option>
                                                 @endforeach
@@ -107,7 +106,7 @@
                                             <label for="provinsi">{{ trans('frontend.Provinsi') }} <span class="text-danger">*</span></label>
                                             <select class="form-control sel-provinsi" name="provinsi" id="provinsi" required>
                                                 <option value="" disabled selected>-- Pilih --</option>
-                                                @foreach ($provinces->where('code', 36) as $item)
+                                                @foreach ($provinces as $item)
                                                     <option @if (@$user->address->provinsi == $item->id) selected @endif value="{{ $item->id }}"> {{ $item->name ?? '' }} </option>
                                                 @endforeach
                                             </select>
@@ -174,7 +173,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-2">
                                             <label for="is_peserta">Pendaftar termasuk Peserta Mudik <span class="text-danger">*</span></label>
+                                            @if($user->status_profile == 0 || $user->status_profile == null)
                                             {{ Form::select('is_peserta', ['Ya' => 'Ya', 'Tidak' => 'Tidak'], @$user->is_peserta?: old('is_peserta'), ['class' => 'form-control','required' => true]) }}<br>
+                                            @else
+                                            <input type="text" class="form-control" name="is_peserta" required value="{{ @$user->is_peserta?: old('is_peserta') }}" readonly>
+                                            @endif
                                             <div class="alert alert-success mt-2" role="alert"> 
                                                 Pilih <b>Ya</b>, apabila Anda ikut sebagai Peserta Mudik. Pendaftar akan secara otomatis masuk ke daftar Peserta Mudik, tidak perlu ditambahkan lagi ke Daftar Peserta Mudik Lainnya!
                                             </div>
@@ -199,31 +202,33 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="formFile" class="form-label">{{ trans('frontend.KK') }} <span class="text-danger">*</span></label>
+                                            <label for="formKK" class="form-label">{{ trans('frontend.KK') }} <span class="text-danger">*</span></label>
                                             <div class="upload-preview">
-                                                <img src="{{ @$user->foto_kk ? asset(@$user->foto_kk) : asset('assets/frontend/images/familycard.png') }}" alt="KK" class="avatar-preview">
+                                                <img src="{{ @$user->foto_kk ? asset(@$user->foto_kk) : asset('assets/frontend/images/familycard.png') }}" alt="KK" class="kk-preview">
                                             </div>
-                                            <input class="form-control" name="foto_kk" type="file" id="formKK" onchange="previewFile(this)" required>
+                                            <input class="form-control" name="foto_kk" type="file" id="formKK" onchange="previewFileKK(this)" {{ @!$user->foto_kk ? "required" : "" }} accept="image/*">
                                         </div>
                                         <div class="form-group">
-                                            <label for="formFile" class="form-label">{{ trans('frontend.KTP') }} <span class="text-danger">*</span></label>
+                                            <label for="formKTP" class="form-label">{{ trans('frontend.KTP') }} <span class="text-danger">*</span></label>
                                             <div class="upload-preview">
-                                                <img src="{{ @$user->foto_ktp ? asset(@$user->foto_ktp) : asset('assets/frontend/images/idcard.png') }}" alt="KTP" class="avatar-preview">
+                                                <img src="{{ @$user->foto_ktp ? asset(@$user->foto_ktp) : asset('assets/frontend/images/idcard.png') }}" alt="KTP" class="ktp-preview">
                                             </div>
-                                            <input class="form-control" name="foto_ktp" type="file" id="formKTP" onchange="previewFile(this)" required>
+                                            <input class="form-control" name="foto_ktp" type="file" id="formKTP" onchange="previewFileKTP(this)" {{ @!$user->foto_ktp ? "required" : "" }} accept="image/*">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="formFile" class="form-label">{{ trans('frontend.Selfie') }} <span class="text-danger">*</span></label>
+                                            <label for="formSelfie" class="form-label">{{ trans('frontend.Selfie') }} <span class="text-danger">*</span></label>
                                             <div class="upload-preview">
-                                                <img src="{{ @$user->foto_selfie ? asset(@$user->foto_selfie) : asset('assets/frontend/images/user.png') }}" alt="Selfie" class="avatar-preview">
+                                                <img src="{{ @$user->foto_selfie ? asset(@$user->foto_selfie) : asset('assets/frontend/images/user.png') }}" alt="Selfie" class="selfie-preview">
                                             </div>
-                                            <input class="form-control" name="foto_selfie" type="file" id="formSelfie" onchange="previewFile(this)" required>
+                                            <input class="form-control" name="foto_selfie" type="file" id="formSelfie" onchange="previewFileSelfie(this)" {{ @!$user->foto_selfie ? "required" : "" }} accept="image/*">
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-theme-colored1 mt-2" type="submit">{{ trans('frontend.Save') }}</button>
+                                <div class="col-xs-12 col-md-3 box">
+                                    <button class="btn btn-theme-colored1 mt-2 w-100" type="submit">{{ trans('frontend.Save') }}</button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -279,12 +284,15 @@
     </script>
     @endif
     <script>
-        var _cityId = '{{ @$user->address->city ?? 0 }}';
-        var _kecId = '{{ @$user->address->kecamatan ?? 0 }}';
-        var _kelId = '{{ @$user->address->kelurahan ?? 0 }}';
-        onChangeSelect('{{ route('user.cities') }}',$('.sel-provinsi').val(), 'kabupaten');
-        onChangeSelect('{{ route('user.districts') }}', _cityId, 'kecamatan');
-        onChangeSelect('{{ route('user.villages') }}', _kecId, 'kelurahan');
+        var _provinsiId = $('.sel-provinsi').val();
+        if(_provinsiId !== null){
+            var _cityId = '{{ @$user->address->city ?? 0 }}';
+            var _kecId = '{{ @$user->address->kecamatan ?? 0 }}';
+            var _kelId = '{{ @$user->address->kelurahan ?? 0 }}';
+            onChangeSelect('{{ route('user.cities') }}',$('.sel-provinsi').val(), 'kabupaten');
+            onChangeSelect('{{ route('user.districts') }}', _cityId, 'kecamatan');
+            onChangeSelect('{{ route('user.villages') }}', _kecId, 'kelurahan');
+        }
 
         $('.sel-provinsi').on('change', function() {
             onChangeSelect('{{ route('user.cities') }}', $(this).val(), 'kabupaten');
@@ -332,12 +340,48 @@
         }
 
         function previewFile(input) {
-            var file = $("input[type=file]").get(0).files[0];
+            var file = $("input[type=file]#formFile").get(0).files[0];
 
             if (file) {
                 var reader = new FileReader();
                 reader.onload = function() {
                     $(".avatar-preview").attr("src", reader.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewFileKK(input) {
+            var file = $("input[type=file]#formKK").get(0).files[0];
+
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    $(".kk-preview").attr("src", reader.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewFileKTP(input) {
+            var file = $("input[type=file]#formKTP").get(0).files[0];
+
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    $(".ktp-preview").attr("src", reader.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewFileSelfie(input) {
+            var file = $("input[type=file]#formSelfie").get(0).files[0];
+
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    $(".selfie-preview").attr("src", reader.result);
                 }
                 reader.readAsDataURL(file);
             }

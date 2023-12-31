@@ -66,7 +66,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-theme-colored1 mt-2" type="submit">{{ trans('frontend.Save') }}</button>
+                                <div class="col-xs-12 col-md-3 box">
+                                    <button class="btn btn-theme-colored1 mt-2 w-100" type="submit">{{ trans('frontend.Save') }}</button>
+                                </div>
                             </form>
                         </div>
                     </div>

@@ -29,19 +29,21 @@
                                     <li>
                                         <a href="{{ route('user.profile') }}">{{ trans('frontend.Profile') }}</a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('user.peserta.cancel') }}" style="background-color:#9d161690 !important;">Pembatalan</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-10 mt-5">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-9 col-sm-12">
                                 <h4><i class="fa fa-users"></i> Data Peserta</h4>
                             </div>
-                            <div class="col-md-4 text-right">
+                            <div class="col-md-3 col-sm-12 text-right">
                                 @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')
-                                    <a target="_blank" href="{{ route('user.peserta.eticket', $user->id) }}"
-                                        class="btn btn-success btn-xs"><i class="fa fa-download"></i> Download E-Tiket</a>
+                                    <a target="_blank" href="{{ route('user.peserta.eticket', $user->id) }}" class="btn btn-success btn-xs w-100"><i class="fa fa-download"></i> Download E-Tiket</a>
                                 @endif
                             </div>
                         </div>
@@ -60,7 +62,8 @@
                                         href="{{ route('user.profile') }}"> {{ trans('frontend.Profile') }}</a>
                                 </div>
                             @endif
-                            <table class="table table-bordered w-100 mt-4 mb-4">
+                            {{-- <table class="table table-bordered w-100 mt-4 mb-4"> --}}
+                            <table cellspacing="0" cellpadding="0" class="table table-condensed table-striped table-statistic">        
                                 <thead class="thead-inverse">
                                     <tr>
                                         <th>#</th>
@@ -154,4 +157,27 @@
             }, 1000);
         </script>
     @endif
+@endpush
+@push('scripts')
+<link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/datatables.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
+@endpush
+@push('scripts')
+    <script src="{{url('assets/admin/bundles/datatables/datatables.min.js')}}"></script>
+    <script src="{{url('assets/admin/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}">
+    <script src="{{asset('vendor/datatables/buttons.server-side.js')}}"></script>
+    <script>
+    $(document).ready(function() {
+        $('table.table-statistic').DataTable( {
+            responsive: true,
+            bLengthChange:false,
+            bPaginate:false,
+            searching:false,
+            info:false,
+            scrollX:false,
+            scrollY:false,
+            ordering:false
+        });
+    });
+    </script>
 @endpush

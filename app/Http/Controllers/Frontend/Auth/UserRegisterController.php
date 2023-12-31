@@ -10,6 +10,7 @@ use App\Models\MudikTujuanProvinsi;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Rules\KartuKeluargaRule;
+use App\Services\NotificationApiService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -39,16 +40,19 @@ class UserRegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::USERPROFILE;
+    // protected $redirectTo = RouteServiceProvider::USERPROFILE;
+    protected $redirectTo = RouteServiceProvider::USERLOGIN;
+    protected $notificationApiService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(NotificationApiService $notificationApiService)
     {
         $this->middleware('guest');
+        $this->notificationApiService = $notificationApiService;
     }
 
     public function userRegisterForm()
@@ -57,7 +61,9 @@ class UserRegisterController extends Controller
         $cityCode = City::select('code')->where('province_code', 36)->get();
         $tempatLahir = District::whereIn('city_code', $cityCode)->pluck('name', 'name')->prepend('Pilih Tempat Lahir', '');
         $period = MudikPeriod::where('status', 'active')->first();
-        $statusMudik = $this->cekStatusAktif($period->start_date, $period->end_date);
+        $statusMudik = false;
+        if ($period)
+            $statusMudik = $this->cekStatusAktif($period->start_date, $period->end_date);
         return view('frontend.registerIndex', compact('tujuan', 'tempatLahir', 'statusMudik'));
     }
     /**
@@ -72,7 +78,7 @@ class UserRegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['unique:users'],
-            'password' => ['required', 'string', 'min:4', 'confirmed'],
+            // 'password' => ['required', 'string', 'min:4', 'confirmed'],
             'no_kk' => ['required', 'string', 'min:16', 'max:16', 'unique:users', new KartuKeluargaRule($data['tujuan'])],
             'nik' => ['required', 'string', 'min:16', 'max:16', 'unique:users'],
             'tujuan' => ['required'],
@@ -101,6 +107,7 @@ class UserRegisterController extends Controller
     protected function create(array $data)
     {
         date_default_timezone_set('Asia/Jakarta');
+        $password = $this->generatePassword();
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -111,8 +118,9 @@ class UserRegisterController extends Controller
             'tujuan' => $data['tujuan'],
             'kota_tujuan' => $data['kota_tujuan'],
             'jumlah' => $data['jumlah'],
-            'password' => Hash::make($data['password']),
-            'email_verified_at' => now()
+            'password' => Hash::make($password),
+            'email_verified_at' => now(),
+            'pass_code' => $password
         ]);
 
         // $template = EmailTemplate::find(3);
@@ -125,10 +133,18 @@ class UserRegisterController extends Controller
         //     $message->subject($template->subject);
         // });
 
-        // event(new Registered($user));
-
-        alert()->success('Registration Successful!');
-
+        event(new Registered($user));
+        $param = [
+            'target' => $data['phone'],
+            'message' => "[Register Mudik Bersama] - Jawara Mudik \nPendaftaran Anda sebagai peserta mudik bersama Dishub Banten berhasil. \nSilahkan login ke (" . url('login') . ") dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $data['email'] . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login \n\nTerima kasih"
+        ];
+        $response = $this->notificationApiService->sendNotification($param);
+        if ($response['status']) {
+            $usr = User::find($user->id);
+            $usr->status_wa = 1;
+            $usr->save();
+        }
+        alert()->success('Pendaftaran Mudik Bersama Berhasil, silahkan login dengan username dan password yang telah dikirim ke no whatsapp Anda!');
         return $user;
     }
 
@@ -152,5 +168,17 @@ class UserRegisterController extends Controller
         } else {
             return false;
         }
+    }
+
+    function generatePassword($length = 6)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $password = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        return $password;
     }
 }

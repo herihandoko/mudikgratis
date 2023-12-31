@@ -10,6 +10,7 @@ use App\Models\Peserta;
 use App\Models\User;
 use App\Models\UserAdress;
 use App\Models\UserInactive;
+use App\Services\NotificationApiService;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF;
 use DateTime;
@@ -62,7 +63,7 @@ class UserPanelController extends Controller
     public  function peserta_create()
     {
         $user = Auth::user();
-        if ($user->peserta->count() >= auth()->user()->jumlah ) {
+        if ($user->peserta->count() >= auth()->user()->jumlah) {
             toast('Jumlah peserta sudah melebihi quota', 'error')->width('300px');
             return redirect()->route('user.peserta');
         }
@@ -76,7 +77,8 @@ class UserPanelController extends Controller
     }
     public function update_profile(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $user = User::find(Auth::user()->id);
+        $attributes = [
             'name' => 'required',
             'no_kk' => 'required|min:16|max:24',
             'nik' => 'required|min:16|max:24',
@@ -91,11 +93,19 @@ class UserPanelController extends Controller
             'provinsi' => 'required|integer',
             'kecamatan' => 'required|integer',
             'kelurahan' => 'required|integer',
-            'is_peserta' => 'required',
-            'foto_ktp' => 'required|max:10000|mimes:jpg,jpeg,png',
-            'foto_kk' => 'required|max:10000|mimes:jpg,jpeg,png',
-            'foto_selfie' => 'required|max:10000|mimes:jpg,jpeg,png'
-        ]);
+            'is_peserta' => 'required'
+        ];
+        if ($request->hasFile('foto_ktp')) {
+            $attributes['foto_ktp'] = 'required|max:10000|mimes:jpg,jpeg,png';
+        }
+        if ($request->hasFile('foto_kk')) {
+            $attributes['foto_kk'] = 'required|max:10000|mimes:jpg,jpeg,png';
+        }
+        if ($request->hasFile('foto_selfie')) {
+            $attributes['foto_selfie'] = 'required|max:10000|mimes:jpg,jpeg,png';
+        }
+
+        $validator = Validator::make($request->all(), $attributes);
 
         if ($validator->fails()) {
             if ($validator->errors()->has('no_kk')) {
@@ -135,17 +145,17 @@ class UserPanelController extends Controller
                 return redirect()->back()->withInput();
             }
 
-            if ($validator->errors()->has('ktp')) {
+            if ($validator->errors()->has('foto_ktp')) {
                 toast(trans('frontend.KTP required!'), 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
 
-            if ($validator->errors()->has('kk')) {
+            if ($validator->errors()->has('foto_kk')) {
                 toast(trans('frontend.KK required!'), 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
 
-            if ($validator->errors()->has('selfie')) {
+            if ($validator->errors()->has('foto_selfie')) {
                 toast(trans('frontend.Selfie required!'), 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
@@ -157,16 +167,13 @@ class UserPanelController extends Controller
                 return redirect()->back()->withInput();
             }
 
-            $user = User::find(Auth::user()->id);
             $user->password = bcrypt($request->password);
+            $user->pass_code = $request->password;
             $user->save();
 
             toast(trans('frontend.Password changed successfully!'), 'success')->width('350px');
             return redirect()->back()->withInput();
         }
-
-
-        $user = User::find(Auth::user()->id);
 
         if ($request->hasFile('avatar')) {
 
@@ -510,5 +517,48 @@ class UserPanelController extends Controller
         return response([
             'status' => 'success',
         ]);
+    }
+
+    public function peserta_cancel(Request $request)
+    {
+        $user = Auth::user();
+        return view('frontend.pesertaCancel', compact('user'));
+    }
+
+    public function store_cancel(Request $request, NotificationApiService $notificationService)
+    {
+        $validator = Validator::make($request->all(), [
+            'nik' => 'required|min:16|max:24'
+        ]);
+        if ($validator->fails()) {
+            if ($validator->errors()->has('nik')) {
+                toast('NIK atau Nomor KTP tidak sesuai', 'error')->width('300px');
+                return redirect()->back()->withInput();
+            }
+        }
+
+        $user = User::where('nik', $request->nik)->where('id', auth()->user()->id)->first();
+        if ($user) {
+            $dataUser = $user->toArray();
+            if ($dataUser) {
+                unset($dataUser['id']);
+                $dataUser['email_verified_at'] = date('Y-m-d H:i:s', strtotime($dataUser['email_verified_at']));
+                $dataUser['created_at'] = date('Y-m-d H:i:s', strtotime($dataUser['created_at']));
+                $dataUser['updated_at'] = date('Y-m-d H:i:s', strtotime($dataUser['updated_at']));
+                $id = UserInactive::insert($dataUser);
+                if ($id) {
+                    $param = [
+                        'target' => $user->phone,
+                        'message' => "[Pembatalan Mudik] - Jawara Mudik \nPembatalan dan Penghapusan Peserta Jawara Mudik DISHUB Propinsi Banten berhasil. \n\nTerima kasih"
+                    ];
+                    $notificationService->sendNotification($param);
+                    User::where('id', auth()->user()->id)->delete();
+                    return redirect()->route('home');
+                }
+            }
+        } else {
+            toast('NIK atau Nomor KTP tidak sesuai', 'error')->width('300px');
+            return redirect()->back()->withInput();
+        }
     }
 }

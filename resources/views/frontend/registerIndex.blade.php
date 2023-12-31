@@ -181,13 +181,13 @@
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
                                         <label for="form_username_phone">{{ trans('frontend.Phone (Optional)') }} <span style="margin-left:5px; color:red;">*</span></label>
-                                        <input id="form_username_phone" name="phone" class="form-control" type="text" required value="{{ old('phone') }}">
-                                        <span style="margin-left:5px; color:red; font-size:10px;">** Pastikan Nomor Telepon Anda aktif dan dapat dihubungi.</span>
+                                        <input id="form_username_phone" name="phone" class="form-control" type="text" required value="{{ old('phone') }}" placeholder="08138XXXXXX">
+                                        <span style="margin-left:5px; color:red; font-size:10px;">** Pastikan Nomor Telepon Anda aktif dan dapat terhubung dengan whatsapp.</span>
                                     </div>
                                 </div>
-                                <hr>
+                                {{-- <hr> --}}
                                 
-                                <div class="row">
+                                {{-- <div class="row">
 
                                     <div class="mb-3 col-md-6">
                                         <label for="form_password">{{ trans('frontend.Password') }}</label>
@@ -199,7 +199,7 @@
                                         <input id="form_password_confirmation" name="password_confirmation" class="form-control" type="password">
                                     </div>
 
-                                </div>
+                                </div> --}}
                                 @if (ReCaptcha('recaptcha_status') == 1)
                                     <div class="row">
                                         <div class="mb-3 col-md-12">
