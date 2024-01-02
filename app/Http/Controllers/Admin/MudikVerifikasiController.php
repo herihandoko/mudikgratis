@@ -7,12 +7,22 @@ use App\Http\Controllers\Controller;
 use App\Models\BusKursi;
 use App\Models\MudikTujuanKota;
 use App\Models\Peserta;
+use App\Models\PesertaRejected;
 use App\Models\User;
+use App\Services\NotificationApiService;
 use Illuminate\Http\Request;
 
 class MudikVerifikasiController extends Controller
 {
-    //
+
+    function __construct()
+    {
+        $this->middleware('permission:mudik-verifikasi-index|mudik-verifikasi-create|mudik-verifikasi-edit|mudik-verifikasi-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:mudik-verifikasi-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:mudik-verifikasi-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:mudik-verifikasi-delete', ['only' => ['destroy']]);
+    }
+
     public function index(MudikVerifikasiDataTable $dataTables)
     {
         return $dataTables->render('admin.mudik.verifikasiIndex');
@@ -32,10 +42,11 @@ class MudikVerifikasiController extends Controller
         return view('admin.mudik.verifikasiEdit', compact('user', 'kotatujuan', 'kursi'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, NotificationApiService $notificationApiService)
     {
         $rules = [
             'status_mudik' => 'required',
+            'reason' => 'required_if:status_mudik,==,ditolak',
             'bus_mudik' => 'required_if:status_mudik,==,diterima',
             'kursi_peserta' => 'required_if:status_mudik,==,diterima',
             'kursi_peserta.*' => 'required_if:status_mudik,==,diterima',
@@ -48,14 +59,46 @@ class MudikVerifikasiController extends Controller
         $this->validate($request, $rules, $customMessages);
         $user =  User::findOrFail($id);
         $user->status_mudik = $request->status_mudik;
-        $user->nomor_bus = $request->bus_mudik;
-        $user->nomor_registrasi = 'MDK-DISHUB-2024' . sprintf("%03d", $user->id);
-        if ($user->save() && $request->kursi_peserta) {
-            foreach ($request->kursi_peserta as $key => $val) {
-                Peserta::where('id', $key)->update([
-                    'nomor_bus' => $request->bus_mudik,
-                    'nomor_kursi' => $val
-                ]);
+        if ($request->status_mudik == 'diterima') {
+            $user->nomor_bus = $request->bus_mudik;
+            $nomorRegistrasi = 'MDK-DISHUB-' . date('Y') . sprintf("%03d", $user->id);
+            $user->nomor_registrasi = $nomorRegistrasi;
+            if ($user->save() && $request->kursi_peserta) {
+                foreach ($request->kursi_peserta as $key => $val) {
+                    Peserta::where('id', $key)->update([
+                        'nomor_bus' => $request->bus_mudik,
+                        'nomor_kursi' => $val
+                    ]);
+                }
+                $param = [
+                    'target' => $user->phone,
+                    'message' => "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nSilahkan download E-Tiket Anda di " . url('login') . " & Perlihatkan kepada petugas kami pada saat registrasi ulang.  \n\nTerima kasih"
+                ];
+                $notificationApiService->sendNotification($param);
+            }
+        } else {
+            $user->reason = $request->reason;
+            $param = [
+                'target' => $user->phone,
+                'message' => "[Status Mudik Bersama Ditolak] - Jawara Mudik \nMaaf, Status Pendaftaran sebagai peserta mudik bersama Dishub Banten ditolak, dikarenakan: \n\n" . $request->reason . " \n\nTerima kasih"
+            ];
+            $notificationApiService->sendNotification($param);
+            if ($user->save()) {
+                $pesertas = Peserta::where('user_id', $user->id)->get();
+                foreach ($pesertas as $key => $value) {
+                    $peserta = new PesertaRejected();
+                    $peserta->nama_lengkap =  $value->nama_lengkap;
+                    $peserta->nik = $value->nik;
+                    $peserta->tgl_lahir = $value->tgl_lahir;
+                    $peserta->jenis_kelamin = $value->jenis_kelamin;
+                    $peserta->user_id = $value->user_id;
+                    $peserta->created_at = date('Y-m-d H:i:s');
+                    $peserta->kategori = $value->kategori;
+                    $peserta->kota_tujuan_id = $value->kota_tujuan_id;
+                    $peserta->periode_id = $value->periode_id;
+                    $peserta->save();
+                }
+                Peserta::where('user_id', $user->id)->delete();
             }
         }
         $notification = 'Verifikasi Peserta Mudik Berhasil';

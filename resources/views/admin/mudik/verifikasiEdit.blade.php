@@ -62,18 +62,15 @@
                             <tbody>
                                 <tr>
                                     <td>Foto KK</td>
-                                    <td colspan="2"><a href="{{ url($user->foto_kk) }}"
-                                            target="_blank">Lihat/Download</a></td>
+                                    <td colspan="2"><a href="{{ url($user->foto_kk) }}" target="_blank"><img src="{{ url($user->foto_kk) }}" height="200" style="padding: 5px"><br>Lihat/Download</a></td>
                                 </tr>
                                 <tr>
                                     <td>Foto KTP</td>
-                                    <td colspan="2"><a href="{{ url($user->foto_ktp) }}"
-                                            target="_blank">Lihat/Download</a></td>
+                                    <td colspan="2"><a href="{{ url($user->foto_ktp) }}" target="_blank"><img src="{{ url($user->foto_ktp) }}" height="200" style="padding: 5px"><br>Lihat/Download</a></td>
                                 </tr>
                                 <tr>
                                     <td>Foto Selfie</td>
-                                    <td colspan="2"><a href="{{ url($user->foto_selfie) }}"
-                                            target="_blank">Lihat/Download</a></td>
+                                    <td colspan="2"><a href="{{ url($user->foto_selfie) }}" target="_blank"><img src="{{ url($user->foto_selfie) }}" height="200" style="padding: 5px"><br>Lihat/Download</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -86,60 +83,68 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="">Status Permohonan Mudik Gratis<span
-                                        class="text-danger">*</span></label>
-                                <select class="form-control" name="status_mudik">
+                                <label for="">Status Permohonan Mudik Gratis<span class="text-danger">*</span></label>
+                                <select class="form-control" name="status_mudik" id="status_mudik">
                                     <option disabled selected>Pilih Status Permohonan Mudik</option>
-                                    <option value="ditolak" @if(old('status_mudik') == 'ditolak') selected @endif>Di Tolak</option>
-                                    <option value="diterima" @if(old('status_mudik') == 'diterima') selected @endif>Di Terima</option>
+                                    <option value="ditolak" @if((old('status_mudik') == 'ditolak') or ($user->status_mudik == 'ditolak')) selected @endif>Di Tolak</option>
+                                    <option value="diterima" @if((old('status_mudik') == 'diterima') or ($user->status_mudik == 'diterima')) selected @endif>Di Terima</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="">Bus Peserta <span class="text-danger">*</span></label>
-                                <select class="form-control" name="bus_mudik">
-                                    <option disabled selected>Pilih Bus</option>
-                                    @if (isset($kotatujuan->bus))
-                                        @foreach ($kotatujuan->bus as $bus)
-                                            <option value="{{ $bus->id }}" @if(old('bus_mudik') == $bus->id) selected @endif>{{ $bus->name }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
+                            <div id="container-ditolak" style="display: none;">
+                                <div class="form-group">
+                                    <label for="">Keterangan</label>
+                                    <textarea class="form-control h-100" name="reason" rows="4">{{ $user->reason }}</textarea>
+                                </div>
                             </div>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>NIK</th>
-                                        <th>Nama</th>
-                                        <th>Tanggal Lahir</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>Kategori</th>
-                                        <th>Kursi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $no = 1; ?>
-                                    @foreach ($user->peserta as $peserta)
+                            <div id="container-diterima" style="display: none;">
+                                <div class="form-group">
+                                    <label for="">Bus Peserta <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="bus_mudik" id="bus-peserta">
+                                        <option disabled selected>Pilih Bus</option>
+                                        @if (isset($kotatujuan->bus))
+                                            @foreach ($kotatujuan->bus as $bus)
+                                                <option value="{{ $bus->id }}" @if(old('bus_mudik') == $bus->id) selected @endif>{{ $bus->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                                <table class="table table-bordered">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $no++ }}</td>
-                                            <td>{{ $peserta->nik }}</td>
-                                            <td>{{ $peserta->nama_lengkap }}</td>
-                                            <td>{{ date('d M Y', strtotime($peserta->tgl_lahir)) }}</td>
-                                            <td>{{ $peserta->jenis_kelamin == 'L' ? 'Laki-Laki' : 'Perempuan' }}</td>
-                                            <td>{{ $peserta->kategori }}</td>
-                                            <td>
-                                                <select class="form-control" name="kursi_peserta[{{ $peserta->id }}]">
-                                                    <option disabled selected>Pilih Kursi</option>
-                                                    @foreach ($kursi as $seat)
-                                                        <option value="{{ $seat->no_kursi }}">{{ $seat->no_kursi }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
+                                            <th>#</th>
+                                            <th>NIK</th>
+                                            <th>Nama</th>
+                                            <th>Tanggal Lahir</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Kategori</th>
+                                            <th>Kursi</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <?php $no = 1; ?>
+                                        @foreach ($user->peserta as $peserta)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ $peserta->nik }}</td>
+                                                <td>{{ $peserta->nama_lengkap }}</td>
+                                                <td>{{ date('d M Y', strtotime($peserta->tgl_lahir)) }}</td>
+                                                <td>{{ $peserta->jenis_kelamin == 'L' ? 'Laki-Laki' : 'Perempuan' }}</td>
+                                                <td>{{ $peserta->kategori }}</td>
+                                                <td>
+                                                    {{-- <button type="button" class="btn btn-sm btn-warning seat-peserta" onclick="pilihSeat({{ $peserta->id }})">Pilih Kursi</button> --}}
+                                                    <select class="form-control" name="kursi_peserta[{{ $peserta->id }}]">
+                                                        <option disabled selected>Pilih Kursi</option>
+                                                        @foreach ($kursi as $seat)
+                                                            <option value="{{ $seat->no_kursi }}">{{ $seat->no_kursi }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                             <button type="submit" class="btn btn-primary btn-block" role="button"> {{ trans('admin.Save') }} </button>
                         </form>
                     </div>
@@ -148,3 +153,37 @@
         </section>
     </div>
 @endsection
+@push('script')
+    <script>
+        var _stsOld = $('#status_mudik').val();
+        if(_stsOld == 'diterima'){
+            $('#container-ditolak').hide();
+            $('#container-diterima').show();
+        }else if(_stsOld == 'ditolak'){
+            $('#container-ditolak').show();
+            $('#container-diterima').hide();
+        }else{
+            $('#container-ditolak').hide();
+            $('#container-diterima').hide();
+        }
+        $('#status_mudik').on('change', function() {
+            var _sts = $(this).val();
+            if(_sts == 'diterima'){
+                $('#container-ditolak').hide();
+                $('#container-diterima').show();
+            }else{
+                $('#container-ditolak').show();
+                $('#container-diterima').hide();
+            }
+         });
+
+        function pilihSeat(id){
+            var busId = $('#bus-peserta').val();
+            if(busId == null){
+                toastr.error('Silahkan pilih bus terlebih dahulu.');
+            }else{
+                
+            }
+        }
+    </script>
+@endpush

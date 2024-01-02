@@ -57,7 +57,9 @@ class UserLoginController extends Controller
 
 
         if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-
+            $user = User::find(auth()->user()->id);
+            $user->last_login = date('Y-m-d H:i:s');
+            $user->save();
             return redirect()->intended(RouteServiceProvider::USERPANEL);
         }
 

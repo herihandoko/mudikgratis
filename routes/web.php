@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\ContactPageController;
 use App\Http\Controllers\Admin\DependentDropdownController;
 use App\Http\Controllers\Admin\MudikBusController;
 use App\Http\Controllers\Admin\MudikKotaController;
+use App\Http\Controllers\Admin\MudikPeriodeController;
 use App\Http\Controllers\Admin\MudikPesertaController;
 use App\Http\Controllers\Admin\MudikProvinsiController;
 use App\Http\Controllers\Admin\MudikTujuanController;
@@ -201,8 +202,10 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::resource('users', UserController::class);
 
         /** Mudik */
+        Route::resource('mudik-periode', MudikPeriodeController::class);
         Route::resource('mudik-tujuan', MudikTujuanController::class);
         Route::resource('mudik-kota', MudikKotaController::class);
+        Route::get('admin/mudik-kota/provinsi', [MudikKotaController::class,'provinsi'])->name('mudik-kota.provinsi');;
         Route::resource('mudik-bus', MudikBusController::class);
         Route::resource('mudik-peserta', MudikPesertaController::class);
         Route::resource('mudik-provinsi', MudikProvinsiController::class);

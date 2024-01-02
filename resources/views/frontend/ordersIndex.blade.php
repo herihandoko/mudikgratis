@@ -55,6 +55,12 @@
                                     ulang.
                                 </div>
                             @endif
+                            @if ($user->status_profile == 1 && $user->status_mudik == 'ditolak')
+                                <div class="alert alert-danger mt-2" role="alert">
+                                    {{ $user->reason }}<br>
+                                    Silahkan perbarui data peserta mudik Anda. <a href="{{ route('user.peserta') }}"><b>Klik!</b></a>
+                                </div>
+                            @endif
                             @if ($user->status_profile == 0 || $user->status_profile == null)
                                 <div class="alert alert-danger" role="alert"> Anda belum memiliki tiket mudik. Silahkan
                                     lengkapi data mudik Anda dan jangan lupa klik button <b>{{ trans('frontend.Save') }}</b>

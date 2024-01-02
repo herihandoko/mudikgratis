@@ -1,5 +1,5 @@
 @php
-$page_title = "Admin | Mudik Tujuan";
+$page_title = "Admin | Provinsi Tujuan";
 @endphp
 @extends('admin.layouts.master')
 @section('content')
@@ -7,10 +7,20 @@ $page_title = "Admin | Mudik Tujuan";
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Mudik Tujuan</h1>
+                <h1>Provinsi Tujuan</h1>
             </div>
-            <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i
-                    class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
+            <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
+            <div class="card text-dark">
+                <div class="card-body">
+                    <form action="{{ route('admin.mudik-provinsi.index') }}" method="GET">
+                        <div class="form-group">
+                            <label for="">Tujuan</label>
+                            {{ Form::select('tujuan_id', $tujuan, $request->tujuan_id , ['class' => 'form-control']) }}
+                        </div>
+                        <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter </button>
+                    </form>
+                </div>
+            </div>
             <div class="section-body">
                 <div class="card">
                     <div class="card-body wsus_custom_overflow">

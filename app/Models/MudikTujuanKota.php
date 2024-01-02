@@ -18,7 +18,7 @@ class MudikTujuanKota extends Model
 
     public function bus()
     {
-        return $this->hasManyThrough(Bus::class, MudikTujuanKotaHasBus::class, 'kota_tujuan', 'id', 'id', 'id');
+        return $this->hasManyThrough(Bus::class, MudikTujuanKotaHasBus::class, 'kota_tujuan', 'id', 'id', 'bus_id');
     }
 
     public function pesertaKota()

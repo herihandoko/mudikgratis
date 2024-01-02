@@ -2,29 +2,26 @@
 
 namespace App\DataTables;
 
-use App\Models\MudikTujuanProvinsi;
+use App\Models\MudikPeriod;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class MudikProvinsiDataTable extends DataTable
+class MudikPeriodeDataTable extends DataTable
 {
     public function dataTable($query)
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('tujuan', function ($row) {
-                return isset($row->tujuan->name)?$row->tujuan->name:'-';
-            })
             ->addColumn('action', function ($action) {
                 $button = [
                     'edit' => [
-                        'link' => route('admin.mudik-provinsi.edit',  $action->id),
-                        'permission' => 'mudik-provinsi-edit',
+                        'link' => route('admin.mudik-periode.edit',  $action->id),
+                        'permission' => 'mudik-periode-edit',
                     ],
                     'delete' => [
-                        'link' => route('admin.mudik-provinsi.destroy', $action->id),
-                        'permission' => 'mudik-provinsi-delete',
+                        'link' => route('admin.mudik-periode.destroy', $action->id),
+                        'permission' => 'mudik-periode-delete',
                     ]
                 ];
                 $button = json_decode(json_encode($button), FALSE);
@@ -35,7 +32,7 @@ class MudikProvinsiDataTable extends DataTable
                     return '<div class="btn btn-danger btn-sm"> ' . $status->status . ' </div>';
                 } else return '<div class="btn btn-secondary btn-sm"> ' . $status->status . ' </div>';
             })
-            ->rawColumns(['action', 'tujuan', 'status']);
+            ->rawColumns(['action', 'status']);
     }
 
     /**
@@ -44,13 +41,9 @@ class MudikProvinsiDataTable extends DataTable
      * @param \App\Models\BlogCategory $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(MudikTujuanProvinsi $model)
+    public function query(MudikPeriod $model)
     {
-        $query = $model->newQuery();
-        if ($this->request()->get("tujuan_id")) {
-            $query->where('tujuan_id', $this->request()->get("tujuan_id"));
-        }
-        return $query;
+        return $model->newQuery();
     }
 
     /**
@@ -61,13 +54,13 @@ class MudikProvinsiDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('mudik-provinsi-table')
+            ->setTableId('mudik-periode-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(0)
             ->buttons(
-                Button::make('create')->action("window.location = '" . route('admin.mudik-provinsi.create') . "';"),
+                Button::make('create'),
                 Button::make('reset')
             );
     }
@@ -81,9 +74,10 @@ class MudikProvinsiDataTable extends DataTable
     {
         return [
             Column::make('id')->width(10),
-            Column::make('tujuan')->width(100),
-            Column::make('name')->width(100),
-            Column::make('status')->width(10),
+            Column::make('name')->title('Judul')->width(100),
+            Column::make('start_date')->title('Tanggal Pembukaan')->width(100),
+            Column::make('end_date')->title('Tanggal Penutupan')->width(100),
+            Column::make('status')->width(100),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

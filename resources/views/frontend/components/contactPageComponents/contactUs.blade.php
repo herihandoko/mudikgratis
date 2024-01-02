@@ -1,6 +1,6 @@
     @php
         $contact = @App\Models\ContactPage::first();
-        $tujuans = App\Models\MudikTujuan::with('provinsis')->get();
+        $tujuans = App\Models\MudikTujuan::with('provinsis')->where('status','active')->get();
     @endphp
     <section class="our-testimonials">
         <div class="container pt-lg-25" style="padding-top: 20px !important; padding-bottom: 0px !important;">

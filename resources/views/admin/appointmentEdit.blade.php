@@ -39,8 +39,7 @@ $page_title = trans('admin.Admin | Update appointment');
                             </div>
                             <div class="form-group">
                               <label for="">{{trans('admin.Time')}}</label>
-                              <input type="datetime-local"
-                                class="form-control" name="appointment_date" value="{{ Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d\TH:i')}}">
+                              <input type="datetime-local" class="form-control" name="appointment_date" value="{{ Carbon\Carbon::parse($appointment->appointment_date)->format('Y-m-d\TH:i')}}">
                             </div>
                             <div class="form-group">
                                 <label for="">{{trans('admin.Status')}}</label>

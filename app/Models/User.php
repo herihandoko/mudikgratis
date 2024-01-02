@@ -36,7 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'nomor_registrasi',
         'pass_code',
         'last_login',
-        'periode'
+        'periode_id'
     ];
 
     /**

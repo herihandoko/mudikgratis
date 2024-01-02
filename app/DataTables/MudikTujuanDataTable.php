@@ -20,18 +20,23 @@ class MudikTujuanDataTable extends DataTable
             ->addColumn('action', function ($action) {
                 $button = [
                     'edit' => [
-                        'link' => route('admin.mudik-verifikasi.edit',  $action->id),
-                        'permission' => 'blog-category-edit',
+                        'link' => route('admin.mudik-tujuan.edit',  $action->id),
+                        'permission' => 'mudik-tujuan-edit',
                     ],
                     'delete' => [
-                        'link' => route('admin.mudik-verifikasi.destroy', $action->id),
-                        'permission' => 'blog-category-delete',
+                        'link' => route('admin.mudik-tujuan.destroy', $action->id),
+                        'permission' => 'mudik-tujuan-delete',
                     ]
                 ];
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
-            ->rawColumns(['action','status_mudik']);
+            ->addColumn('status', function ($status) {
+                if ($status->status !== 'active') {
+                    return '<div class="btn btn-danger btn-sm"> ' . $status->status . ' </div>';
+                } else return '<div class="btn btn-secondary btn-sm"> ' . $status->status . ' </div>';
+            })
+            ->rawColumns(['action','status']);
     }
 
     /**
@@ -53,13 +58,13 @@ class MudikTujuanDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('blogcategory-table')
+            ->setTableId('mudik-tujuan-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(0)
             ->buttons(
-                // Button::make('create'),
+                Button::make('create'),
                 Button::make('reset')
             );
     }
@@ -73,7 +78,8 @@ class MudikTujuanDataTable extends DataTable
     {
         return [
             Column::make('id')->width(10),
-            Column::make('name')->width(100),
+            Column::make('name')->title('Tujuan')->width(100),
+            Column::make('status')->width(10),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -89,6 +95,6 @@ class MudikTujuanDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'MudikVerifikasi_' . date('YmdHis');
+        return 'MudikTujuan_' . date('YmdHis');
     }
 }

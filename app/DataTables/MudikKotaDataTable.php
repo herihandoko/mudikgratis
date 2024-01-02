@@ -25,18 +25,23 @@ class MudikKotaDataTable extends DataTable
             ->addColumn('action', function ($action) {
                 $button = [
                     'edit' => [
-                        'link' => route('admin.mudik-verifikasi.edit',  $action->id),
-                        'permission' => 'blog-category-edit',
+                        'link' => route('admin.mudik-kota.edit',  $action->id),
+                        'permission' => 'mudik-kota-edit',
                     ],
                     'delete' => [
-                        'link' => route('admin.mudik-verifikasi.destroy', $action->id),
-                        'permission' => 'blog-category-delete',
+                        'link' => route('admin.mudik-kota.destroy', $action->id),
+                        'permission' => 'mudik-kota-delete',
                     ]
                 ];
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
-            ->rawColumns(['action','provinsi']);
+            ->addColumn('status', function ($status) {
+                if ($status->status !== 'active') {
+                    return '<div class="btn btn-danger btn-sm"> ' . $status->status . ' </div>';
+                } else return '<div class="btn btn-secondary btn-sm"> ' . $status->status . ' </div>';
+            })
+            ->rawColumns(['action', 'provinsi', 'status']);
     }
 
     /**
@@ -47,7 +52,11 @@ class MudikKotaDataTable extends DataTable
      */
     public function query(MudikTujuanKota $model)
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+        if ($this->request()->get("tujuan_id")) {
+            $query->where('tujuan_id', $this->request()->get("tujuan_id"));
+        }
+        return $query;
     }
 
     /**
@@ -58,13 +67,13 @@ class MudikKotaDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('blogcategory-table')
+            ->setTableId('mudik-kota-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(0)
             ->buttons(
-                // Button::make('create'),
+                Button::make('create'),
                 Button::make('reset')
             );
     }
@@ -79,7 +88,8 @@ class MudikKotaDataTable extends DataTable
         return [
             Column::make('id')->width(10),
             Column::make('provinsi')->width(100),
-            Column::make('name')->width(100),
+            Column::make('name')->title('Kota')->width(100),
+            Column::make('status')->width(100),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

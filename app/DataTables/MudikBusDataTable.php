@@ -20,24 +20,26 @@ class MudikBusDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            // ->addColumn('provinsi', function ($row) {
-            //     return $row->provinsi->name;
-            // })
             ->addColumn('action', function ($action) {
                 $button = [
                     'edit' => [
-                        'link' => route('admin.mudik-verifikasi.edit',  $action->id),
-                        'permission' => 'blog-category-edit',
+                        'link' => route('admin.mudik-bus.edit',  $action->id),
+                        'permission' => 'mudik-bus-edit',
                     ],
                     'delete' => [
-                        'link' => route('admin.mudik-verifikasi.destroy', $action->id),
-                        'permission' => 'blog-category-delete',
+                        'link' => route('admin.mudik-bus.destroy', $action->id),
+                        'permission' => 'mudik-bus-delete',
                     ]
                 ];
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
-            ->rawColumns(['action']);
+            ->addColumn('status', function ($status) {
+                if ($status->status !== 'active') {
+                    return '<div class="btn btn-danger btn-sm"> ' . $status->status . ' </div>';
+                } else return '<div class="btn btn-secondary btn-sm"> ' . $status->status . ' </div>';
+            })
+            ->rawColumns(['action', 'status']);
     }
 
     /**
@@ -59,13 +61,13 @@ class MudikBusDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('blogcategory-table')
+            ->setTableId('mudik-bus-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(0)
             ->buttons(
-                // Button::make('create'),
+                Button::make('create'),
                 Button::make('reset')
             );
     }
@@ -79,8 +81,10 @@ class MudikBusDataTable extends DataTable
     {
         return [
             Column::make('id')->width(10),
-            Column::make('name')->width(100),
+            Column::make('name')->title('Nama Bus')->width(100),
             Column::make('jumlah_kursi')->width(100),
+            Column::make('seat')->width(100),
+            Column::make('status')->width(100),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

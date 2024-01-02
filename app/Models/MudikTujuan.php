@@ -11,7 +11,8 @@ class MudikTujuan extends Model
 
     protected $table = "mudik_tujuan";
 
-    public function provinsis(){
-        return $this->hasMany(MudikTujuanProvinsi::class,'tujuan_id','id');
+    public function provinsis()
+    {
+        return $this->hasMany(MudikTujuanProvinsi::class, 'tujuan_id', 'id');
     }
 }

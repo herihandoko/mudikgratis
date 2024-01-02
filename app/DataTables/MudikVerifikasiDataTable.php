@@ -27,11 +27,11 @@ class MudikVerifikasiDataTable extends DataTable
                 $button = [
                     'edit' => [
                         'link' => route('admin.mudik-verifikasi.edit',  $action->id),
-                        'permission' => 'blog-category-edit',
+                        'permission' => 'mudik-verifikasi-edit',
                     ],
                     'delete' => [
                         'link' => route('admin.mudik-verifikasi.destroy', $action->id),
-                        'permission' => 'blog-category-delete',
+                        'permission' => 'mudik-verifikasi-delete',
                     ]
                 ];
                 $button = json_decode(json_encode($button), FALSE);

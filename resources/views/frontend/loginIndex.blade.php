@@ -67,11 +67,7 @@ $page_title =  'Login';
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
                                         <label for="form_password">{{trans('frontend.Password')}}</label>
-                                        <input id="form_password" name="password" class="form-control" type="password"
-                                        @if (env('DEMO_MODE'))
-                                            value="1234"
-                                        @endif
-                                        >
+                                        <input id="form_password" name="password" class="form-control" type="password" @if (env('DEMO_MODE')) value="1234" @endif >
                                     </div>
                                 </div>
 

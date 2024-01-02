@@ -298,7 +298,8 @@ class UserPanelController extends Controller
             $peserta->user_id = $user->id;
             $peserta->created_at = date('Y-m-d H:i:s');
             $peserta->kategori = $this->categorizeAgeGroup($request->tgl_lahir);
-            $peserta->kota_tujuan_id = $user->kota_tujuan_id;
+            $peserta->kota_tujuan_id = $user->kota_tujuan;
+            $peserta->periode_id = $user->periode_id;
             $peserta->save();
         } else {
             Peserta::where('nik', $request->nik)->delete();
@@ -426,7 +427,12 @@ class UserPanelController extends Controller
         $peserta->created_at = date('Y-m-d H:i:s');
         $peserta->kategori = $this->categorizeAgeGroup($request->tgl_lahir);
         $peserta->kota_tujuan_id = Auth::user()->kota_tujuan;
-        $peserta->save();
+        $peserta->periode_id = Auth::user()->periode_id;
+        if ($peserta->save()) {
+            $user = User::find(auth()->user()->id);
+            $user->status_mudik = 'waiting';
+            $user->save();
+        }
         toast('Tambah peserta berhasil', 'success')->width('350px');
         return redirect()->route('user.peserta');
     }
@@ -488,6 +494,7 @@ class UserPanelController extends Controller
         $peserta->created_at = date('Y-m-d H:i:s');
         $peserta->kategori = $this->categorizeAgeGroup($request->tgl_lahir);
         $peserta->kota_tujuan_id = Auth::user()->kota_tujuan;
+        $peserta->periode_id = Auth::user()->periode_id;
         $peserta->save();
         toast('Tambah peserta berhasil', 'success')->width('350px');
         return redirect()->route('user.peserta');

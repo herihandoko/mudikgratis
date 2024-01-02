@@ -57,7 +57,7 @@ class UserRegisterController extends Controller
 
     public function userRegisterForm()
     {
-        $tujuan = MudikTujuan::pluck('name', 'id')->prepend('Pilih Tujuan Mudik Gratis', '');
+        $tujuan = MudikTujuan::where('status', 'active')->pluck('name', 'id')->prepend('Pilih Tujuan Mudik Gratis', '');
         $cityCode = City::select('code')->where('province_code', 36)->get();
         $tempatLahir = District::whereIn('city_code', $cityCode)->pluck('name', 'name')->prepend('Pilih Tempat Lahir', '');
         $period = MudikPeriod::where('status', 'active')->first();
@@ -122,7 +122,7 @@ class UserRegisterController extends Controller
             'password' => Hash::make($password),
             'email_verified_at' => now(),
             'pass_code' => $password,
-            'periode' => isset($period->tahun) ? $period->tahun : ''
+            'periode_id' => isset($period->id) ? $period->id : ''
         ]);
 
         // $template = EmailTemplate::find(3);
@@ -152,7 +152,7 @@ class UserRegisterController extends Controller
 
     public function userRegisterCities(Request $request)
     {
-        return MudikTujuanProvinsi::with('kota')->where('tujuan_id', $request->id)->get();
+        return MudikTujuanProvinsi::with('kota')->where('tujuan_id', $request->id)->where('status', 'active')->get();
     }
 
     function cekStatusAktif($start_date, $end_date)
