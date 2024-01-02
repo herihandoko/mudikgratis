@@ -35,6 +35,7 @@
                       class="font-current-theme2"
                     >{{$item->subtitle}}
                     </rs-layer>
+                    @guest
                     <rs-layer
                       id="slider-2-slide-2-layer-22"
                       data-type="text"
@@ -47,6 +48,7 @@
                       class="font-current-theme1"
                     ><a href="{{$item->button_link}}" class="btn btn-theme-colored1">{{$item->button}}</a>
                     </rs-layer>
+                    @endguest
                     <rs-layer
                       id="slider-2-slide-2-layer-0"
                       data-type="shape"
