@@ -146,17 +146,17 @@ class UserPanelController extends Controller
             }
 
             if ($validator->errors()->has('foto_ktp')) {
-                toast(trans('frontend.KTP required!'), 'error')->width('300px');
+                toast($validator->messages()->get('foto_ktp')[0], 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
 
             if ($validator->errors()->has('foto_kk')) {
-                toast(trans('frontend.KK required!'), 'error')->width('300px');
+                toast($validator->messages()->get('foto_kk')[0], 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
 
             if ($validator->errors()->has('foto_selfie')) {
-                toast(trans('frontend.Selfie required!'), 'error')->width('300px');
+                toast($validator->messages()->get('foto_selfie')[0], 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
         }
