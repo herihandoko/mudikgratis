@@ -46,7 +46,7 @@
                                     Silahkan perbarui data peserta mudik Anda. <a href="{{ route('user.peserta') }}"><b>Klik!</b></a>
                                 </div>
                             @endif
-                            <form action="{{ route('user.update') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('user.update') }}" method="post" enctype="multipart/form-data" files="true">
                                 @csrf
                                 <h3>{{ trans('frontend.Information') }}</h3>
                                 <div class="mb-3">
