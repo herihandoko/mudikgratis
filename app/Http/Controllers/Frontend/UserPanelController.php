@@ -77,6 +77,8 @@ class UserPanelController extends Controller
     }
     public function update_profile(Request $request)
     {
+        ini_set('post_max_size', '5M');
+        ini_set('upload_max_filesize', '5M');
         $user = User::find(Auth::user()->id);
         $attributes = [
             'name' => 'required',
