@@ -144,7 +144,7 @@ class MudikVerifikasiController extends Controller
                 return response([
                     'status' => 'success',
                     'message' => "Kursi berhasil dipilih",
-                    'url' => route('admin.mudik-verifikasi.edit', 16)
+                    'url' => route('admin.mudik-verifikasi.edit', $peserta->user_id)
                 ]);
             } else {
                 return response([
