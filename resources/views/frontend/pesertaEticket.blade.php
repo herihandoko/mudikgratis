@@ -14,10 +14,11 @@
         <table width="100%">
             <tr>
                 <td>
-                    <img src="{{ url('assets/uploads/images/media_1701588795.png') }}" height="50px">
+                    <img src="{{ public_path(GetSetting('site_logo')) }}" height="50px">
                 </td>
                 <td>
-                    <img src="{{ url('assets/frontend/images/qrcode.png') }}" height="70px" align="right">
+                    <img src="data:image/png;base64, {!! $qrcode !!}" height="70px" align="right">
+                    {{-- <img src="{{ public_path('assets/frontend/images/qrcode.png') }}" height="70px" align="right"> --}}
                 </td>
             </tr>
         </table>

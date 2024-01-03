@@ -11,8 +11,7 @@ use App\Models\User;
 use App\Models\UserAdress;
 use App\Models\UserInactive;
 use App\Services\NotificationApiService;
-use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
-use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManagerStatic as Image;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 class UserPanelController extends Controller
 {
@@ -46,17 +47,21 @@ class UserPanelController extends Controller
     {
         $pesertas = Auth::user()->peserta()->latest()->paginate(4);
         $user = Auth::user();
-        $pdf = FacadePdf::loadView('frontend.pesertaEticket', compact('pesertas', 'user'));
-        $pdf->getDomPDF()->setHttpContext(
-            stream_context_create([
-                'ssl' => [
-                    'allow_self_signed' => TRUE,
-                    'verify_peer' => FALSE,
-                    'verify_peer_name' => FALSE,
-                ]
-            ])
-        );
-        return $pdf->download('laporan-pegawai-pdf');
+        $qrcode = base64_encode(QrCode::format('svg')->style('dot')->size(200)->generate($user->nomor_registrasi));
+        $pdf = Pdf::loadView('frontend.pesertaEticket', compact('pesertas', 'user', 'qrcode'));
+        // return view('frontend.pesertaEticket', compact('pesertas', 'user', 'qrcode'));
+        return $pdf->download('invoice.pdf');
+        // $pdf = FacadePdf::loadView('frontend.pesertaEticket', compact('pesertas', 'user'));
+        // $pdf->getDomPDF()->setHttpContext(
+        //     stream_context_create([
+        //         'ssl' => [
+        //             'allow_self_signed' => TRUE,
+        //             'verify_peer' => FALSE,
+        //             'verify_peer_name' => FALSE,
+        //         ]
+        //     ])
+        // );
+        // return $pdf->download('laporan-pegawai-pdf');
         // return view('frontend.pesertaEticket', compact('pesertas', 'user'));
     }
 
