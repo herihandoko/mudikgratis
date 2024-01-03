@@ -78,6 +78,7 @@ class MudikVerifikasiController extends Controller
             }
         } else {
             $user->reason = $request->reason;
+            $user->nomor_bus = null;
             $param = [
                 'target' => $user->phone,
                 'message' => "[Status Mudik Bersama Ditolak] - Jawara Mudik \nMaaf, Status Pendaftaran sebagai peserta mudik bersama Dishub Banten ditolak, dikarenakan: \n\n" . $request->reason . " \n\nTerima kasih"
@@ -117,6 +118,60 @@ class MudikVerifikasiController extends Controller
         User::findOrFail($id)->delete();
         return response([
             'status' => 'success',
+        ]);
+    }
+
+    public function seat(Request $request)
+    {
+        $idbus = $request->idbus;
+        $pesertas = Peserta::select('nomor_kursi')->where('nomor_bus', $idbus)->get();
+        $kursi = [];
+        foreach ($pesertas as $key => $value) {
+            $kursi[$value->nomor_kursi] = $value->nomor_kursi;
+        }
+        return view('admin.mudik.indexSeat', compact('request', 'kursi'));
+    }
+
+    public function seat_store(Request $request)
+    {
+        $peserta = Peserta::find($request->idpeserta);
+        if ($request->idbus && $request->seat && $request->idpeserta) {
+            $checkAvailable = Peserta::where('nomor_bus', $request->idbus)->where('nomor_kursi', $request->seat)->where('id', '!=', $request->idpeserta)->exists();
+            if (!$checkAvailable) {
+                $peserta->nomor_bus = $request->idbus;
+                $peserta->nomor_kursi = $request->seat;
+                $peserta->save();
+                return response([
+                    'status' => 'success',
+                    'message' => "Kursi berhasil dipilih",
+                    'url' => route('admin.mudik-verifikasi.edit', 16)
+                ]);
+            } else {
+                return response([
+                    'status' => 'failed',
+                    'message' => "Kursi sudah terisi"
+                ]);
+            }
+        } else {
+            return response([
+                'status' => 'failed',
+                'message' => "Gagal pilih kursi"
+            ]);
+        }
+    }
+
+    public function bus_store(Request $request)
+    {
+        $user = User::find($request->iduser);
+        $user->nomor_bus = $request->idbus;
+        if ($user->save()) {
+            Peserta::where('user_id', $request->iduser)->update([
+                'nomor_bus' => null,
+                'nomor_kursi' => null
+            ]);
+        }
+        return response([
+            'status' => 'success'
         ]);
     }
 }

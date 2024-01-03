@@ -205,11 +205,14 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::resource('mudik-periode', MudikPeriodeController::class);
         Route::resource('mudik-tujuan', MudikTujuanController::class);
         Route::resource('mudik-kota', MudikKotaController::class);
-        Route::get('admin/mudik-kota/provinsi', [MudikKotaController::class,'provinsi'])->name('mudik-kota.provinsi');;
+        Route::get('/admin/mudik-kota/provinsi', [MudikKotaController::class,'provinsi'])->name('mudik-kota.provinsi');
         Route::resource('mudik-bus', MudikBusController::class);
         Route::resource('mudik-peserta', MudikPesertaController::class);
         Route::resource('mudik-provinsi', MudikProvinsiController::class);
         Route::resource('mudik-verifikasi', MudikVerifikasiController::class);
+        Route::get('/admin/mudik-verifikasi/seat', [MudikVerifikasiController::class,'seat'])->name('mudik-verifikasi.seat');
+        Route::post('/admin/mudik-verifikasi/seat/store', [MudikVerifikasiController::class,'seat_store'])->name('mudik-verifikasi.seat.store');
+        Route::post('/admin/mudik-verifikasi/bus/store', [MudikVerifikasiController::class,'bus_store'])->name('mudik-verifikasi.bus.store');
     });
 
 

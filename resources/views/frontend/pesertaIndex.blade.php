@@ -41,7 +41,7 @@
                                 <h4><i class="fa fa-users"></i> Peserta Mudik Lainnya (Maksimal {{ auth()->user()->jumlah }} Orang)</h4>
                             </div>
                             <div class="col-md-3 col-sm-12 text-right">
-                                @if(($user->peserta->count() < auth()->user()->jumlah) && ($user->status_profile == 1))
+                                @if(($user->peserta->count() < auth()->user()->jumlah) && ($user->status_profile == 1) && $user->status_mudik != 'diterima')
                                     <a href="{{ route('user.peserta.create') }}" class="btn btn-success btn-xs w-100"><i class="fa fa-plus"></i> Tambah Peserta</a>
                                 @endif
                                 @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')

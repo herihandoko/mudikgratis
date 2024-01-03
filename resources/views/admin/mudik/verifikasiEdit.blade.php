@@ -87,7 +87,7 @@
                                 <select class="form-control" name="status_mudik" id="status_mudik">
                                     <option disabled selected>Pilih Status Permohonan Mudik</option>
                                     <option value="ditolak" @if((old('status_mudik') == 'ditolak') or ($user->status_mudik == 'ditolak')) selected @endif>Di Tolak</option>
-                                    <option value="diterima" @if((old('status_mudik') == 'diterima') or ($user->status_mudik == 'diterima')) selected @endif>Di Terima</option>
+                                    <option value="diterima" @if((old('status_mudik') == 'diterima') or ($user->status_mudik == 'diterima') or $user->nomor_bus) selected @endif>Di Terima</option>
                                 </select>
                             </div>
                             <div id="container-ditolak" style="display: none;">
@@ -96,14 +96,14 @@
                                     <textarea class="form-control h-100" name="reason" rows="4">{{ $user->reason }}</textarea>
                                 </div>
                             </div>
-                            <div id="container-diterima" style="display: none;">
+                            <div id="container-diterima">
                                 <div class="form-group">
                                     <label for="">Bus Peserta <span class="text-danger">*</span></label>
                                     <select class="form-control" name="bus_mudik" id="bus-peserta">
                                         <option disabled selected>Pilih Bus</option>
                                         @if (isset($kotatujuan->bus))
                                             @foreach ($kotatujuan->bus as $bus)
-                                                <option value="{{ $bus->id }}" @if(old('bus_mudik') == $bus->id) selected @endif>{{ $bus->name }}</option>
+                                                <option value="{{ $bus->id }}" @if((old('bus_mudik') == $bus->id) || ($user->nomor_bus == $bus->id)) selected @endif>{{ $bus->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -131,14 +131,13 @@
                                                 <td>{{ $peserta->jenis_kelamin == 'L' ? 'Laki-Laki' : 'Perempuan' }}</td>
                                                 <td>{{ $peserta->kategori }}</td>
                                                 <td>
-                                                    {{-- <button type="button" class="btn btn-sm btn-warning seat-peserta" onclick="pilihSeat({{ $peserta->id }})">Pilih Kursi</button> --}}
-                                                    <select class="form-control" name="kursi_peserta[{{ $peserta->id }}]">
-                                                        <option disabled selected>Pilih Kursi</option>
-                                                        @foreach ($kursi as $seat)
-                                                            <option value="{{ $seat->no_kursi }}">{{ $seat->no_kursi }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    @if($peserta->nomor_kursi)
+                                                        <button type="button" class="btn btn-sm btn-link seat-peserta" onclick="pilihSeat({{ $peserta->id }})">{{ $peserta->nomor_kursi }}</button>
+                                                        <input type="hidden" name="kursi_peserta[]" value="{{ $peserta->nomor_kursi }}">
+                                                    @else
+                                                        <button type="button" class="btn btn-sm btn-success seat-peserta" onclick="pilihSeat({{ $peserta->id }})">Pilih Kursi Kursi</button>
+                                                        <input type="hidden" name="kursi_peserta[]" value="">
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -158,31 +157,48 @@
         var _stsOld = $('#status_mudik').val();
         if(_stsOld == 'diterima'){
             $('#container-ditolak').hide();
-            $('#container-diterima').show();
+            // $('#container-diterima').show();
         }else if(_stsOld == 'ditolak'){
             $('#container-ditolak').show();
-            $('#container-diterima').hide();
+            // $('#container-diterima').hide();
         }else{
             $('#container-ditolak').hide();
-            $('#container-diterima').hide();
+            // $('#container-diterima').hide();
         }
         $('#status_mudik').on('change', function() {
             var _sts = $(this).val();
             if(_sts == 'diterima'){
                 $('#container-ditolak').hide();
-                $('#container-diterima').show();
+                // $('#container-diterima').show();
             }else{
                 $('#container-ditolak').show();
-                $('#container-diterima').hide();
+                // $('#container-diterima').hide();
             }
          });
+
+        $('#bus-peserta').on('change', function() {
+            $.ajax({
+                type: 'POST',
+                url: "<?= route('admin.mudik-verifikasi.bus.store') ?>",
+                data: {
+                    idbus:$(this).val(),
+                    iduser:'<?= $user->id ?>'
+                },
+                success: function(data) {
+                    if (data.status == 'success') {
+                        location.reload();
+                    }
+                }
+            });
+        });
 
         function pilihSeat(id){
             var busId = $('#bus-peserta').val();
             if(busId == null){
                 toastr.error('Silahkan pilih bus terlebih dahulu.');
             }else{
-                
+                var url =  "<?= route('admin.mudik-verifikasi.seat') ?>?idbus="+busId+'&idpeserta='+id;
+                window.location.href = url;
             }
         }
     </script>

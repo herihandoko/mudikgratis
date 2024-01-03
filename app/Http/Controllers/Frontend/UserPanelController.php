@@ -88,7 +88,7 @@ class UserPanelController extends Controller
             'phone' => 'required',
             'country' => 'required',
             'city' => 'required|integer',
-            'post_code' => 'required',
+            // 'post_code' => 'required',
             'address' => 'required',
             'provinsi' => 'required|integer',
             'kecamatan' => 'required|integer',
@@ -136,10 +136,10 @@ class UserPanelController extends Controller
                 toast(trans('frontend.City required!'), 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
-            if ($validator->errors()->has('post_code')) {
-                toast(trans('frontend.Post code required!'), 'error')->width('300px');
-                return redirect()->back()->withInput();
-            }
+            // if ($validator->errors()->has('post_code')) {
+            //     toast(trans('frontend.Post code required!'), 'error')->width('300px');
+            //     return redirect()->back()->withInput();
+            // }
             if ($validator->errors()->has('address')) {
                 toast(trans('frontend.Address required!'), 'error')->width('300px');
                 return redirect()->back()->withInput();
