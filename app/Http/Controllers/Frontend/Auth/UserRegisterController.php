@@ -57,14 +57,18 @@ class UserRegisterController extends Controller
 
     public function userRegisterForm()
     {
-        $tujuan = MudikTujuan::where('status', 'active')->pluck('name', 'id')->prepend('Pilih Tujuan Mudik Gratis', '');
-        $cityCode = City::select('code')->where('province_code', 36)->get();
-        $tempatLahir = District::whereIn('city_code', $cityCode)->pluck('name', 'name')->prepend('Pilih Tempat Lahir', '');
-        $period = MudikPeriod::where('status', 'active')->first();
-        $statusMudik = false;
-        if ($period)
-            $statusMudik = $this->cekStatusAktif($period->start_date, $period->end_date);
-        return view('frontend.registerIndex', compact('tujuan', 'tempatLahir', 'statusMudik'));
+        if (auth()->check()) {
+            return redirect()->intended(RouteServiceProvider::USERPANEL);
+        } else {
+            $tujuan = MudikTujuan::where('status', 'active')->pluck('name', 'id')->prepend('Pilih Tujuan Mudik Gratis', '');
+            $cityCode = City::select('code')->where('province_code', 36)->get();
+            $tempatLahir = District::whereIn('city_code', $cityCode)->pluck('name', 'name')->prepend('Pilih Tempat Lahir', '');
+            $period = MudikPeriod::where('status', 'active')->first();
+            $statusMudik = false;
+            if ($period)
+                $statusMudik = $this->cekStatusAktif($period->start_date, $period->end_date);
+            return view('frontend.registerIndex', compact('tujuan', 'tempatLahir', 'statusMudik'));
+        }
     }
     /**
      * Get a validator for an incoming registration request.
