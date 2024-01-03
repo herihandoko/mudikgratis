@@ -4,7 +4,26 @@
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
+            font-size: 10px;
+        }
+
+        .header,
+        .footer {
+            width: 100%;
+            text-align: left;
+            position: fixed;
+        }
+
+        .header {
+            top: 0px;
+        }
+
+        .footer {
+            bottom: 0px;
+        }
+
+        .pagenum:before {
+            content: counter(page);
         }
     </style>
 </head>
@@ -102,6 +121,17 @@
                 </tr>
             @endforeach
         </table>
+        <div class="footer">
+            <p style="line-height: 1.5;">Tiket ini dapat dicetak dan dibawa untuk ditunjukan kepada petugas pada saat
+                check-in.<br>
+                Sertakan identitas diri para penumpang pada saat check-in agar petugas dapat melakukan verifikasi
+            </p>
+            <div style="background-color: #facd2f !important; padding:10px;">
+                <p style="line-height: 1.5;">Apabila memerlukan bantuan, silakan hubungi <b>Customer Service Jawara Mudik Bersama</b><br>
+                    <b>Telp.</b> 0812-9880-8903, <b>Wa.</b> 0812-9880-8903, <b>E-mail:</b> jawaramudik@bantenprov.go.id
+                </p>
+            </div>
+        </div>
     </div>
 </body>
 

@@ -47,22 +47,10 @@ class UserPanelController extends Controller
     {
         $pesertas = Auth::user()->peserta()->latest()->paginate(4);
         $user = Auth::user();
-        $qrcode = base64_encode(QrCode::format('svg')->style('dot')->size(200)->generate($user->nomor_registrasi));
+        $qrcode = base64_encode(QrCode::format('svg')->size(200)->generate($user->nomor_registrasi));
         $pdf = Pdf::loadView('frontend.pesertaEticket', compact('pesertas', 'user', 'qrcode'));
         // return view('frontend.pesertaEticket', compact('pesertas', 'user', 'qrcode'));
-        return $pdf->download('invoice.pdf');
-        // $pdf = FacadePdf::loadView('frontend.pesertaEticket', compact('pesertas', 'user'));
-        // $pdf->getDomPDF()->setHttpContext(
-        //     stream_context_create([
-        //         'ssl' => [
-        //             'allow_self_signed' => TRUE,
-        //             'verify_peer' => FALSE,
-        //             'verify_peer_name' => FALSE,
-        //         ]
-        //     ])
-        // );
-        // return $pdf->download('laporan-pegawai-pdf');
-        // return view('frontend.pesertaEticket', compact('pesertas', 'user'));
+        return $pdf->download('tiket-mudik-bersama.pdf');
     }
 
     public  function peserta_create()
