@@ -121,6 +121,7 @@
                 </tr>
             @endforeach
         </table>
+        <p style="margin:10px;">{!! clean(html_entity_decode(@App\Models\PrivacyPolicy::first()->content)) !!}</p>
         <div class="footer">
             <p style="line-height: 1.5;">Tiket ini dapat dicetak dan dibawa untuk ditunjukan kepada petugas pada saat
                 check-in.<br>
