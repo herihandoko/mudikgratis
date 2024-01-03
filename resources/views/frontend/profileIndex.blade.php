@@ -50,7 +50,7 @@
                                 @csrf
                                 <h3>{{ trans('frontend.Information') }}</h3>
                                 <div class="mb-3">
-                                    <label for="formFile" class="form-label">{{ trans('frontend.Avatar') }}</label>
+                                    <label for="formFile" class="form-label">{{ trans('frontend.Avatar') }} <span class="text-danger"> (Ukuran file max : 2MB, jpg,jpeg,png)</span></label>
                                     <div class="upload-preview">
                                         <img src="{{ @$user->avatar ? asset(@$user->avatar) : asset('assets/frontend/images/user.png') }}" alt="Avatar" class="avatar-preview">
                                     </div>
@@ -208,14 +208,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="formKK" class="form-label">{{ trans('frontend.KK') }} <span class="text-danger">*</span></label>
+                                            <label for="formKK" class="form-label">{{ trans('frontend.KK') }} <span class="text-danger">* (Ukuran file max : 2MB, jpg,jpeg,png)</span></label>
                                             <div class="upload-preview">
                                                 <img src="{{ @$user->foto_kk ? asset(@$user->foto_kk) : asset('assets/frontend/images/familycard.png') }}" alt="KK" class="kk-preview">
                                             </div>
                                             <input class="form-control" name="foto_kk" type="file" id="formKK" onchange="previewFileKK(this)" {{ @!$user->foto_kk ? "required" : "" }} accept="image/*">
                                         </div>
                                         <div class="form-group">
-                                            <label for="formKTP" class="form-label">{{ trans('frontend.KTP') }} <span class="text-danger">*</span></label>
+                                            <label for="formKTP" class="form-label">{{ trans('frontend.KTP') }} <span class="text-danger">* (Ukuran file max : 2MB, jpg,jpeg,png)</span></label>
                                             <div class="upload-preview">
                                                 <img src="{{ @$user->foto_ktp ? asset(@$user->foto_ktp) : asset('assets/frontend/images/idcard.png') }}" alt="KTP" class="ktp-preview">
                                             </div>
@@ -224,7 +224,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="formSelfie" class="form-label">{{ trans('frontend.Selfie') }} <span class="text-danger">*</span></label>
+                                            <label for="formSelfie" class="form-label">{{ trans('frontend.Selfie') }} <span class="text-danger">* (Ukuran file max : 2MB, jpg,jpeg,png)</span></label>
                                             <div class="upload-preview">
                                                 <img src="{{ @$user->foto_selfie ? asset(@$user->foto_selfie) : asset('assets/frontend/images/user.png') }}" alt="Selfie" class="selfie-preview">
                                             </div>
