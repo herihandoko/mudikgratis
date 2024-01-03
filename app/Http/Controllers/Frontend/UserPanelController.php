@@ -98,16 +98,13 @@ class UserPanelController extends Controller
             'is_peserta' => 'required'
         ];
         if ($request->hasFile('foto_ktp')) {
-            // $attributes['foto_ktp'] = 'required|max:5000|mimes:jpg,jpeg,png,JPG,JPEG,PNG';
-            $attributes['foto_ktp'] = ['required',File::image()->smallerThan(20000)];
+            $attributes['foto_ktp'] = 'required|max:5000|mimes:jpg,jpeg,png,JPG,JPEG,PNG';
         }
         if ($request->hasFile('foto_kk')) {
-            // $attributes['foto_kk'] = 'required|max:5000|mimes:jpg,jpeg,png,JPG,JPEG,PNG';
-            $attributes['foto_kk'] = ['required',File::image()->smallerThan(20000)];
+            $attributes['foto_kk'] = 'required|max:5000|mimes:jpg,jpeg,png,JPG,JPEG,PNG';
         }
         if ($request->hasFile('foto_selfie')) {
-            // $attributes['foto_selfie'] = 'required|max:5000|mimes:jpg,jpeg,png,JPG,JPEG,PNG';
-            $attributes['foto_selfie'] = ['required',File::image()->smallerThan(20000)];
+            $attributes['foto_selfie'] = 'required|max:5000|mimes:jpg,jpeg,png,JPG,JPEG,PNG';
         }
 
         $validator = Validator::make($request->all(), $attributes);
