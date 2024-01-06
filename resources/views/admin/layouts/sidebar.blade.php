@@ -58,6 +58,11 @@
                         <a class="nav-link" href="{{ route('admin.mudik-verifikasi.index') }}">Verifikasi</a>
                     </li>
                     @endcan
+                    @can('mudik-report-index')
+                    <li class="{{ ActiveSidebar('admin.mudik-report.index') }}">
+                        <a class="nav-link" href="{{ route('admin.mudik-report.index') }}">Report Peserta</a>
+                    </li>
+                    @endcan
                 </ul>
             </li>
             @endcanany

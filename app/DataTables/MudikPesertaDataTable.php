@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\BlogCategory;
+use App\Models\Peserta;
 use App\Models\User;
 use App\Models\UserInactive;
 use Yajra\DataTables\Html\Button;
@@ -16,25 +17,7 @@ class MudikPesertaDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables()
-            ->eloquent($query)
-            ->addColumn('status_mudik', function ($status) {
-                return '<div class="btn btn-danger btn-sm"> Gagal </div>';
-            })
-            ->addColumn('action', function ($action) {
-                $button = [
-                    'edit' => [
-                        'link' => route('admin.mudik-verifikasi.edit',  $action->id),
-                        'permission' => 'blog-category-edit',
-                    ],
-                    'delete' => [
-                        'link' => route('admin.mudik-verifikasi.destroy', $action->id),
-                        'permission' => 'blog-category-delete',
-                    ]
-                ];
-                $button = json_decode(json_encode($button), FALSE);
-                return view('admin.layouts.datatableButtons', compact('button'));
-            })
-            ->rawColumns(['action','status_mudik']);
+            ->eloquent($query);
     }
 
     /**
@@ -43,9 +26,19 @@ class MudikPesertaDataTable extends DataTable
      * @param \App\Models\BlogCategory $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(UserInactive $model)
+    public function query(Peserta $model)
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+        if ($this->request()->get("periode_id")) {
+            $query->where('periode_id', $this->request()->get("periode_id"));
+        }
+        if ($this->request()->get("kota_tujuan_id")) {
+            $query->where('kota_tujuan_id', $this->request()->get("kota_tujuan_id"));
+        }
+        if ($this->request()->get("nomor_bus")) {
+            $query->where('nomor_bus', $this->request()->get("nomor_bus"));
+        }
+        return $query;
     }
 
     /**
@@ -56,13 +49,12 @@ class MudikPesertaDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('blogcategory-table')
+            ->setTableId('mudik-peserta-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(0)
             ->buttons(
-                // Button::make('create'),
                 Button::make('reset')
             );
     }
@@ -77,15 +69,10 @@ class MudikPesertaDataTable extends DataTable
         return [
             Column::make('id')->width(10),
             Column::make('nik')->width(100),
-            Column::make('name')->width(100),
-            Column::make('email')->width(100),
-            Column::make('phone')->width(100),
-            Column::make('status_mudik')->width(100),
-            Column::computed('action')
-                ->exportable(false)
-                ->printable(false)
-                ->width(60)
-                ->addClass('text-center'),
+            Column::make('nama_lengkap')->width(100),
+            Column::make('tgl_lahir')->width(100),
+            Column::make('jenis_kelamin')->width(100),
+            Column::make('kategori')->width(100)
         ];
     }
 

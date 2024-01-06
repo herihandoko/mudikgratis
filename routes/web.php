@@ -38,6 +38,7 @@ use App\Http\Controllers\Admin\MudikKotaController;
 use App\Http\Controllers\Admin\MudikPeriodeController;
 use App\Http\Controllers\Admin\MudikPesertaController;
 use App\Http\Controllers\Admin\MudikProvinsiController;
+use App\Http\Controllers\Admin\MudikReportController;
 use App\Http\Controllers\Admin\MudikTujuanController;
 use App\Http\Controllers\Admin\MudikVerifikasiController;
 use App\Http\Controllers\Admin\RoleController;
@@ -210,6 +211,7 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::resource('mudik-peserta', MudikPesertaController::class);
         Route::resource('mudik-provinsi', MudikProvinsiController::class);
         Route::resource('mudik-verifikasi', MudikVerifikasiController::class);
+        Route::resource('mudik-report', MudikReportController::class);
         Route::get('/admin/mudik-verifikasi/seat', [MudikVerifikasiController::class,'seat'])->name('mudik-verifikasi.seat');
         Route::post('/admin/mudik-verifikasi/seat/store', [MudikVerifikasiController::class,'seat_store'])->name('mudik-verifikasi.seat.store');
         Route::post('/admin/mudik-verifikasi/bus/store', [MudikVerifikasiController::class,'bus_store'])->name('mudik-verifikasi.bus.store');
