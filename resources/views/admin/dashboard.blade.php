@@ -14,7 +14,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
                             <div class="card-icon bg-primary">
-                                <i class="fab fa-blogger    "></i>
+                                <i class="fa fa-user text-white fa-2x"></i>
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
@@ -29,7 +29,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
                             <div class="card-icon bg-warning">
-                                <i class="fas fa-tshirt"></i>
+                              <i class="fa fa-users text-white fa-2x"></i>
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
@@ -44,7 +44,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
                             <div class="card-icon bg-success">
-                                <i class="fas fa-shopping-cart"></i>
+                              <i class="fa fa-bus text-white fa-2x"></i>
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
@@ -59,7 +59,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
                             <div class="card-icon bg-primary">
-                                <i class="fas fa-users"></i>
+                              <i class="fa fa-building text-white fa-2x"></i>
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
@@ -74,7 +74,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
                             <div class="card-icon bg-danger">
-                                <i class="fas fa-calendar-check"></i>
+                                <i class="fa fa-check text-white fa-2x"></i>
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
@@ -89,7 +89,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
                             <div class="card-icon bg-warning">
-                                <i class="fas fa-camera"></i>
+                              <i class="fa fa-hourglass text-white fa-2x"></i>
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
@@ -104,7 +104,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
                             <div class="card-icon bg-success">
-                                <i class="fas fa-circle"></i>
+                              <i class="fa fa-chair text-white fa-2x"></i>
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
@@ -118,8 +118,8 @@
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                         <div class="card card-statistic-1">
-                            <div class="card-icon bg-success">
-                                <i class="fas fa-comment-alt"></i>
+                            <div class="card-icon bg-info">
+                              <i class="fa fa-chair text-white fa-2x"></i>
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
