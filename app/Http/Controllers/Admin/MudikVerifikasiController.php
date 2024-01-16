@@ -99,7 +99,7 @@ class MudikVerifikasiController extends Controller
                     $peserta->periode_id = $value->periode_id;
                     $peserta->save();
                 }
-                Peserta::where('user_id', $user->id)->delete();
+                // Peserta::where('user_id', $user->id)->delete();
             }
         }
         $notification = 'Verifikasi Peserta Mudik Berhasil';

@@ -156,7 +156,7 @@
                                             <input type="text" class="form-control" name="post_code" value="{{ @$user->mudiktujuan->name }}" readonly disabled>
                                         </div>
                                         <div class="form-group mb-2">
-                                            <label for="">Kota Tujuan Mudik</label>
+                                            <label for="">@if($user->mudiktujuan->id == 1)Kota Tujuan Mudik @else Kota Asal Mudik @endif</label>
                                             <input type="text" class="form-control" name="post_code" value="{{ @$user->kotatujuan->name }}" readonly disabled>
                                         </div>
                                         <div class="form-group mb-2">

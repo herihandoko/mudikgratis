@@ -13,8 +13,7 @@ $page_title = trans('admin.Admin | Profile');
             <div class="section-header">
                 <h1>{{trans('admin.Profile')}}</h1>
             </div>
-            <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i
-                    class="fas fa-arrow-circle-left    "></i> {{trans('admin.Back')}}</a>
+            <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
             <div class="section-body">
                 <div class="row">
                     <div class="col-md-6">

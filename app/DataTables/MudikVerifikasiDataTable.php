@@ -17,9 +17,9 @@ class MudikVerifikasiDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('status_mudik', function ($status) {
-                if ($status->status_mudik == 'waiting') {
+                if ($status->status_mudik == 'dikirim') {
                     return '<div class="btn btn-warning btn-sm"> Menunggu Verifikasi </div>';
-                }elseif($status->status_mudik == 'ditolak'){    
+                } elseif ($status->status_mudik == 'ditolak') {
                     return '<div class="btn btn-danger btn-sm"> Di Tolak </div>';
                 } else return '<div class="btn btn-success btn-sm"> Terverifikasi </div>';
             })
@@ -37,7 +37,7 @@ class MudikVerifikasiDataTable extends DataTable
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
-            ->rawColumns(['action','status_mudik']);
+            ->rawColumns(['action', 'status_mudik']);
     }
 
     /**
@@ -48,7 +48,7 @@ class MudikVerifikasiDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->newQuery();
+        return $model->where('status_mudik', 'dikirim')->newQuery();
     }
 
     /**

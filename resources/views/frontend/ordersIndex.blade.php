@@ -48,6 +48,12 @@
                             </div>
                         </div>
                         <div class="table-responsive">
+                            @if ($user->status_profile == 1 && $user->status_mudik == 'dikirim')
+                                <div class="alert alert-info mt-2" role="alert">
+                                    Pendaftaran peserta mudik Anda dalam proses verifikasi. Kami akan beritahu Anda (via Whatsapp atau selalu cek dashboard aplikasi Anda)
+                                    apabila data Anda memenuhi syarat sebagai Peserta Mudik.
+                                </div>
+                            @endif
                             @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')
                                 <div class="alert alert-success mt-2" role="alert">
                                     Selamat Data Peserta Mudik Anda Sudah tersimpan dengan Nomor Registrasi <b>{{ $user->nomor_registrasi }}</b>.

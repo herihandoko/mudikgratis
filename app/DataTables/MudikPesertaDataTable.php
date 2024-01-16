@@ -17,7 +17,11 @@ class MudikPesertaDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables()
-            ->eloquent($query);
+            ->eloquent($query)
+            ->addColumn('kota_tujuan', function ($row) {
+                return $row->KotaTujuan->name;
+            })
+            ->rawColumns(['action', 'status_mudik']);
     }
 
     /**
@@ -28,7 +32,7 @@ class MudikPesertaDataTable extends DataTable
      */
     public function query(Peserta $model)
     {
-        $query = $model->newQuery();
+        $query = $model->with('KotaTujuan')->newQuery();
         if ($this->request()->get("periode_id")) {
             $query->where('periode_id', $this->request()->get("periode_id"));
         }
@@ -72,7 +76,8 @@ class MudikPesertaDataTable extends DataTable
             Column::make('nama_lengkap')->width(100),
             Column::make('tgl_lahir')->width(100),
             Column::make('jenis_kelamin')->width(100),
-            Column::make('kategori')->width(100)
+            Column::make('kategori')->width(100),
+            Column::make('kota_tujuan')->width(100)
         ];
     }
 

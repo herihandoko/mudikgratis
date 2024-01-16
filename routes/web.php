@@ -321,6 +321,7 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::get('/peserta/{id}/edit',     [UserPanelController::class, 'peserta_edit'])->name('peserta.edit');
         Route::get('/peserta/{id}/eticket',     [UserPanelController::class, 'peserta_eticket'])->name('peserta.eticket');
         Route::post('/peserta/update',     [UserPanelController::class, 'peserta_update'])->name('peserta.update');
+        Route::get('/peserta/submit',     [UserPanelController::class, 'peserta_submit'])->name('peserta.submit');
         Route::get('/peserta/delete',     [UserPanelController::class, 'peserta_delete'])->name('peserta.delete');
         Route::get('/peserta/cancel',     [UserPanelController::class, 'peserta_cancel'])->name('peserta.cancel');
         Route::post('/peserta/store_cancel',     [UserPanelController::class, 'store_cancel'])->name('peserta.store_cancel');

@@ -123,6 +123,8 @@ class UserRegisterController extends Controller
             'tujuan' => $data['tujuan'],
             'kota_tujuan' => $data['kota_tujuan'],
             'jumlah' => $data['jumlah'],
+            'tgl_lahir' => isset($data['tgl_lahir']) ? $data['tgl_lahir'] : null,
+            'tempat_lahir' => $data['tempat_lahir'] ? $data['tempat_lahir'] : null,
             'password' => Hash::make($password),
             'email_verified_at' => now(),
             'pass_code' => $password,
