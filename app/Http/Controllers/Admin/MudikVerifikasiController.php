@@ -37,7 +37,7 @@ class MudikVerifikasiController extends Controller
     public function edit($id)
     {
         $user = User::where('id', $id)->where('status_profile', 1)->first();
-        $kotatujuan = MudikTujuanKota::find($user->kota_tujuan);
+        $kotatujuan = MudikTujuanKota::find($user->kotatujuan->kota_tujuan);
         $kursi = BusKursi::where('type_kursi', '2-2')->get();
         return view('admin.mudik.verifikasiEdit', compact('user', 'kotatujuan', 'kursi'));
     }
