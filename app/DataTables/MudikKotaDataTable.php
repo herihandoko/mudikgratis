@@ -22,6 +22,9 @@ class MudikKotaDataTable extends DataTable
             ->addColumn('provinsi', function ($row) {
                 return $row->provinsi->name;
             })
+            ->addColumn('jumlah_bus', function ($row) {
+                return $row->bus->count();
+            })
             ->addColumn('action', function ($action) {
                 $button = [
                     'edit' => [
@@ -41,7 +44,7 @@ class MudikKotaDataTable extends DataTable
                     return '<div class="btn btn-danger btn-sm"> ' . $status->status . ' </div>';
                 } else return '<div class="btn btn-secondary btn-sm"> ' . $status->status . ' </div>';
             })
-            ->rawColumns(['action', 'provinsi', 'status']);
+            ->rawColumns(['action', 'provinsi', 'jumlah_bus', 'status']);
     }
 
     /**
@@ -89,6 +92,7 @@ class MudikKotaDataTable extends DataTable
             Column::make('id')->width(10),
             Column::make('provinsi')->width(100),
             Column::make('name')->title('Kota')->width(100),
+            Column::make('jumlah_bus')->title('Jumlah Bus')->width(100),
             Column::make('status')->width(100),
             Column::computed('action')
                 ->exportable(false)

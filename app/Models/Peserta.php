@@ -19,4 +19,8 @@ class Peserta extends Model
     {
         return $this->hasOne(MudikTujuanKota::class, 'id', 'kota_tujuan_id');
     }
+
+    public function profile() : HasOne {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

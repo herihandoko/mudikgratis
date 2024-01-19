@@ -133,10 +133,10 @@
                                                 <td>
                                                     @if($peserta->nomor_kursi)
                                                         <button type="button" class="btn btn-sm btn-link seat-peserta" onclick="pilihSeat({{ $peserta->id }})">{{ $peserta->nomor_kursi }}</button>
-                                                        <input type="hidden" name="kursi_peserta[]" value="{{ $peserta->nomor_kursi }}">
+                                                        <input type="hidden" name="kursi_peserta[{{ $peserta->id }}]" value="{{ $peserta->nomor_kursi }}">
                                                     @else
                                                         <button type="button" class="btn btn-sm btn-success seat-peserta" onclick="pilihSeat({{ $peserta->id }})">Pilih Kursi Kursi</button>
-                                                        <input type="hidden" name="kursi_peserta[]" value="">
+                                                        <input type="hidden" name="kursi_peserta[{{ $peserta->id }}]" value="">
                                                     @endif
                                                 </td>
                                             </tr>

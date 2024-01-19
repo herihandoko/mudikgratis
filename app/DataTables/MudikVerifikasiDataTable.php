@@ -23,6 +23,12 @@ class MudikVerifikasiDataTable extends DataTable
                     return '<div class="btn btn-danger btn-sm"> Di Tolak </div>';
                 } else return '<div class="btn btn-success btn-sm"> Terverifikasi </div>';
             })
+            ->addColumn('jumlah_peserta', function ($row) {
+                return $row->peserta->count();
+            })
+            ->addColumn('kota_tujuan', function ($row) {
+                return $row->KotaTujuan->name;
+            })
             ->addColumn('action', function ($action) {
                 $button = [
                     'edit' => [
@@ -32,6 +38,10 @@ class MudikVerifikasiDataTable extends DataTable
                     'delete' => [
                         'link' => route('admin.mudik-verifikasi.destroy', $action->id),
                         'permission' => 'mudik-verifikasi-delete',
+                    ],
+                    'print' => [
+                        'link' => route('admin.mudik-verifikasi.cetak', $action->id),
+                        'permission' => 'mudik-verifikasi-index',
                     ]
                 ];
                 $button = json_decode(json_encode($button), FALSE);
@@ -48,7 +58,17 @@ class MudikVerifikasiDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->where('status_mudik', 'dikirim')->newQuery();
+        $query =  $model->where('status_mudik', 'dikirim')->newQuery();
+        if ($this->request()->get("kota_tujuan_id")) {
+            $query->where('kota_tujuan', $this->request()->get("kota_tujuan_id"));
+        }
+        if ($this->request()->get("tujuan_id")) {
+            $query->where('tujuan', $this->request()->get("tujuan_id"));
+        }
+        if ($this->request()->get("status_mudik")) {
+            $query->where('status_mudik', $this->request()->get("status_mudik"));
+        }
+        return $query;
     }
 
     /**
@@ -65,7 +85,6 @@ class MudikVerifikasiDataTable extends DataTable
             ->dom('Bfrtip')
             ->orderBy(0)
             ->buttons(
-                // Button::make('create'),
                 Button::make('reset')
             );
     }
@@ -83,11 +102,13 @@ class MudikVerifikasiDataTable extends DataTable
             Column::make('name')->width(100),
             Column::make('email')->width(100),
             Column::make('phone')->width(100),
-            Column::make('status_mudik')->width(100),
+            Column::make('kota_tujuan')->width(100),
+            Column::make('jumlah_peserta')->width(100),
+            Column::make('status_mudik')->width(200),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                ->width(80)
                 ->addClass('text-center'),
         ];
     }

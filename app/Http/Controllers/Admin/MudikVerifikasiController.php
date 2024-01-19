@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\MudikVerifikasiDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\BusKursi;
+use App\Models\MudikTujuan;
 use App\Models\MudikTujuanKota;
 use App\Models\Peserta;
 use App\Models\PesertaRejected;
 use App\Models\User;
 use App\Services\NotificationApiService;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MudikVerifikasiController extends Controller
 {
@@ -23,9 +26,11 @@ class MudikVerifikasiController extends Controller
         $this->middleware('permission:mudik-verifikasi-delete', ['only' => ['destroy']]);
     }
 
-    public function index(MudikVerifikasiDataTable $dataTables)
+    public function index(Request $request)
     {
-        return $dataTables->render('admin.mudik.verifikasiIndex');
+        $tujuan = MudikTujuan::pluck('name', 'id');
+        $dataTables = new MudikVerifikasiDataTable();
+        return $dataTables->render('admin.mudik.verifikasiIndex', compact('tujuan', 'request'));
     }
 
     /**
@@ -37,7 +42,7 @@ class MudikVerifikasiController extends Controller
     public function edit($id)
     {
         $user = User::where('id', $id)->where('status_profile', 1)->first();
-        $kotatujuan = MudikTujuanKota::find($user->kotatujuan->kota_tujuan);
+        $kotatujuan = MudikTujuanKota::find($user->kota_tujuan);
         $kursi = BusKursi::where('type_kursi', '2-2')->get();
         return view('admin.mudik.verifikasiEdit', compact('user', 'kotatujuan', 'kursi'));
     }
@@ -67,6 +72,7 @@ class MudikVerifikasiController extends Controller
                 foreach ($request->kursi_peserta as $key => $val) {
                     Peserta::where('id', $key)->update([
                         'nomor_bus' => $request->bus_mudik,
+                        'status' => $request->status_mudik,
                         'nomor_kursi' => $val
                     ]);
                 }
@@ -97,6 +103,8 @@ class MudikVerifikasiController extends Controller
                     $peserta->kategori = $value->kategori;
                     $peserta->kota_tujuan_id = $value->kota_tujuan_id;
                     $peserta->periode_id = $value->periode_id;
+                    $peserta->status = $request->status_mudik;
+                    $peserta->reason = $request->reason;
                     $peserta->save();
                 }
                 // Peserta::where('user_id', $user->id)->delete();
@@ -104,7 +112,7 @@ class MudikVerifikasiController extends Controller
         }
         $notification = 'Verifikasi Peserta Mudik Berhasil';
         $notification = ['message' => $notification, 'alert-type' => 'success'];
-        return redirect()->route('admin.mudik-verifikasi.index')->with($notification);
+        return redirect()->route('admin.mudik-verifikasi.index', ['tujuan_id' => $user->tujuan, 'kota_tujuan_id' => $user->kota_tujuan])->with($notification);
     }
 
     /**
@@ -173,5 +181,19 @@ class MudikVerifikasiController extends Controller
         return response([
             'status' => 'success'
         ]);
+    }
+
+    public function combo(Request $request)
+    {
+        return MudikTujuanKota::where('tujuan_id', $request->id)->get();
+    }
+
+    public function cetak($id)
+    {
+        $pesertas = Peserta::where('user_id', $id)->get();
+        $user = User::find($id);
+        $qrcode = base64_encode(QrCode::format('svg')->size(200)->generate($user->nomor_registrasi));
+        $pdf = Pdf::loadView('frontend.pesertaEticket', compact('pesertas', 'user', 'qrcode'));
+        return $pdf->download('tiket-mudik-bersama.pdf');
     }
 }

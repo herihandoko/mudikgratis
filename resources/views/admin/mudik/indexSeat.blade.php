@@ -35,7 +35,7 @@
                                                 <label for="{{ $row }}C" style="color: #FFFFFF !important;">{{ $row }}C</label>
                                             </li>
                                             <li class="seat">
-                                                <input type="checkbox" id="{{ $row }}D" value="{{ $row }}C" @if(isset($kursi[$row.'D'])) disabled @endif/>
+                                                <input type="checkbox" id="{{ $row }}D" value="{{ $row }}D" @if(isset($kursi[$row.'D'])) disabled @endif/>
                                                 <label for="{{ $row }}D" style="color: #FFFFFF !important;">{{ $row }}D</label>
                                             </li>
                                         </ol>

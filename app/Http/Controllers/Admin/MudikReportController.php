@@ -32,14 +32,15 @@ class MudikReportController extends Controller
 
     public function index(Request $request)
     {
-        $periode = MudikPeriod::pluck('name', 'id')->prepend('-- Pilih Periode --', '');
-        $tujuan = MudikTujuanKota::pluck('name', 'id')->prepend('-- Pilih Tujuan --', '');
-        $bus = Bus::pluck('name', 'id')->prepend('-- Pilih Bus --', '');
+        $periode = MudikPeriod::pluck('name', 'id');
+        $tujuan = MudikTujuan::pluck('name', 'id');
         $dataTables = new MudikPesertaDataTable();
         if ($request->type == 'export') {
-            return Excel::download(new ExportPeserta($request), 'peserta.xlsx');
+            $bus = Bus::find($request->nomor_bus);
+            $kotaTujuan = MudikTujuanKota::find($request->kota_tujuan_id);
+            return Excel::download(new ExportPeserta($request, $bus, $kotaTujuan), 'report-peserta-mudik.xlsx');
         }
-        return $dataTables->render('admin.mudik.reportIndex', compact('tujuan', 'request', 'periode', 'bus'));
+        return $dataTables->render('admin.mudik.reportIndex', compact('tujuan', 'request', 'periode'));
     }
 
     /**
@@ -129,7 +130,7 @@ class MudikReportController extends Controller
      */
     public function destroy($id)
     {
-        User::findOrFail($id)->delete();
+        Peserta::findOrFail($id)->delete();
         return response([
             'status' => 'success',
         ]);
@@ -187,5 +188,16 @@ class MudikReportController extends Controller
         return response([
             'status' => 'success'
         ]);
+    }
+
+    public function combo(Request $request)
+    {
+        return MudikTujuanKota::where('tujuan_id', $request->id)->get();
+    }
+
+    public function combobus(Request $request)
+    {
+        $kota = MudikTujuanKota::where('id', $request->id)->first();
+        return $kota->bus;
     }
 }

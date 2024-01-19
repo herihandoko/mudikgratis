@@ -18,10 +18,36 @@ class MudikPesertaDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->addColumn('no_kk', function ($row) {
+                return $row->profile->no_kk;
+            })
+            ->addColumn('phone', function ($row) {
+                return $row->profile->phone;
+            })
+            ->addColumn('alamat', function ($row) {
+                return $row->profile->address->address;
+            })
+            ->editColumn('jenis_kelamin', function ($row) {
+                if ($row->jenis_kelamin == 'L') {
+                    return 'Laki-Laki';
+                } else {
+                    return 'Perempuan';
+                }
+            })
+            ->addColumn('action', function ($action) {
+                $button = [
+                    'delete' => [
+                        'link' => route('admin.mudik-report.destroy', $action->id),
+                        'permission' => 'mudik-report-delete',
+                    ]
+                ];
+                $button = json_decode(json_encode($button), FALSE);
+                return view('admin.layouts.datatableButtons', compact('button'));
+            })
             ->addColumn('kota_tujuan', function ($row) {
                 return $row->KotaTujuan->name;
             })
-            ->rawColumns(['action', 'status_mudik']);
+            ->rawColumns(['no_kk', 'action', 'status_mudik', 'alamat', 'phone']);
     }
 
     /**
@@ -71,13 +97,22 @@ class MudikPesertaDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('id')->width(10),
-            Column::make('nik')->width(100),
-            Column::make('nama_lengkap')->width(100),
-            Column::make('tgl_lahir')->width(100),
-            Column::make('jenis_kelamin')->width(100),
-            Column::make('kategori')->width(100),
-            Column::make('kota_tujuan')->width(100)
+            Column::make('id')->title('ID')->width(10),
+            Column::make('no_kk')->title('NOMOR KARTU KELUARGA')->width(100),
+            Column::make('nik')->title('NOMOR INDUK KEPENDUDUKAN (NIK)')->width(100),
+            Column::make('nama_lengkap')->title('NAMA LENGKAP (SESUAI KTP/KK)')->width(100),
+            Column::make('alamat')->title('ALAMAT (SESUAI KTP/KK)')->width(100),
+            Column::make('jenis_kelamin')->title('JENIS KELAMIN')->width(100),
+            Column::make('phone')->title('NO TELEPON/HP (WA AKTIF)')->width(100),
+            Column::make('kota_tujuan')->title('KOTA TUJUAN')->width(100),
+            Column::make('nomor_kursi')->title('NOMOR KURSI')->width(100),
+            Column::make('status')->title('STATUS')->width(100),
+            Column::make('reason')->title('KET')->width(100),
+            Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center'),
         ];
     }
 

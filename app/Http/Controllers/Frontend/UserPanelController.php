@@ -81,9 +81,7 @@ class UserPanelController extends Controller
             'tempat_lahir' => 'required|max:255',
             'gender' => 'required',
             'phone' => 'required',
-            'country' => 'required',
             'city' => 'required|integer',
-            // 'post_code' => 'required',
             'address' => 'required',
             'provinsi' => 'required|integer',
             'kecamatan' => 'required|integer',
@@ -115,10 +113,6 @@ class UserPanelController extends Controller
                 toast(trans('frontend.Phone required!'), 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
-            if ($validator->errors()->has('country')) {
-                toast(trans('frontend.Country required!'), 'error')->width('300px');
-                return redirect()->back()->withInput();
-            }
             if ($validator->errors()->has('tgl_lahir')) {
                 toast(trans('frontend.tgl_lahir required!'), 'error')->width('300px');
                 return redirect()->back()->withInput();
@@ -131,10 +125,6 @@ class UserPanelController extends Controller
                 toast(trans('frontend.City required!'), 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
-            // if ($validator->errors()->has('post_code')) {
-            //     toast(trans('frontend.Post code required!'), 'error')->width('300px');
-            //     return redirect()->back()->withInput();
-            // }
             if ($validator->errors()->has('address')) {
                 toast(trans('frontend.Address required!'), 'error')->width('300px');
                 return redirect()->back()->withInput();
@@ -164,10 +154,6 @@ class UserPanelController extends Controller
 
             $user->password = bcrypt($request->password);
             $user->pass_code = $request->password;
-            $user->save();
-
-            toast(trans('frontend.Password changed successfully!'), 'success')->width('350px');
-            return redirect()->back()->withInput();
         }
 
         if ($request->hasFile('avatar')) {
@@ -303,7 +289,6 @@ class UserPanelController extends Controller
         if (!UserAdress::where(['user_id' => $user->id])->first()) $address = new UserAdress();
         else $address = UserAdress::where(['user_id' => $user->id])->first();
         $address->user_id = $user->id;
-        $address->country = $request->country;
         $address->city = $request->city;
         $address->post_code = $request->post_code;
         $address->address = $request->address;
@@ -423,6 +408,7 @@ class UserPanelController extends Controller
         $peserta->kategori = $this->categorizeAgeGroup($request->tgl_lahir);
         $peserta->kota_tujuan_id = Auth::user()->kota_tujuan;
         $peserta->periode_id = Auth::user()->periode_id;
+        $peserta->status = 'belum dikirim';
         if ($peserta->save()) {
             $user = User::find(auth()->user()->id);
             $user->status_mudik = 'waiting';
@@ -530,36 +516,36 @@ class UserPanelController extends Controller
     public function store_cancel(Request $request, NotificationApiService $notificationService)
     {
         $validator = Validator::make($request->all(), [
-            'nik' => 'required|min:16|max:24'
+            'reason' => 'required|min:4|max:255'
         ]);
         if ($validator->fails()) {
-            if ($validator->errors()->has('nik')) {
-                toast('NIK atau Nomor KTP tidak sesuai', 'error')->width('300px');
+            if ($validator->errors()->has('reason')) {
+                toast('Silahkan isi alasan pembatalan', 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
         }
 
-        $user = User::where('nik', $request->nik)->where('id', auth()->user()->id)->first();
+        $user = User::find(auth()->user()->id);
         if ($user) {
-            $dataUser = $user->toArray();
-            if ($dataUser) {
-                unset($dataUser['id']);
-                $dataUser['email_verified_at'] = date('Y-m-d H:i:s', strtotime($dataUser['email_verified_at']));
-                $dataUser['created_at'] = date('Y-m-d H:i:s', strtotime($dataUser['created_at']));
-                $dataUser['updated_at'] = date('Y-m-d H:i:s', strtotime($dataUser['updated_at']));
-                $id = UserInactive::insert($dataUser);
-                if ($id) {
-                    $param = [
-                        'target' => $user->phone,
-                        'message' => "[Pembatalan Mudik] - Jawara Mudik \nPembatalan dan Penghapusan Peserta Jawara Mudik DISHUB Propinsi Banten berhasil. \n\nTerima kasih"
-                    ];
-                    $notificationService->sendNotification($param);
-                    User::where('id', auth()->user()->id)->delete();
-                    return redirect()->route('home');
-                }
+            $user->reason = $request->reason;
+            $user->status_mudik = 'dibatalkan';
+            $user->updated_at = date('Y-m-d H:i:s');
+            if ($user->save()) {
+                Peserta::where('user_id', $user->id)->update([
+                    'nomor_bus' => null,
+                    'nomor_kursi' => null,
+                    'status' => 'dibatalkan',
+                    'reason' => $request->reason
+                ]);
+                $param = [
+                    'target' => $user->phone,
+                    'message' => "[Pembatalan Mudik] - Jawara Mudik \nPembatalan dan Penghapusan Peserta Jawara Mudik DISHUB Propinsi Banten berhasil. \n\nTerima kasih"
+                ];
+                $notificationService->sendNotification($param);
             }
+            return redirect()->route('home');
         } else {
-            toast('NIK atau Nomor KTP tidak sesuai', 'error')->width('300px');
+            toast('Pembatalan gagal', 'error')->width('300px');
             return redirect()->back()->withInput();
         }
     }
@@ -568,12 +554,16 @@ class UserPanelController extends Controller
     {
         $user = User::find(auth()->user()->id);
         $user->status_mudik = 'dikirim';
-        $user->save();
-        $param = [
-            'target' => auth()->user()->phone,
-            'message' => "[Pendaftaran Peserta Mudik] - Jawara Mudik \nPendaftaran Peserta Jawara Mudik DISHUB Propinsi Banten berhasil, Data yang sudah di Submit/Kirim akan diperiksa terlebih dahulu oleh Admin Kami. Kami akan beritahu Anda via Whatsapp atau selalu cek dashboard aplikasi Anda (" . url('login') . ") apabila data Anda memenuhi syarat sebagai Peserta Mudik \n\nTerima kasih"
-        ];
-        $notificationService->sendNotification($param);
+        if($user->save()){
+            Peserta::where('user_id', $user->id)->update([
+                'status' => 'dikirim'
+            ]);
+            $param = [
+                'target' => auth()->user()->phone,
+                'message' => "[Pendaftaran Peserta Mudik] - Jawara Mudik \nPendaftaran Peserta Jawara Mudik DISHUB Propinsi Banten berhasil, Data yang sudah di Submit/Kirim akan diperiksa terlebih dahulu oleh Admin Kami. Kami akan beritahu Anda via Whatsapp atau selalu cek dashboard aplikasi Anda (" . url('login') . ") apabila data Anda memenuhi syarat sebagai Peserta Mudik \n\nTerima kasih"
+            ];
+            $notificationService->sendNotification($param);
+        }
         alert()->success('Data peserta mudik berhasil dikirim, Data yang sudah di Submit/Kirim akan diperiksa terlebih dahulu oleh Admin Kami. Terima kasih.');
         return redirect()->back();
     }

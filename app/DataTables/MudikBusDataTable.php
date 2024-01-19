@@ -84,6 +84,7 @@ class MudikBusDataTable extends DataTable
             Column::make('name')->title('Nama Bus')->width(100),
             Column::make('jumlah_kursi')->width(100),
             Column::make('seat')->width(100),
+            Column::make('pendamping')->width(100),
             Column::make('status')->width(100),
             Column::computed('action')
                 ->exportable(false)

@@ -32,6 +32,10 @@ $page_title = "Admin | Tambah Bus";
                                 {{ Form::select('seat', ['2-2'=>'2-2','2-3'=>'2-3'], old('seat') , ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group">
+                                <label for="">Nama Pendamping <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="pendamping" value="{{ old('pendamping') }}">
+                            </div>
+                            <div class="form-group">
                                 <label for="">Deskripsi</label>
                                 <textarea class="form-control h-100" name="description" id="editor" rows="4"></textarea>
                             </div>

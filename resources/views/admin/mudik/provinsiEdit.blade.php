@@ -18,7 +18,7 @@
                             @method('PUT')
                             <div class="form-group">
                                 <label for="">Tujuan</label>
-                                {{ Form::select('tujuan_id', $tujuan, old('tujuan_id') , ['class' => 'form-control']) }}
+                                {{ Form::select('tujuan_id', $tujuan, $category->tujuan_id , ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group">
                                 <label for="">Provinsi</label>

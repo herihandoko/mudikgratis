@@ -70,8 +70,7 @@
                             @if ($user->status_profile == 0 || $user->status_profile == null)
                                 <div class="alert alert-danger" role="alert"> Anda belum memiliki tiket mudik. Silahkan
                                     lengkapi data mudik Anda dan jangan lupa klik button <b>{{ trans('frontend.Save') }}</b>
-                                    untuk mendapatkan tiket mudik. Waktu yang tersisa <b><span id="demo"></span></b><a
-                                        href="{{ route('user.profile') }}"> {{ trans('frontend.Profile') }}</a>
+                                    untuk mendapatkan tiket mudik. <b><span id="demo"></span></b><a href="{{ route('user.profile') }}"> {{ trans('frontend.Profile') }}</a>
                                 </div>
                             @endif
                             {{-- <table class="table table-bordered w-100 mt-4 mb-4"> --}}
@@ -83,6 +82,7 @@
                                         <th>NIK</th>
                                         <th>Tanggal Lahir</th>
                                         <th>Kategori</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -102,7 +102,18 @@
                                                     {{ Carbon\Carbon::parse($peserta->tgl_lahir)->format('d M Y') }}
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-success"> Dewasa </span>
+                                                    <span class="badge bg-success"> {{ $peserta->kategori }} </span>
+                                                </td>
+                                                <td>
+                                                    @if($peserta->status == 'dibatalkan')
+                                                        <span class="badge bg-danger"> {{ ucwords($peserta->status) }} </span>
+                                                    @elseif($peserta->status == 'belum dikirim')    
+                                                        <span class="badge bg-warning"> {{ ucwords($peserta->status) }} </span>
+                                                    @elseif($peserta->status == 'dikirim')    
+                                                        <span class="badge bg-info"> Menunggu Verifikasi</span>        
+                                                    @else
+                                                        <span class="badge bg-success"> {{ ucwords($peserta->status) }} </span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -128,55 +139,12 @@
     <!-- end wrapper -->
 @endsection
 @push('scripts')
-    @if (auth()->user()->status_profile == 0)
-        <script>
-            // Set the date we're counting down to
-            var ONE_HOUR = 60 * 60 * 1000;
-            var countDownDateX = new Date('{{ auth()->user()->created_at }}').getTime();
-            countDownDate = new Date(countDownDateX + ONE_HOUR).getTime()
-            // Update the count down every 1 second
-            var x = setInterval(function() {
-
-                // Get today's date and time
-                var now = new Date().getTime();
-
-                // Find the distance between now and the count down date
-                var distance = countDownDate - now;
-
-                // Time calculations for days, hours, minutes and seconds
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Display the result in the element with id="demo"
-                document.getElementById("demo").innerHTML = days + "d : " + hours + "h : " +
-                    minutes + "m : " + seconds + "s";
-
-                // If the count down is finished, write some text
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.getElementById("demo").innerHTML = "EXPIRED";
-                    $.ajax({
-                        url: '{{ route('user.profile.delete') }}',
-                        type: 'GET',
-                        success: function(data) {
-                            location.reload();
-                        }
-                    });
-
-                }
-            }, 1000);
-        </script>
-    @endif
-@endpush
-@push('scripts')
 <link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/datatables.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
 @endpush
 @push('scripts')
     <script src="{{url('assets/admin/bundles/datatables/datatables.min.js')}}"></script>
-    <script src="{{url('assets/admin/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}">
+    <script src="{{url('assets/admin/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{asset('vendor/datatables/buttons.server-side.js')}}"></script>
     <script>
     $(document).ready(function() {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\MudikProvinsiDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\MudikTujuan;
+use App\Models\MudikTujuanKota;
 use App\Models\MudikTujuanProvinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -41,7 +42,7 @@ class MudikProvinsiController extends Controller
         $provinsi = new MudikTujuanProvinsi();
         $provinsi->name = $request->name;
         $provinsi->tujuan_id = $request->tujuan_id;
-        $provinsi->status = isset($request->status)?'active':'inactive';
+        $provinsi->status = isset($request->status) ? 'active' : 'inactive';
         $provinsi->save();
         $notification = trans('admin.Create Successfully');
         $notification = ['message' => $notification, 'alert-type' => 'success'];
@@ -64,8 +65,12 @@ class MudikProvinsiController extends Controller
         $provinsi = MudikTujuanProvinsi::findOrFail($id);
         $provinsi->name = $request->name;
         $provinsi->tujuan_id = $request->tujuan_id;
-        $provinsi->status = isset($request->status)?'active':'inactive';
-        $provinsi->save();
+        $provinsi->status = isset($request->status) ? 'active' : 'inactive';
+        if ($provinsi->save()) {
+            MudikTujuanKota::where('provinsi_id', $id)->update([
+                'tujuan_id' => $request->tujuan_id
+            ]);
+        }
         $notification = trans('admin.Updated Successfully');
         $notification = ['message' => $notification, 'alert-type' => 'success'];
         return redirect()->route('admin.mudik-provinsi.index')->with($notification);

@@ -33,6 +33,10 @@ $page_title = "Admin | Edit Bus";
                                 {{ Form::select('seat', ['2-2'=>'2-2','2-3'=>'2-3'], $category->seat , ['class' => 'form-control']) }}
                             </div>
                             <div class="form-group">
+                                <label for="">Nama Pendamping <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="pendamping" value="{{ $category->pendamping }}">
+                            </div>
+                            <div class="form-group">
                                 <label for="">Deskripsi</label>
                                 <textarea class="form-control h-100" name="description" id="editor" rows="4">{{ $category->description }}</textarea>
                             </div>

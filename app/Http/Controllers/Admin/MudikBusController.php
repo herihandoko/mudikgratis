@@ -41,6 +41,7 @@ class MudikBusController extends Controller
         $periode->plat_nomor = $request->plat_nomor;
         $periode->jumlah_kursi = $request->jumlah_kursi;
         $periode->seat = $request->seat;
+        $periode->pendamping = $request->pendamping;
         $periode->description = $request->description;
         $periode->status = isset($request->status)?'active':'inactive';
         $periode->save();
@@ -66,6 +67,7 @@ class MudikBusController extends Controller
         $periode->plat_nomor = $request->plat_nomor;
         $periode->jumlah_kursi = $request->jumlah_kursi;
         $periode->seat = $request->seat;
+        $periode->pendamping = $request->pendamping;
         $periode->description = $request->description;
         $periode->status = isset($request->status)?'active':'inactive';
         $periode->save();

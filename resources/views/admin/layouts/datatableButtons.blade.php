@@ -27,4 +27,10 @@
     @endcan
 @endisset
 
+@isset($button->print)
+    @can($button->print->permission)
+        <a class="btn-sm btn-info print" href="{{ $button->print->link }}" target="_blank"><i class="fa fa-print"></i></a>
+    @endcan
+@endisset
+
 

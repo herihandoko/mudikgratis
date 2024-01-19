@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url)
     {
-
+        \Illuminate\Support\Carbon::setLocale('id');
         $config =
             [
                 'secret' => ReCaptcha('recaptcha_secret_key'),

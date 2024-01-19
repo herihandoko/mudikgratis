@@ -62,22 +62,24 @@
                 <td style="border-bottom:solid black 1px; padding:5px;">: {{ $user->no_kk }}</td>
             </tr>
             <tr>
-                <th style="border-bottom:solid black 1px; padding:5px;" align="left">Moda</th>
-                <td style="border-bottom:solid black 1px; padding:5px;">: Bus</td>
+                <th style="border-bottom:solid black 1px; padding:5px;" align="left">Kota Tujuan</th>
+                <td style="border-bottom:solid black 1px; padding:5px;">: {{ $user->kotatujuan->name }}</td>
                 <th style="border-bottom:solid black 1px; padding:5px;" align="left">NIK</th>
                 <td style="border-bottom:solid black 1px; padding:5px;">: {{ $user->nik }}</td>
             </tr>
             <tr>
-                <th style="border-bottom:solid black 1px; padding:5px;" align="left">Lokasi Pemberangkatan</th>
-                <td style="border-bottom:solid black 1px; padding:5px;">: Terminal Serang</td>
+                <th style="border-bottom:solid black 1px; padding:5px;" align="left">Nomor Bus</th>
+                <td style="border-bottom:solid black 1px; padding:5px;">: {{ $user->bus->name }}</td>
                 <th style="border-bottom:solid black 1px; padding:5px;" align="left">Tanggal Berangkat</th>
-                <td style="border-bottom:solid black 1px; padding:5px;">: 02 Mei 2024 07:00</td>
+                <td style="border-bottom:solid black 1px; padding:5px;">: {{ isset($user->kotatujuan->tgl_keberangkatan) ? date('d M Y, H:i',strtotime($user->kotatujuan->tgl_keberangkatan)):'-' }}</td>
             </tr>
             <tr>
-                <th style="border-bottom:solid black 1px; padding:5px;" align="left">Kota Tujuan</th>
-                <td style="border-bottom:solid black 1px; padding:5px;">: {{ $user->kotatujuan->name }}</td>
-                <th style="border-bottom:solid black 1px; padding:5px;" align="left">Nomor Bus</th>
-                <td style="border-bottom:solid black 1px; padding:5px;">: Bus 2</td>
+                <th style="border-bottom:solid black 1px; padding:5px;" align="left">Titik Awal Keberangkatan</th>
+                <td style="border-bottom:solid black 1px; padding:5px;" colspan="3">: {{ $user->kotatujuan->titik_awal??'-' }}</td>
+            </tr>
+            <tr>
+                <th style="border-bottom:solid black 1px; padding:5px;" align="left">Titik Akhir Tujuan</th>
+                <td style="border-bottom:solid black 1px; padding:5px;" colspan="3">: {{ $user->kotatujuan->titik_akhir??'-' }}</td>
             </tr>
         </table>
         <h4>Peserta Mudik</h4>
