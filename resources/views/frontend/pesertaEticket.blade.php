@@ -131,7 +131,7 @@
             </p>
             <div style="background-color: #facd2f !important; padding:10px;">
                 <p style="line-height: 1.5;">Apabila memerlukan bantuan, silakan hubungi <b>Customer Service Jawara Mudik Bersama</b><br>
-                    <b>Telp.</b> 0812-9880-8903, <b>Wa.</b> 0812-9880-8903, <b>E-mail:</b> jawaramudik@bantenprov.go.id
+                    <b>Telp.</b> 0852-1080-8700, <b>Wa.</b> 0852-1080-8700, <b>E-mail:</b> jawaramudik@bantenprov.go.id
                 </p>
             </div>
         </div>
