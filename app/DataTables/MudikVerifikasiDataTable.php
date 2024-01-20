@@ -58,7 +58,8 @@ class MudikVerifikasiDataTable extends DataTable
      */
     public function query(User $model)
     {
-        $query =  $model->where('status_mudik', 'dikirim')->newQuery();
+        $query =  $model->newQuery();
+
         if ($this->request()->get("kota_tujuan_id")) {
             $query->where('kota_tujuan', $this->request()->get("kota_tujuan_id"));
         }
@@ -67,6 +68,8 @@ class MudikVerifikasiDataTable extends DataTable
         }
         if ($this->request()->get("status_mudik")) {
             $query->where('status_mudik', $this->request()->get("status_mudik"));
+        } else {
+            $query->where('status_mudik', 'dikirim');
         }
         return $query;
     }
