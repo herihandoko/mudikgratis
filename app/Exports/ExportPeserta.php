@@ -57,7 +57,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
             ["Hari/Tanggal", $formatted],
             ["Bus", isset($this->bus->name) ? $this->bus->name : "-"],
             ["Pendamping", isset($this->bus->pendamping) ? $this->bus->pendamping : "-"],
-            ["NO", "NOMOR KARTU KELUARGA", "NOMOR INDUK KEPENDUDUKAN (NIK)", "NAMA LENGKAP (SESUAI KTP/KK)", "ALAMAT (SESUAI KTP/KK)", "JENIS KELAMIN", "NO TELEPON/HP (WA AKTIF)", "KOTA TUJUAN", "STATUS", "KET"]
+            ["NO", "NOMOR KARTU KELUARGA", "NOMOR INDUK KEPENDUDUKAN (NIK)", "NAMA LENGKAP (SESUAI KTP/KK)", "ALAMAT (SESUAI KTP/KK)", "JENIS KELAMIN", "NO TELEPON/HP (WA AKTIF)", "STATUS", "KET"]
         ];
     }
 
@@ -74,8 +74,8 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
                 $event->sheet->getDelegate()->getColumnDimension('G')->setAutoSize(true);
                 $event->sheet->getDelegate()->getColumnDimension('H')->setAutoSize(true);
                 $event->sheet->getDelegate()->getColumnDimension('I')->setAutoSize(true);
-                $event->sheet->getDelegate()->mergeCells('A1:J1');
-                $event->sheet->getDelegate()->mergeCells('A2:J2');
+                $event->sheet->getDelegate()->mergeCells('A1:I1');
+                $event->sheet->getDelegate()->mergeCells('A2:I2');
                 $styleArray = [
                     'font' => [
                         'bold' => true,
@@ -85,8 +85,8 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
                         'vertical' => Alignment::VERTICAL_CENTER,
                     ],
                 ];
-                $event->sheet->getDelegate()->getStyle('A1:J1')->applyFromArray($styleArray);
-                $event->sheet->getDelegate()->getStyle('A2:J2')->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A1:I1')->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A2:I2')->applyFromArray($styleArray);
 
                 $styleArray = [
                     'font' => [
@@ -102,7 +102,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
                     ],
                 ];
 
-                $event->sheet->getDelegate()->getStyle('A6:J6')->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A6:I6')->applyFromArray($styleArray);
             },
         ];
     }
