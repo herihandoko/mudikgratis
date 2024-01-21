@@ -30,20 +30,33 @@ class MudikVerifikasiDataTable extends DataTable
                 return $row->KotaTujuan->name;
             })
             ->addColumn('action', function ($action) {
-                $button = [
-                    'edit' => [
-                        'link' => route('admin.mudik-verifikasi.edit',  $action->id),
-                        'permission' => 'mudik-verifikasi-edit',
-                    ],
-                    'delete' => [
-                        'link' => route('admin.mudik-verifikasi.destroy', $action->id),
-                        'permission' => 'mudik-verifikasi-delete',
-                    ],
-                    'print' => [
-                        'link' => route('admin.mudik-verifikasi.cetak', $action->id),
-                        'permission' => 'mudik-verifikasi-index',
-                    ]
-                ];
+                if ($action->status_mudik == 'diterima') {
+                    $button = [
+                        'edit' => [
+                            'link' => route('admin.mudik-verifikasi.edit',  $action->id),
+                            'permission' => 'mudik-verifikasi-edit',
+                        ],
+                        'delete' => [
+                            'link' => route('admin.mudik-verifikasi.destroy', $action->id),
+                            'permission' => 'mudik-verifikasi-delete',
+                        ],
+                        'print' => [
+                            'link' => route('admin.mudik-verifikasi.cetak', $action->id),
+                            'permission' => 'mudik-verifikasi-index',
+                        ]
+                    ];
+                } else {
+                    $button = [
+                        'edit' => [
+                            'link' => route('admin.mudik-verifikasi.edit',  $action->id),
+                            'permission' => 'mudik-verifikasi-edit',
+                        ],
+                        'delete' => [
+                            'link' => route('admin.mudik-verifikasi.destroy', $action->id),
+                            'permission' => 'mudik-verifikasi-delete',
+                        ],
+                    ];
+                }
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
