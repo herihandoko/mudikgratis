@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Services\NotificationApiService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MudikReportController extends Controller
 {
@@ -39,6 +40,22 @@ class MudikReportController extends Controller
             $bus = Bus::find($request->nomor_bus);
             $kotaTujuan = MudikTujuanKota::find($request->kota_tujuan_id);
             return Excel::download(new ExportPeserta($request, $bus, $kotaTujuan), 'report-peserta-mudik.xlsx');
+        } elseif ($request->type == 'pdf') {
+            $bus = Bus::find($request->nomor_bus);
+            $kotaTujuan = MudikTujuanKota::find($request->kota_tujuan_id);
+            $peserta = Peserta::select('id', 'nik', 'nama_lengkap', 'tgl_lahir', 'jenis_kelamin', 'kategori', 'user_id', 'nik', 'kota_tujuan_id', 'nomor_bus', 'status', 'reason');
+            if ($request->periode_id) {
+                $peserta->where('periode_id', $request->periode_id);
+            }
+            if ($request->kota_tujuan_id) {
+                $peserta->where('kota_tujuan_id', $request->kota_tujuan_id);
+            }
+            if ($request->nomor_bus) {
+                $peserta->where('nomor_bus', $request->nomor_bus);
+            }
+            $pesertas = $peserta->get();
+            $pdf = Pdf::loadView('admin.mudik.reportPeserta', compact('bus', 'kotaTujuan', 'pesertas'));
+            return $pdf->download('report-mudik-bersama.pdf');
         }
         return $dataTables->render('admin.mudik.reportIndex', compact('tujuan', 'request', 'periode'));
     }

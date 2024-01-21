@@ -46,7 +46,8 @@ $page_title = "Admin | Report Peserta";
                             <label for="">Type Report</label>
                             {{ Form::select('type', [
                                 'preview'=> 'Preview',
-                                'export'=>'Export to Excel'
+                                'export'=>'Export to Excel',
+                                'pdf'=>'Cetak to PDF'
                             ], $request->type , ['class' => 'form-control']) }}
                         </div>
                         <a class="btn btn-warning" href="{{ route('admin.mudik-report.index') }}"><i class="fa fa-undo"></i> Reset Filter </a>
