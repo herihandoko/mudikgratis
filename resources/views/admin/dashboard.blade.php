@@ -18,10 +18,10 @@
                             </div>
                             <div class="card-wrap">
                                 <div class="card-header">
-                                    <h4>Pengguna</h4>
+                                    <a href=""><h4>Pengguna</h4></a>
                                 </div>
                                 <div class="card-body">
-                                    {{ App\Models\User::count() }}
+                                    <a href="{{ route('admin.mudik-pengguna.index') }}">{{ App\Models\User::count() }}</a>
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                                     <h4>Peserta</h4>
                                 </div>
                                 <div class="card-body">
-                                    {{ App\Models\Peserta::count() }}
+                                    <a href="{{ route('admin.mudik-report.index') }}">{{ App\Models\Peserta::count() }}</a>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                                     <h4>Bus</h4>
                                 </div>
                                 <div class="card-body">
-                                    {{ App\Models\Bus::count() }}
+                                    <a href="{{ route('admin.mudik-bus.index') }}">{{ App\Models\Bus::count() }}</a>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                                     <h4>Kota Tujuan</h4>
                                 </div>
                                 <div class="card-body">
-                                    {{ App\Models\MudikTujuanKota::count() }}
+                                    <a href="{{ route('admin.mudik-kota.index') }}"> {{ App\Models\MudikTujuanKota::count() }}</a>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                     <h4>User Terverifikasi</h4>
                                 </div>
                                 <div class="card-body">
-                                    {{ App\Models\User::where('status_mudik', 'diterima')->count() }}
+                                    <a href="{{ route('admin.mudik-verifikasi.index',['status_mudik'=>'diterima']) }}"> {{ App\Models\User::where('status_mudik', 'diterima')->count() }}</a>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                     <h4>Menunggu Verifikasi</h4>
                                 </div>
                                 <div class="card-body">
-                                    {{ App\Models\User::where('status_mudik', 'waiting')->count() }}
+                                    <a href="{{ route('admin.mudik-verifikasi.index',['status_mudik'=>'dikirim']) }}"> {{ App\Models\User::where('status_mudik', 'dikirim')->count() }} </a>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                                     <h4>Total Kursi</h4>
                                 </div>
                                 <div class="card-body">
-                                    {{ App\Models\Bus::sum('jumlah_kursi') }}
+                                    <a href="{{ route('admin.mudik-bus.index') }}">{{ App\Models\Bus::sum('jumlah_kursi') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                     <h4>Total Kursi Terisi</h4>
                                 </div>
                                 <div class="card-body">
-                                    {{ App\Models\Peserta::where('nomor_kursi', '!=', '')->count() }}
+                                    <a href="{{ route('admin.mudik-bus.index',['status'=>'terisi']) }}">{{ App\Models\Peserta::where('nomor_kursi', '!=', '')->count() }}</a>
                                 </div>
                             </div>
                         </div>

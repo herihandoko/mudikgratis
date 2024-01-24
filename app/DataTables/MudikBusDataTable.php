@@ -20,6 +20,9 @@ class MudikBusDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->addColumn('total_terisi', function ($row) {
+                return $row->peserta->count();
+            })
             ->addColumn('action', function ($action) {
                 $button = [
                     'edit' => [
@@ -39,7 +42,7 @@ class MudikBusDataTable extends DataTable
                     return '<div class="btn btn-danger btn-sm"> ' . $status->status . ' </div>';
                 } else return '<div class="btn btn-secondary btn-sm"> ' . $status->status . ' </div>';
             })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action', 'status', 'total_terisi']);
     }
 
     /**
@@ -50,7 +53,13 @@ class MudikBusDataTable extends DataTable
      */
     public function query(Bus $model)
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+        if ($this->request->status) {
+            $query->whereHas('peserta', function ($q) {
+                $q->where('nomor_kursi', '!=', '');
+            });
+        }
+        return $query;
     }
 
     /**
@@ -84,6 +93,7 @@ class MudikBusDataTable extends DataTable
             Column::make('name')->title('Nama Bus')->width(100),
             Column::make('jumlah_kursi')->width(100),
             Column::make('seat')->width(100),
+            Column::make('total_terisi')->width(100),
             Column::make('pendamping')->width(100),
             Column::make('status')->width(100),
             Column::computed('action')

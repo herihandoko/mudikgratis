@@ -63,6 +63,11 @@
                         <a class="nav-link" href="{{ route('admin.mudik-report.index') }}">Report Peserta</a>
                     </li>
                     @endcan
+                    @can('mudik-pengguna-index')
+                    <li class="{{ ActiveSidebar('admin.mudik-pengguna.index') }}">
+                        <a class="nav-link" href="{{ route('admin.mudik-pengguna.index') }}">Pengguna</a>
+                    </li>
+                    @endcan
                 </ul>
             </li>
             @endcanany

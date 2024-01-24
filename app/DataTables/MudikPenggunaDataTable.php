@@ -2,52 +2,46 @@
 
 namespace App\DataTables;
 
-use App\Models\BlogCategory;
 use App\Models\Peserta;
 use App\Models\User;
-use App\Models\UserInactive;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class MudikPesertaDataTable extends DataTable
+class MudikPenggunaDataTable extends DataTable
 {
     public function dataTable($query)
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('no_kk', function ($row) {
-                return $row->profile->no_kk;
-            })
-            ->addColumn('phone', function ($row) {
-                return $row->profile->phone;
-            })
-            ->addColumn('alamat', function ($row) {
-                return $row->profile->address->address;
+            ->editColumn('status_profile', function ($row) {
+                if ($row->status_profile == 1) {
+                    return '<div class="btn btn-success btn-sm">Lengkap</div>';
+                } else {
+                    return '<div class="btn btn-danger btn-sm">Belum Lengkap</div>';
+                }
             })
             ->editColumn('jenis_kelamin', function ($row) {
-                if ($row->jenis_kelamin == 'L') {
+                if ($row->gender == 'L') {
                     return 'Laki-Laki';
                 } else {
                     return 'Perempuan';
                 }
             })
+            ->addColumn('jumlah_peserta', function ($row) {
+                return $row->peserta->count();
+            })
             ->addColumn('action', function ($action) {
                 $button = [
                     'delete' => [
-                        'link' => route('admin.mudik-report.destroy', $action->id),
-                        'permission' => 'mudik-report-delete',
+                        'link' => route('admin.mudik-pengguna.destroy', $action->id),
+                        'permission' => 'mudik-pengguna-delete',
                     ]
                 ];
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
-            ->addColumn('kota_tujuan', function ($row) {
-                return $row->KotaTujuan->name;
-            })
-            ->rawColumns(['no_kk', 'action', 'status_mudik', 'alamat', 'phone']);
+            ->rawColumns(['status_profile', 'action', 'jumlah_peserta']);
     }
 
     /**
@@ -56,18 +50,9 @@ class MudikPesertaDataTable extends DataTable
      * @param \App\Models\BlogCategory $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Peserta $model)
+    public function query(User $model)
     {
-        $query = $model->with('KotaTujuan')->newQuery();
-        if ($this->request()->get("periode_id")) {
-            $query->where('periode_id', $this->request()->get("periode_id"));
-        }
-        if ($this->request()->get("kota_tujuan_id")) {
-            $query->where('kota_tujuan_id', $this->request()->get("kota_tujuan_id"));
-        }
-        if ($this->request()->get("nomor_bus")) {
-            $query->where('nomor_bus', $this->request()->get("nomor_bus"));
-        }
+        $query = $model->newQuery();
         return $query;
     }
 
@@ -79,7 +64,7 @@ class MudikPesertaDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('mudik-peserta-table')
+            ->setTableId('mudik-pengguna-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -100,14 +85,11 @@ class MudikPesertaDataTable extends DataTable
             Column::make('id')->title('ID')->width(10),
             Column::make('no_kk')->title('NOMOR KARTU KELUARGA')->width(100),
             Column::make('nik')->title('NOMOR INDUK KEPENDUDUKAN (NIK)')->width(100),
-            Column::make('nama_lengkap')->title('NAMA LENGKAP (SESUAI KTP/KK)')->width(100),
-            Column::make('alamat')->title('ALAMAT (SESUAI KTP/KK)')->width(100),
-            Column::make('jenis_kelamin')->title('JENIS KELAMIN')->width(100),
+            Column::make('name')->title('NAMA LENGKAP (SESUAI KTP/KK)')->width(100),
             Column::make('phone')->title('NOMOR TELEPON/HP (WA AKTIF)')->width(100),
-            Column::make('kota_tujuan')->title('KOTA TUJUAN')->width(100),
-            Column::make('nomor_kursi')->title('NOMOR KURSI')->width(100),
-            Column::make('status')->title('STATUS')->width(100),
-            Column::make('reason')->title('KET.')->width(100),
+            Column::make('status_profile')->title('STATUS PROFILE')->width(100),
+            Column::make('status_mudik')->title('STATUS MUDIK')->width(100),
+            Column::make('jumlah_peserta')->title('JUMLAH PESERTA')->width(100),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

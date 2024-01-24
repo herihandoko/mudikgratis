@@ -103,7 +103,7 @@ $nomor = 1;
                 </td>
                 <td
                     style="text-align: center; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px; border-top:solid black 1px; background-color:#bebdbd;">
-                    NO TELEPON/HP (WA AKTIF)
+                    NOMOR TELEPON/HP (WA AKTIF)
                 </td>
                 <td
                     style="text-align: center; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px; border-top:solid black 1px; background-color:#bebdbd;">
@@ -111,7 +111,7 @@ $nomor = 1;
                 </td>
                 <td
                     style="text-align: center; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px; border-top:solid black 1px; border-right:solid black 1px; background-color:#bebdbd;">
-                    KET
+                    KET.
                 </td>
             </tr>
             @foreach ($pesertas as $row)

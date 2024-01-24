@@ -10,4 +10,10 @@ class Bus extends Model
     use HasFactory;
 
     protected $table = 'bus';
+
+    public function peserta()
+    {
+        return $this->hasMany(Peserta::class, 'nomor_bus', 'id');
+    }
+
 }

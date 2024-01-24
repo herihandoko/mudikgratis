@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\ContactPageController;
 use App\Http\Controllers\Admin\DependentDropdownController;
 use App\Http\Controllers\Admin\MudikBusController;
 use App\Http\Controllers\Admin\MudikKotaController;
+use App\Http\Controllers\Admin\MudikPenggunaController;
 use App\Http\Controllers\Admin\MudikPeriodeController;
 use App\Http\Controllers\Admin\MudikPesertaController;
 use App\Http\Controllers\Admin\MudikProvinsiController;
@@ -75,6 +76,7 @@ use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController
 use App\Http\Controllers\Frontend\Auth\VerificationController;
 use App\Http\Controllers\Frontend\RuteController;
 use App\Http\Controllers\Frontend\StatisticController as FrontendStatisticController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -212,6 +214,8 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::resource('mudik-provinsi', MudikProvinsiController::class);
         Route::resource('mudik-verifikasi', MudikVerifikasiController::class);
         Route::resource('mudik-report', MudikReportController::class);
+        Route::resource('mudik-pengguna', MudikPenggunaController::class);
+
         Route::get('/admin/mudik-report/combo', [MudikReportController::class,'combo'])->name('mudik-report.combo');
         Route::get('/admin/mudik-report/combobus', [MudikReportController::class,'combobus'])->name('mudik-report.combobus');
         Route::get('/admin/mudik-verifikasi/seat', [MudikVerifikasiController::class,'seat'])->name('mudik-verifikasi.seat');
