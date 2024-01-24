@@ -48,7 +48,7 @@
                                         <a href="{{ route('user.peserta.create') }}" class="btn btn-success btn-xs w-100"><i class="fa fa-plus"></i> Tambah Peserta</a>
                                     @endif
                                     @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')
-                                        <a target="_blank" href="{{ route('user.peserta.eticket', $user->id) }}" class="btn btn-success btn-xs w-100"><i class="fa fa-download"></i> Download E-Tiket</a>
+                                        {{-- <a target="_blank" href="{{ route('user.peserta.eticket', $user->id) }}" class="btn btn-success btn-xs w-100"><i class="fa fa-download"></i> Download E-Tiket</a> --}}
                                     @endif
                                 @endif
                             </div>
