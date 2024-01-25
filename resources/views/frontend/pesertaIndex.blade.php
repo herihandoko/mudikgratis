@@ -30,6 +30,9 @@
                                         <a href="{{ route('user.profile') }}">{{ trans('frontend.Profile') }}</a>
                                     </li>
                                     <li>
+                                        <a href="{{ route('user.peserta.reset') }}">Ubah Password</a>
+                                    </li>
+                                    <li>
                                         <a href="{{ route('user.peserta.cancel') }}"
                                             style="background-color:#9d161690 !important;">Pembatalan</a>
                                     </li>

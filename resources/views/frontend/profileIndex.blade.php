@@ -26,12 +26,13 @@
                                         <a href="{{ route('user.peserta') }}">{{ trans('frontend.Peserta') }}</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('user.profile') }}"
-                                            class="active">{{ trans('frontend.Profile') }}</a>
+                                        <a href="{{ route('user.profile') }}" class="active">{{ trans('frontend.Profile') }}</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('user.peserta.cancel') }}"
-                                            style="background-color:#9d161690 !important;">Pembatalan</a>
+                                        <a href="{{ route('user.peserta.reset') }}">Ubah Password</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('user.peserta.cancel') }}" style="background-color:#9d161690 !important;">Pembatalan</a>
                                     </li>
                                 </ul>
                             </div>
@@ -209,18 +210,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h3 class="mt-4">{{ trans('frontend.Data Akun') }}</h3>
-                                <hr>
-                                <div class="form-group mb-2">
-                                    <label for="">{{ trans('frontend.Email') }}</label>
-                                    <input type="email" class="form-control" name="email"
-                                        value="{{ @$user->email }}" disabled>
-                                </div>
-                                <div class="form-group mb-2">
-                                    <label for="">{{ trans('frontend.Password') }}</label>
-                                    <input type="password" class="form-control" name="password">
-                                </div>
-
                                 <h3 class="mt-4">{{ trans('frontend.Dokumen Registrasi') }}</h3>
                                 <hr>
                                 <div class="row">
