@@ -87,8 +87,8 @@ $page_title =  'Login';
 
                                 <div class="checkbox mt-15">
                                     <label for="form_checkbox">
-                                        <input id="form_checkbox" name="form_checkbox" type="checkbox">
-                                        {{trans('frontend.Remember me')}}</label>
+                                        <input id="form_checkbox" name="form_checkbox" type="checkbox"> {{trans('frontend.Remember me')}}
+                                    </label>
                                 </div>
                                 <div class="mb-3 tm-sc-button mt-10">
                                     <button type="submit" class="btn btn-dark">{{trans('frontend.Login')}}</button>

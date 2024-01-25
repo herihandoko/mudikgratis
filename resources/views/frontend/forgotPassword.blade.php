@@ -38,7 +38,7 @@ $page_title =  'Forgot password';
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
                                         <label for="form_username_phone">Nomor Telepon </label>
-                                        <input id="form_username_phone" name="phone" class="form-control" type="text" required>
+                                        <input id="form_username_phone" name="phone" class="form-control" type="text" required placeholder="0813XXXXXXXX">
                                     </div>
                                 </div>
                                 <div class="mb-3 tm-sc-button mt-10">

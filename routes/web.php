@@ -275,7 +275,8 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
     Route::post('/logout',              [UserLoginController::class,    'userLogout'])->name('user.logout');
     Route::get('/forgot',               [ForgotPasswordController::class, 'forgot'])->name('user.forgot');
     Route::post('/forgot',              [ForgotPasswordController::class, 'resetLink'])->name('user.forgot');
-    Route::get('/password-reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('user.reset');
+    // Route::get('/password-reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('user.reset');
+    Route::get('/password-reset', [ResetPasswordController::class, 'showResetForm'])->name('user.reset');
     Route::post('/password-reset',      [ResetPasswordController::class, 'resetPassword'])->name('user.reset');
     Route::get('/email-subscribe/{token}', [HomePageController::class, 'news_letter_verify'])->name('news.letter.verify');
 

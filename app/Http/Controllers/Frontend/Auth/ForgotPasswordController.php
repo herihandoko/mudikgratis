@@ -61,7 +61,7 @@ class ForgotPasswordController extends Controller
 
             $param = [
                 'target' => $request->phone,
-                'message' => "[Reset Password] - Jawara Mudik \nReset Password Jawara Mudik DISHUB Propinsi Banten berhasil. \nSilahkan login ke (" . url('login') . ") dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $dataUser->email . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login \n\nTerima kasih"
+                'message' => "[Reset Password] - Jawara Mudik \nReset Password Jawara Mudik DISHUB Propinsi Banten berhasil. \nSilahkan login ke (" . url('login') . ") dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $dataUser->email . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: ". route('user.reset') ." \n \n\nTerima kasih"
             ];
             $notificationService->sendNotification($param);
 
