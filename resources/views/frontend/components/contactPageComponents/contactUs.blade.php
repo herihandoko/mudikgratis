@@ -7,23 +7,24 @@
             <div class="section-title">
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
-                        <div class="tm-sc-section-title section-title text-center">
+                        <div class="tm-sc-section-title section-title text-center" style="margin-bottom: 0px !important">
                             <div class="title-wrapper">
                                 <h4 class="title text-theme-colored2">Statistik Ketersedian</h4>
-                                <h6 class="subtitle">Mudik Dinanti, Mudik Di Hati<br>Bersama Dinas Perhubungan Provinsi Banten 2024</p> </h6>
+                                <h6 class="subtitle" style="color: #009b4d !important;">Mudik Dinanti, Mudik Di Hati<br>Bersama Dinas Perhubungan Provinsi Banten {{ date('Y') }}</h6>
+                                <h5>Program ini bisa didapatkan secara gratis,<br>tanpa dipungut biaya sedikitpun.</h5>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="padding-top: 0px !important;">
                 <div class="row">
-                    <div class="col-md-12 col-md-offset-2">
-                        <div class="inDiv login-box-body addMarginBottom20">
+                    <div class="col-md-12 col-md-offset-2" style="padding-top: 0px !important;">
+                        <div class="inDiv login-box-body addMarginBottom20" style="padding-top: 0px !important;">
                             {{-- <h4 class="noMargin"><strong><i class="fa fa-bus"></i> Rute Bus</strong></h4>
                             <hr> --}}
                             @foreach ($tujuans as $item => $tujuan)
-                                <div class="row text-center mt-5">
+                                <div class="row text-center mt-1">
                                     <h4>{{ $tujuan->name }}</h4>
                                 </div>
                                 <?php $no = 1; ?>
