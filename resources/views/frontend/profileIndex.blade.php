@@ -106,7 +106,7 @@
                                 <h3 class="mt-4">{{ trans('frontend.Address') }}</h3>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group mb-2">
                                             @php
                                                 $provinces = new App\Http\Controllers\Admin\DependentDropdownController();
@@ -123,23 +123,17 @@
                                             </select>
                                         </div>
                                         <div class="form-group mb-2">
-                                            <label for="kecamatan">{{ trans('frontend.Kecamatan') }} <span class="text-danger">*</span></label>
-                                            <select class="form-control sel-kecamatan" name="kecamatan" id="kecamatan" required>
-                                                <option value="">Pilih Kecamatan Kecamatan</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group mb-2">
-                                            <label for="">{{ trans('frontend.Full Address') }}</label>
-                                            <textarea type="text" class="form-control" name="address" value="">{!! @filterTag(clean($user->address->address)) !!}</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-2">
                                             <label for="kabupaten">{{ trans('frontend.City') }} <span
                                                     class="text-danger">*</span></label>
                                             <select class="form-control sel-kabupaten" name="city" id="kabupaten"
                                                 required>
                                                 <option value="">Pilih Kabupaten Kota</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label for="kecamatan">{{ trans('frontend.Kecamatan') }} <span class="text-danger">*</span></label>
+                                            <select class="form-control sel-kecamatan" name="kecamatan" id="kecamatan" required>
+                                                <option value="">Pilih Kecamatan Kecamatan</option>
                                             </select>
                                         </div>
                                         <div class="form-group mb-2">
@@ -149,6 +143,10 @@
                                                 required>
                                                 <option value="">Pilih Kelurahan Kelurahan</option>
                                             </select>
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label for="">{{ trans('frontend.Full Address') }}</label>
+                                            <textarea type="text" class="form-control" name="address" value="">{!! @filterTag(clean($user->address->address)) !!}</textarea>
                                         </div>
                                     </div>
                                 </div>
