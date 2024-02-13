@@ -299,9 +299,14 @@ class UserPanelController extends Controller
 
         $address->save();
 
-        toast(trans('frontend.Profile Updated!'), 'success')->width('350px');
 
-        return redirect()->back();
+
+        // toast(trans('frontend.Profile Updated!'), 'success')->width('350px');
+
+        // return redirect()->back();
+
+        toast(trans('frontend.Profile Updated!'), 'success')->width('350px');
+        return redirect()->route('user.peserta');
     }
 
     public function shipping_address(Request $request)
