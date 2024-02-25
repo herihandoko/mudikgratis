@@ -10,7 +10,7 @@
                         <div class="tm-sc-section-title section-title text-center" style="margin-bottom: 0px !important">
                             <div class="title-wrapper">
                                 <h4 class="title text-theme-colored2">Statistik Ketersedian</h4>
-                                <h6 class="subtitle" style="color: #009b4d !important;">Mudik Dinanti, Mudik Di Hati<br>Bersama Dinas Perhubungan Provinsi Banten {{ date('Y') }}</h6>
+                                <h6 class="subtitle" style="color: #009b4d !important;">Mudik Bahagia, Bersama Pemerintah <br> Provinsi Banten {{ date('Y') }}</h6>
                                 <h5>Program ini bisa didapatkan secara gratis,<br>tanpa dipungut biaya sedikitpun.</h5>
                             </div>
                         </div>
