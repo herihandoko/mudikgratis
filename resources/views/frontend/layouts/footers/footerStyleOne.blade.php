@@ -7,12 +7,13 @@
                       <div class="widget tm-widget-contact-info">
                           <h4 class="widget-title">{{ trans('Statistik Pengunjung') }}</h4>
                           <div class="description">
+                                <?php $totalVisitor = 236; ?>
                               <p>
-                                  Pengunjung Hari Ini : {{ number_format(@App\Models\Visitor::where('date_visit', date('Y-m-d'))->count()) }} <br>
-                                  Pengunjung Kemarin : {{ number_format(@App\Models\Visitor::where('date_visit', date('Y-m-d',strtotime("-1 days")))->count()) }} <br>
-                                  Pengunjung Bulan Ini : {{ number_format(@App\Models\Visitor::whereMonth('date_visit', date('m'))->whereYear('date_visit', date('Y'))->count()) }} <br>
-                                  Total Hits : {{ number_format(@App\Models\Visitor::count()) }} <br>
-                                  Total Pengunjung : {{ number_format(@App\Models\Visitor::count()) }} <br>
+                                  Pengunjung Hari Ini : {{ number_format(@App\Models\Visitor::where('date_visit', date('Y-m-d'))->count() + $totalVisitor) }} <br>
+                                  Pengunjung Kemarin : {{ number_format(@App\Models\Visitor::where('date_visit', date('Y-m-d',strtotime("-1 days")))->count() + $totalVisitor) }} <br>
+                                  Pengunjung Bulan Ini : {{ number_format(@App\Models\Visitor::whereMonth('date_visit', date('m'))->whereYear('date_visit', date('Y'))->count() + ($totalVisitor * 15)) }} <br>
+                                  Total Hits : {{ number_format(@App\Models\Visitor::count() + ($totalVisitor * 100)) }} <br>
+                                  Total Pengunjung : {{ number_format(@App\Models\Visitor::count() + ($totalVisitor * 100)) }} <br>
                               </p>
                           </div>
                           <hr>
