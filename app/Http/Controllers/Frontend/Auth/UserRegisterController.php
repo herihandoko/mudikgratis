@@ -63,11 +63,11 @@ class UserRegisterController extends Controller
             $tujuan = MudikTujuan::where('status', 'active')->pluck('name', 'id')->prepend('Pilih Tujuan Mudik Gratis', '');
             $cityCode = City::select('code')->where('province_code', 36)->get();
             $tempatLahir = District::whereIn('city_code', $cityCode)->pluck('name', 'name')->prepend('Pilih Tempat Lahir', '');
-            $period = MudikPeriod::where('status', 'active')->first();
+            $period = MudikPeriod::where('status', 'active')->orderBy('id', 'desc')->first();
             $statusMudik = false;
             if ($period)
                 $statusMudik = $this->cekStatusAktif($period->start_date, $period->end_date);
-            return view('frontend.registerIndex', compact('tujuan', 'tempatLahir', 'statusMudik'));
+            return view('frontend.registerIndex', compact('tujuan', 'tempatLahir', 'statusMudik', 'period'));
         }
     }
     /**
@@ -144,7 +144,7 @@ class UserRegisterController extends Controller
         event(new Registered($user));
         $param = [
             'target' => $data['phone'],
-            'message' => "[Register Mudik Bersama] - Jawara Mudik \nPendaftaran Anda sebagai peserta mudik bersama Dishub Banten berhasil. \nSilahkan login ke (" . url('login') . ") dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $data['email'] . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: ". route('user.reset') ." \n\nTerima kasih"
+            'message' => "[Register Mudik Bersama] - Jawara Mudik \nPendaftaran Anda sebagai peserta mudik bersama Dishub Banten berhasil. \nSilahkan login ke (" . url('login') . ") dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $data['email'] . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: " . route('user.reset') . " \n\nTerima kasih"
         ];
         $response = $this->notificationApiService->sendNotification($param);
         if ($response['status']) {

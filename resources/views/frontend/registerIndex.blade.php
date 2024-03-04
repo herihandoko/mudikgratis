@@ -227,7 +227,12 @@
                             </form>
                             @else
                             <div class="alert alert-info alert-dismissible fade show text-center" role="alert">
+                                {{-- <strong>Maaf :</strong> Registrasi peserta mudik sementara ditutup. --}}
+                                @if($period)
+                                {!! @$period->description !!}
+                                @else
                                 <strong>Maaf :</strong> Registrasi peserta mudik sementara ditutup.
+                                @endif
                             </div>
                             @endif
                         </div>
