@@ -81,8 +81,16 @@
                                                                     @endforeach
                                                                     {{ $jumlahKursi }} Kursi
                                                                 </td>
-                                                                <td class="text-right">{{ $val->pesertaKota->count() }} Peserta</td>
-                                                                <td class="text-right">{{ $jumlahKursi - $val->pesertaKota->count() }} Kursi</td>
+                                                                <td class="text-right">
+                                                                    <?php $jumlahKursiIsi = 0; ?>
+                                                                    @foreach ($val->userKota as $item => $valx)
+                                                                        <?php $jumlahKursiIsi =  $jumlahKursiIsi+ $valx->jumlah; ?>
+                                                                    @endforeach
+                                                                    {{ $jumlahKursiIsi }} Peserta
+                                                                </td>
+                                                                <td class="text-right">{{ $jumlahKursi - $jumlahKursiIsi }} Kursi</td>
+                                                                {{-- <td class="text-right">{{ $val->pesertaKota->count() }} Peserta</td>
+                                                                <td class="text-right">{{ $jumlahKursi - $val->pesertaKota->count() }} Kursi</td> --}}
                                                             </tr>
                                                         @endforeach
                                                         </body>
