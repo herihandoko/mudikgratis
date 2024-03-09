@@ -223,6 +223,10 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::post('/admin/mudik-verifikasi/seat/store', [MudikVerifikasiController::class,'seat_store'])->name('mudik-verifikasi.seat.store');
         Route::post('/admin/mudik-verifikasi/bus/store', [MudikVerifikasiController::class,'bus_store'])->name('mudik-verifikasi.bus.store');
         Route::get('/admin/mudik-verifikasi/combo', [MudikVerifikasiController::class,'combo'])->name('mudik-verifikasi.combo');
+
+        Route::get('/phpinfo', function () {
+            phpinfo();
+        });
     });
 
 
