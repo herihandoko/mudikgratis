@@ -59,9 +59,24 @@
                             @endif
                             @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')
                                 <div class="alert alert-success mt-2" role="alert">
-                                    Selamat Data Peserta Mudik Anda Sudah tersimpan dengan Nomor Registrasi <b>{{ $user->nomor_registrasi }}</b>.
-                                    Silahkan download E-Tiket Anda dan Perlihatkan kepada petugas kami saat registrasi
-                                    ulang.
+                                    Selamat Data Peserta Mudik Anda Sudah tersimpan dengan Nomor Registrasi <b>{{ $user->nomor_registrasi }}</b>.<br>
+                                    Peserta Mudik yang di nyatakan terdaftar wajib hadir pada saat Verifikasi Waktu dan Tempat untuk Verifikasi sebagai
+                                    berikut :<br>
+                                    a. Peserta Mudik Gratis dari Provinsi Banten Keluar Provinsi Banten :<br>
+                                    <ul>
+                                        <li>Tanggal : <b>22 - 23 Maret 2024</b></li>
+                                        <li>Waktu :  <b>09.00 WIB s/d 17.00 WIB</b></li>
+                                        <li>Tempat :  <b>Kantor Dinas Perhubungan Provinsi Banten KP3B - Palima Kota Serang</b></li>
+                                    </ul>
+                                    b. Peserta Mudik Gratis dari Luar Provinsi Banten ke Provinsi Banten :<br>
+                                    <ul>
+                                        <li>Tanggal :  <b>22 - 23 Maret 2024</b></li>
+                                        <li>Waktu :  <b>09.00 WIB s/d 17.00 WIB</b></li>
+                                        <li>Tempat : <b>Akan di Informasikan lebih lanjut</b></li>
+                                    </ul>
+                                    Terima Kasih;
+                                    {{-- Silahkan download E-Tiket Anda dan Perlihatkan kepada petugas kami saat registrasi
+                                    ulang. --}}
                                 </div>
                             @endif
                             @if ($user->status_profile == 1 && $user->status_mudik == 'ditolak')
