@@ -56,20 +56,12 @@
                                                         <td class="text-left">{{ $val->name }}</td>
                                                         <td class="text-right">{{ $val->bus->count() }} Bus</td>
                                                         <td class="text-right">
-                                                            <?php $jumlahKursi = 0; ?>
-                                                            @foreach ($val->bus as $keybus => $busx)
-                                                                <?php $jumlahKursi += $busx->jumlah_kursi; ?>
-                                                            @endforeach
-                                                            {{ $jumlahKursi }} Kursi
+                                                            {{ $val->bus->sum('jumlah_kursi') }} Kursi
                                                         </td>
                                                         <td class="text-right">
-                                                            <?php $jumlahKursiIsi = 0; ?>
-                                                            @foreach ($val->userKota as $item => $valx)
-                                                                <?php $jumlahKursiIsi =  $jumlahKursiIsi+ $valx->jumlah; ?>
-                                                            @endforeach
-                                                            {{ $jumlahKursiIsi }} Peserta
+                                                            {{ $val->userKota->sum('jumlah') }} Peserta
                                                         </td>
-                                                        <td class="text-right">{{ $jumlahKursi - $jumlahKursiIsi }} Kursi</td>
+                                                        <td class="text-right">{{ $val->bus->sum('jumlah_kursi')-$val->userKota->sum('jumlah') }} Kursi</td>
                                                     </tr>
                                                 @endforeach
                                                 </body>

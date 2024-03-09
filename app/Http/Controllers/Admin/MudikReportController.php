@@ -102,9 +102,15 @@ class MudikReportController extends Controller
                         'nomor_kursi' => $val
                     ]);
                 }
+                $tujuan = MudikTujuan::find($user->tujuan);
+                if ($tujuan->code == 'kedalam-banten') {
+                    $message = "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nPeserta Mudik yang di nyatakan terdaftar wajib hadir pada saat Verifikasi Waktu dan Tempat untuk Verifikasi sebagai berikut:\n\n============================= \n\nTanggal: *22 - 23 Maret 2024*\nWaktu:*09.00 WIB s/d 17.00 WIB*\nTempat:*Akan di Informasikan lebih lanjut*\n\n============================= \n\nTerima kasih";
+                } else {
+                    $message = "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nPeserta Mudik yang di nyatakan terdaftar wajib hadir pada saat Verifikasi Waktu dan Tempat untuk Verifikasi sebagai berikut:\n\n============================= \n\nTanggal: *22 - 23 Maret 2024*\nWaktu:*09.00 WIB s/d 17.00 WIB*\nTempat:*Kantor Dinas Perhubungan Provinsi Banten KP3B - Palima Kota Serang*\n\n============================= \n\nTerima kasih";
+                }
                 $param = [
                     'target' => $user->phone,
-                    'message' => "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nSilahkan download E-Tiket Anda di " . url('login') . " & Perlihatkan kepada petugas kami pada saat registrasi ulang.  \n\nTerima kasih"
+                    'message' => $message
                 ];
                 $notificationApiService->sendNotification($param);
             }

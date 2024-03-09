@@ -10,6 +10,7 @@ use App\Models\MudikTujuanProvinsi;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Rules\KartuKeluargaRule;
+use App\Rules\KuotaRule;
 use App\Services\NotificationApiService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -87,7 +88,7 @@ class UserRegisterController extends Controller
             'nik' => ['required', 'string', 'min:16', 'max:16', 'unique:users'],
             'tujuan' => ['required'],
             'kota_tujuan' => ['required'],
-            'jumlah' => ['required'],
+            'jumlah' => ['required', 'max:4', new KuotaRule($data['kota_tujuan'])],
             'tgl_lahir' => $data['tujuan'] == 2 ? 'required|date_format:Y-m-d|before:today' : [],
             'tempat_lahir' =>  $data['tujuan'] == 2 ? 'required|max:255' : [],
             'g-recaptcha-response' =>  ReCaptcha('recaptcha_status') == 1 ? ['required', 'captcha'] : [],
@@ -144,7 +145,7 @@ class UserRegisterController extends Controller
         event(new Registered($user));
         $param = [
             'target' => $data['phone'],
-            'message' => "[Register Mudik Bersama] - Jawara Mudik \nPendaftaran Anda sebagai peserta mudik bersama Dishub Banten berhasil. \nSilahkan login ke (" . url('login') . ") dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $data['email'] . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: " . route('user.reset') . " \n\nTerima kasih"
+            'message' => "[Register Mudik Bersama] - Jawara Mudik \nPendaftaran Anda sebagai peserta mudik bersama Dishub Banten berhasil. \nSilahkan login ke (" . url('login') . ") dan lengkapi profil Anda sebelum *".date('d M Y H:i', strtotime('1 hour'))."* dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $data['email'] . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: " . route('user.reset') . " \n\nTerima kasih"
         ];
         $response = $this->notificationApiService->sendNotification($param);
         if ($response['status']) {
@@ -152,7 +153,7 @@ class UserRegisterController extends Controller
             $usr->status_wa = 1;
             $usr->save();
         }
-        alert()->success('Pendaftaran Mudik Bersama Berhasil, silahkan login dengan username dan password yang telah dikirim ke no whatsapp Anda!');
+        alert()->success('Pendaftaran Mudik Bersama Berhasil, silahkan lengkapi profile Anda sebelum '.date('d M Y H:i', strtotime('1 hour')).' dan login dengan username dan password yang telah dikirim ke no whatsapp Anda!');
         return $user;
     }
 

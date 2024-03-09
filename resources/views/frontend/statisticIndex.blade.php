@@ -33,15 +33,9 @@
                         <div class="site-wrapper-inner">
                             <div class="row">
                                 <div class="col-md-12 col-md-offset-2">
-                                    {{-- <h2 class="addMarginTop50 text-center text-blackGrey animated slideInDown">
-                                        <strong>STATISTIK PESERTA</strong>
-                                    </h2>
-                                    <p class="text-center">Mudik Dinanti, Mudik Di Hati<br>Bersama Dinas Perhubungan Provinsi Banten 2024</p> --}}
                                     <div class="inDiv login-box-body addMarginBottom20">
                                         <h4 class="noMargin"><strong><i class="fa fa-bus"></i> Rute Bus</strong></h4>
                                         <hr>
-                                        {{-- <h4 class="noMargin"><strong><i class="fa fa-bus"></i> Rute Bus</strong></h4>
-                                        <hr> --}}
                                         @foreach ($tujuans as $item => $tujuan)
                                         <div class="row text-center mt-5">
                                             <h4>{{ $tujuan->name }}</h4>
@@ -75,22 +69,12 @@
                                                                 <td class="text-left">{{ $val->name }}</td>
                                                                 <td class="text-right">{{ $val->bus->count() }} Bus</td>
                                                                 <td class="text-right">
-                                                                    <?php $jumlahKursi = 0; ?>
-                                                                    @foreach ($val->bus as $keybus => $busx)
-                                                                        <?php $jumlahKursi += $busx->jumlah_kursi; ?>
-                                                                    @endforeach
-                                                                    {{ $jumlahKursi }} Kursi
+                                                                    {{ $val->bus->sum('jumlah_kursi') }} Kursi
                                                                 </td>
                                                                 <td class="text-right">
-                                                                    <?php $jumlahKursiIsi = 0; ?>
-                                                                    @foreach ($val->userKota as $item => $valx)
-                                                                        <?php $jumlahKursiIsi =  $jumlahKursiIsi+ $valx->jumlah; ?>
-                                                                    @endforeach
-                                                                    {{ $jumlahKursiIsi }} Peserta
+                                                                    {{ $val->userKota->sum('jumlah') }} Peserta
                                                                 </td>
-                                                                <td class="text-right">{{ $jumlahKursi - $jumlahKursiIsi }} Kursi</td>
-                                                                {{-- <td class="text-right">{{ $val->pesertaKota->count() }} Peserta</td>
-                                                                <td class="text-right">{{ $jumlahKursi - $val->pesertaKota->count() }} Kursi</td> --}}
+                                                                <td class="text-right">{{ $val->bus->sum('jumlah_kursi')-$val->userKota->sum('jumlah') }} Kursi</td>
                                                             </tr>
                                                         @endforeach
                                                         </body>

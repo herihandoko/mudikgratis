@@ -136,7 +136,7 @@
                                                     @elseif($peserta->status == 'dikirim')    
                                                         <span class="badge bg-info"> Menunggu Verifikasi</span>    
                                                     @else
-                                                        <span class="badge bg-success"> {{ ucwords($peserta->status) }} </span>
+                                                        <span class="badge bg-success"> {{ $peserta->status?ucwords($peserta->status):'Konsep' }} </span>
                                                     @endif
                                                 </td>
                                                 @if ($user->status_profile == 1 && ($user->status_mudik !== 'diterima' && $user->status_mudik !== 'dikirim'))
