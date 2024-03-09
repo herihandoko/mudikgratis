@@ -54,6 +54,7 @@ class CleanRegisterCommand extends Command
                 $dataUser = $user->toArray();
                 if ($dataUser) {
                     unset($dataUser['id']);
+                    unset($dataUser['peserta']);
                     $dataUser['email_verified_at'] = date('Y-m-d H:i:s', strtotime($dataUser['email_verified_at']));
                     $dataUser['created_at'] = date('Y-m-d H:i:s', strtotime($dataUser['created_at']));
                     $dataUser['updated_at'] = date('Y-m-d H:i:s', strtotime($dataUser['updated_at']));
