@@ -130,7 +130,11 @@
                                                     @elseif($peserta->status == 'dikirim')    
                                                         <span class="badge bg-info"> Menunggu Verifikasi</span>        
                                                     @else
-                                                        <span class="badge bg-success"> {{ ucwords($peserta->status) }} </span>
+                                                        @if($peserta->status)
+                                                            <span class="badge bg-success"> {{ ucwords($peserta->status) }} </span>
+                                                        @else
+                                                            <span class="badge bg-warning"> Belum Dikirim </span>
+                                                        @endif
                                                     @endif
                                                 </td>
                                             </tr>
