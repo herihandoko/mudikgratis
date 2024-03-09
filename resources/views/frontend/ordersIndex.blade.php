@@ -141,7 +141,7 @@
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan="5" align="center">Data Peserta Mudik Belum Ada</td>
+                                            <td colspan="6" align="center">Data Peserta Mudik Belum Ada</td>
                                         </tr>
                                     @endif
                                 </tbody>
