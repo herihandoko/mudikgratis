@@ -74,7 +74,11 @@
                                                                 <td class="text-right">
                                                                     {{ $val->userKota->sum('jumlah') }} Peserta
                                                                 </td>
+                                                                @if($val->bus->sum('jumlah_kursi')-$val->userKota->sum('jumlah') < 0)
+                                                                <td class="text-right">0 Kursi</td>
+                                                                @else
                                                                 <td class="text-right">{{ $val->bus->sum('jumlah_kursi')-$val->userKota->sum('jumlah') }} Kursi</td>
+                                                                @endif
                                                             </tr>
                                                         @endforeach
                                                         </body>
