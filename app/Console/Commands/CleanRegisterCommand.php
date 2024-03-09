@@ -43,6 +43,7 @@ class CleanRegisterCommand extends Command
      */
     public function handle()
     {
+        date_default_timezone_set("Asia/Jakarta");
         $threshold = Carbon::now()->subHour();
         $unconfirmedUsers = User::where('status_profile', 0)
             ->where('created_at', '<=', $threshold)
