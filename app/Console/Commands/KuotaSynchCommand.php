@@ -44,7 +44,7 @@ class KuotaSynchCommand extends Command
     public function handle()
     {
         date_default_timezone_set("Asia/Jakarta");
-        $users = User::whereIn('status_mudik', ['diterima', 'dikirim'])->get();
+        $users = User::where('status_profile', 1)->whereIn('status_mudik', ['diterima', 'dikirim'])->get();
         foreach ($users as $key => $user) {
             if ($user->jumlah != $user->peserta->count()) {
                 User::where('id', $user->id)->update([
