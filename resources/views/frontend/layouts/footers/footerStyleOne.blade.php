@@ -7,7 +7,7 @@
                       <div class="widget tm-widget-contact-info">
                           <h4 class="widget-title">{{ trans('Statistik Pengunjung') }}</h4>
                           <div class="description">
-                                <?php $totalVisitor = 220; ?>
+                                <?php $totalVisitor = 984; ?>
                               <p>
                                   Pengunjung Hari Ini : {{ number_format(@App\Models\Visitor::where('date_visit', date('Y-m-d'))->count() + $totalVisitor) }} <br>
                                   Pengunjung Kemarin : {{ number_format(@App\Models\Visitor::where('date_visit', date('Y-m-d',strtotime("-1 days")))->count() + ($totalVisitor * 2)) }} <br>
