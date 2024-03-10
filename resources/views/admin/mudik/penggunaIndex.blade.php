@@ -39,6 +39,7 @@ $page_title = 'Verifikasi Mudik';
                             <div class="form-group">
                                 <label for="">Status Mudik</label>
                                 {{ Form::select('status_mudik', [
+                                    ''=> 'Semua',
                                     'diterima'=> 'Diterima',
                                     'dikirm'=>'Dikirim',
                                     'waiting'=>'Menunggu User'
@@ -47,6 +48,7 @@ $page_title = 'Verifikasi Mudik';
                             <div class="form-group">
                                 <label for="">Status Profile</label>
                                 {{ Form::select('status_profile', [
+                                    ''=> 'Semua',
                                     1 => 'Lengkap',
                                     0 => 'Belum Lengkap',
                                 ], $request->status_profile , ['class' => 'form-control']) }}
