@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Peserta;
+use App\Models\PesertaCancelled;
 use Illuminate\Console\Command;
 use App\Models\User;
 use App\Models\UserInactive;
@@ -44,6 +46,29 @@ class CleanCancelledCommand extends Command
     public function handle()
     {
         date_default_timezone_set("Asia/Jakarta");
-        $this->info('Unconfirmed users deleted successfully.');
+        $pesertas = Peserta::where('status', 'dibatalkan')->get();
+        foreach ($pesertas as $key => $peserta) {
+            $dataPeserta = $peserta->toArray();
+            unset($dataPeserta['id']);
+            $id = PesertaCancelled::insert($dataPeserta);
+            if ($id) {
+                Peserta::where('id', $peserta->id)->delete();
+            }
+        }
+        $users = User::where('status_mudik', 'dibatalkan')->get();
+        foreach ($users as $keyx => $user) {
+            $dataUser = $user->toArray();
+            unset($dataUser['id']);
+            unset($dataUser['peserta']);
+            $dataUser['email_verified_at'] = date('Y-m-d H:i:s', strtotime($dataUser['email_verified_at']));
+            $dataUser['created_at'] = date('Y-m-d H:i:s', strtotime($dataUser['created_at']));
+            $dataUser['updated_at'] = date('Y-m-d H:i:s', strtotime($dataUser['updated_at']));
+            $id = UserInactive::insert($dataUser);
+            if ($id) {
+                $dataUser = $user->toArray();
+                User::where('id', $user->id)->delete();
+            }
+        }
+        $this->info('Unconfirmed users deleted cancelled successfully.');
     }
 }
