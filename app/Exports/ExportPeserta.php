@@ -34,7 +34,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
     public function collection()
     {
         //
-        $peserta = Peserta::select('id', 'nik', 'nama_lengkap', 'tgl_lahir', 'jenis_kelamin', 'kategori', 'user_id', 'nik', 'kota_tujuan_id', 'nomor_bus', 'status', 'reason','nomor_kursi');
+        $peserta = Peserta::select('id', 'nik', 'nama_lengkap', 'tgl_lahir', 'jenis_kelamin', 'kategori', 'user_id', 'nik', 'kota_tujuan_id', 'nomor_bus', 'status', 'reason', 'nomor_kursi');
         if ($this->request->periode_id) {
             $peserta->where('periode_id', $this->request->periode_id);
         }
@@ -133,7 +133,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
             isset($row->profile->address->address) ? $row->profile->address->address : '-',
             $jnsKelamin,
             "\t" . $row->profile->phone,
-            isset($row->KotaTujuan->name) ? $row->KotaTujuan->name : '-',
+            isset($row->profile->userCity->name) ? $row->profile->userCity->name : '-',
             isset($row->nomor_kursi) ? $row->nomor_kursi : '-',
             $row->status,
             $row->reason

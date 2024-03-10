@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Laravolt\Indonesia\Models\City;
+use Laravolt\Indonesia\Models\District;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -88,7 +90,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(MudikTujuanKota::class, 'id', 'kota_tujuan');
     }
 
-    public function bus(){
+    public function bus()
+    {
         return $this->hasOne(Bus::class, 'id', 'nomor_bus');
+    }
+
+    public function userCity()
+    {
+        return $this->hasOneThrough(City::class, UserAdress::class, 'user_id', 'id', 'id', 'city');
     }
 }
