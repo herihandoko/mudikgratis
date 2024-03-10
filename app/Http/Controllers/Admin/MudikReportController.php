@@ -54,7 +54,7 @@ class MudikReportController extends Controller
                 $peserta->where('nomor_bus', $request->nomor_bus);
             }
             $pesertas = $peserta->get();
-            $pdf = Pdf::loadView('admin.mudik.reportPeserta', compact('bus', 'kotaTujuan', 'pesertas'));
+            $pdf = Pdf::loadView('admin.mudik.reportPeserta', compact('bus', 'kotaTujuan', 'pesertas'))->setPaper('a4', 'landscape');
             return $pdf->download('report-mudik-bersama.pdf');
         }
         return $dataTables->render('admin.mudik.reportIndex', compact('tujuan', 'request', 'periode'));
