@@ -107,6 +107,14 @@ $nomor = 1;
                 </td>
                 <td
                     style="text-align: center; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px; border-top:solid black 1px; background-color:#bebdbd;">
+                   KOTA/KAB
+                </td>
+                <td
+                    style="text-align: center; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px; border-top:solid black 1px; background-color:#bebdbd;">
+                   NOMOR KURSI
+                </td>
+                <td
+                    style="text-align: center; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px; border-top:solid black 1px; background-color:#bebdbd;">
                     STATUS
                 </td>
                 <td
@@ -151,6 +159,14 @@ $nomor = 1;
                     <td
                         style="text-align: left; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px;">
                         {{ @$row->profile->phone }}
+                    </td>
+                    <td
+                        style="text-align: left; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px;">
+                        {{ @$row->KotaTujuan->name }}
+                    </td>
+                    <td
+                        style="text-align: left; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px;">
+                        {{ @$row->nomor_bus }}
                     </td>
                     <td
                         style="text-align: left; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px;">

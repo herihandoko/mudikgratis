@@ -43,7 +43,7 @@ class MudikReportController extends Controller
         } elseif ($request->type == 'pdf') {
             $bus = Bus::find($request->nomor_bus);
             $kotaTujuan = MudikTujuanKota::find($request->kota_tujuan_id);
-            $peserta = Peserta::select('id', 'nik', 'nama_lengkap', 'tgl_lahir', 'jenis_kelamin', 'kategori', 'user_id', 'nik', 'kota_tujuan_id', 'nomor_bus', 'status', 'reason');
+            $peserta = Peserta::select('id', 'nik', 'nama_lengkap', 'tgl_lahir', 'jenis_kelamin', 'kategori', 'user_id', 'nik', 'kota_tujuan_id', 'nomor_bus', 'status', 'reason','nomor_kursi');
             if ($request->periode_id) {
                 $peserta->where('periode_id', $request->periode_id);
             }
