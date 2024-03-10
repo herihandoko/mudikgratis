@@ -50,6 +50,8 @@ class CleanCancelledCommand extends Command
         foreach ($pesertas as $key => $peserta) {
             $dataPeserta = $peserta->toArray();
             unset($dataPeserta['id']);
+            $dataPeserta['created_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['created_at']));
+            $dataPeserta['updated_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['updated_at']));
             $id = PesertaCancelled::insert($dataPeserta);
             if ($id) {
                 Peserta::where('id', $peserta->id)->delete();
