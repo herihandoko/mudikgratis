@@ -11,51 +11,51 @@ $page_title = "Admin | Report Peserta";
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
             <div id="accordion">
-            <div class="card text-dark">
-                <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                      <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Filter Report Peserta
-                      </button>
-                    </h5>
+                <div class="card text-dark">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Filter Report Peserta
+                        </button>
+                        </h5>
+                    </div>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <form action="{{ route('admin.mudik-report.index') }}" method="GET">
+                            <div class="form-group">
+                                <label for="">Periode</label>
+                                {{ Form::select('periode_id', $periode, $request->periode_id , ['class' => 'form-control']) }}
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tujuan</label>
+                                {{ Form::select('tujuan_id', $tujuan, $request->tujuan_id , ['class' => 'form-control','id'=>'sel-tujuan']) }}
+                            </div>
+                            <div class="form-group">
+                                <label for="kota_tujuan_id" id="label-kota_tujuan_id">Kota Tujuan <span class="text-danger">*</span></label>
+                                <select class="form-control sel-kota-tujuan" name="kota_tujuan_id" id="kota_tujuan_id">
+                                    <option value="" disabled selected>Pilih Kota Tujuan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nomor_bus">Bus</label>
+                                <select class="form-control sel-nomor_bus" name="nomor_bus" id="nomor_bus">
+                                    <option value="" disabled selected>Pilih Bus</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Type Report</label>
+                                {{ Form::select('type', [
+                                    'preview'=> 'Preview',
+                                    'export'=>'Export to Excel',
+                                    'pdf'=>'Cetak to PDF'
+                                ], $request->type , ['class' => 'form-control']) }}
+                            </div>
+                            <a class="btn btn-warning" href="{{ route('admin.mudik-report.index') }}"><i class="fa fa-undo"></i> Reset Filter </a>
+                            <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter </button>
+                        </form>
+                    </div>
+                    </div>
                 </div>
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
-                    <form action="{{ route('admin.mudik-report.index') }}" method="GET">
-                        <div class="form-group">
-                            <label for="">Periode</label>
-                            {{ Form::select('periode_id', $periode, $request->periode_id , ['class' => 'form-control']) }}
-                        </div>
-                        <div class="form-group">
-                            <label for="">Tujuan</label>
-                            {{ Form::select('tujuan_id', $tujuan, $request->tujuan_id , ['class' => 'form-control','id'=>'sel-tujuan']) }}
-                        </div>
-                        <div class="form-group">
-                            <label for="kota_tujuan_id" id="label-kota_tujuan_id">Kota Tujuan <span class="text-danger">*</span></label>
-                            <select class="form-control sel-kota-tujuan" name="kota_tujuan_id" id="kota_tujuan_id">
-                                <option value="" disabled selected>Pilih Kota Tujuan</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="nomor_bus">Bus</label>
-                            <select class="form-control sel-nomor_bus" name="nomor_bus" id="nomor_bus">
-                                <option value="" disabled selected>Pilih Bus</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Type Report</label>
-                            {{ Form::select('type', [
-                                'preview'=> 'Preview',
-                                'export'=>'Export to Excel',
-                                'pdf'=>'Cetak to PDF'
-                            ], $request->type , ['class' => 'form-control']) }}
-                        </div>
-                        <a class="btn btn-warning" href="{{ route('admin.mudik-report.index') }}"><i class="fa fa-undo"></i> Reset Filter </a>
-                        <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter </button>
-                    </form>
-                </div>
-                </div>
-            </div>
             </div>
             <div class="section-body">
                 <div class="card">

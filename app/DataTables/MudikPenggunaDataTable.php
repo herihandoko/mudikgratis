@@ -56,6 +56,15 @@ class MudikPenggunaDataTable extends DataTable
     public function query(User $model)
     {
         $query = $model->newQuery();
+        if ($this->request()->get("periode_id")) {
+            $query->where('periode_id', $this->request()->get("periode_id"));
+        }
+        if ($this->request()->get("tujuan_id")) {
+            $query->where('tujuan', $this->request()->get("tujuan_id"));
+        }
+        if ($this->request()->get("kota_tujuan_id")) {
+            $query->where('kota_tujuan', $this->request()->get("kota_tujuan_id"));
+        }
         return $query;
     }
 
