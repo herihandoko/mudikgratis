@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CleanRegisterCommand;
+use App\Console\Commands\CleanStatusCommand;
 use App\Console\Commands\KuotaSynchCommand;
 use App\Console\Commands\WaitingNotifCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -19,7 +20,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         CleanRegisterCommand::class,
         KuotaSynchCommand::class,
-        WaitingNotifCommand::class
+        WaitingNotifCommand::class,
+        CleanStatusCommand::class
     ];
 
     protected function schedule(Schedule $schedule)
@@ -27,6 +29,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('users:delete-unconfirmed')->everyMinute();
         $schedule->command('kuota:synch')->everyMinute();
         $schedule->command('waiting:notif')->hourly();
+        $schedule->command('peserta:status')->everyFiveMinutes();
     }
 
     /**
