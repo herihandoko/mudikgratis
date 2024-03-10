@@ -80,9 +80,7 @@
                                     <li>Waktu :  <b>09.00 WIB s/d 17.00 WIB</b></li>
                                     <li>Tempat : <b>Akan di Informasikan lebih lanjut</b></li>
                                 </ul>
-                                Terima Kasih;
-                                {{-- Silahkan download E-Tiket Anda dan Perlihatkan kepada petugas kami saat registrasi
-                                ulang. --}}
+                                Terima Kasih.
                             </div>
                             @endif
                             @if ($user->status_profile == 1 && $user->status_mudik == 'ditolak')

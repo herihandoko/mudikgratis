@@ -129,8 +129,8 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
             $this->rowNumber, // This is the row index
             "\t" . $row->profile->no_kk,
             "\t" . $row->nik,
-            $row->nama_lengkap,
-            $row->profile->address->address,
+            isset($row->nama_lengkap)?$row->nama_lengkap:"-",
+            isset($row->profile->address->address)?$row->profile->address->address:'-',
             $jnsKelamin,
             "\t" . $row->profile->phone,
             $row->status,
