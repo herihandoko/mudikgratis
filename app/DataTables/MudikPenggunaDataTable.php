@@ -28,6 +28,9 @@ class MudikPenggunaDataTable extends DataTable
                     return 'Perempuan';
                 }
             })
+            ->addColumn('kota_tujuan', function ($row) {
+                return $row->kotatujuan->name;
+            })
             ->addColumn('jumlah_peserta', function ($row) {
                 return $row->peserta->count();
             })
@@ -41,7 +44,7 @@ class MudikPenggunaDataTable extends DataTable
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
-            ->rawColumns(['status_profile', 'action', 'jumlah_peserta']);
+            ->rawColumns(['status_profile', 'action', 'jumlah_peserta','kota_tujuan']);
     }
 
     /**
@@ -87,8 +90,10 @@ class MudikPenggunaDataTable extends DataTable
             Column::make('nik')->title('NOMOR INDUK KEPENDUDUKAN (NIK)')->width(100),
             Column::make('name')->title('NAMA LENGKAP (SESUAI KTP/KK)')->width(100),
             Column::make('phone')->title('NOMOR TELEPON/HP (WA AKTIF)')->width(100),
+            Column::make('kota_tujuan')->title('KOTA TUJUAN')->width(100),
             Column::make('status_profile')->title('STATUS PROFILE')->width(100),
             Column::make('status_mudik')->title('STATUS MUDIK')->width(100),
+            Column::make('jumlah')->title('JUMLAH REQUEST')->width(100),
             Column::make('jumlah_peserta')->title('JUMLAH PESERTA')->width(100),
             Column::computed('action')
                 ->exportable(false)
