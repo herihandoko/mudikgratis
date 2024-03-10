@@ -36,6 +36,21 @@ $page_title = 'Verifikasi Mudik';
                                     <option value="" disabled selected>Pilih Kota Tujuan</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="">Status Mudik</label>
+                                {{ Form::select('status_mudik', [
+                                    'diterima'=> 'Diterima',
+                                    'dikirm'=>'Dikirim',
+                                    'waiting'=>'Menunggu User'
+                                ], $request->status_mudik , ['class' => 'form-control']) }}
+                            </div>
+                            <div class="form-group">
+                                <label for="">Status Profile</label>
+                                {{ Form::select('status_profile', [
+                                    1 => 'Lengkap',
+                                    0 => 'Belum Lengkap',
+                                ], $request->status_profile , ['class' => 'form-control']) }}
+                            </div>
                             <a class="btn btn-warning" href="{{ route('admin.mudik-pengguna.index') }}"><i class="fa fa-undo"></i> Reset Filter </a>
                             <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter </button>
                         </form>

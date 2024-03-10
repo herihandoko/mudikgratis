@@ -65,6 +65,15 @@ class MudikPenggunaDataTable extends DataTable
         if ($this->request()->get("kota_tujuan_id")) {
             $query->where('kota_tujuan', $this->request()->get("kota_tujuan_id"));
         }
+        if ($this->request()->get("kota_tujuan_id")) {
+            $query->where('kota_tujuan', $this->request()->get("kota_tujuan_id"));
+        }
+        if ($this->request()->get("status_mudik")) {
+            $query->where('status_mudik', $this->request()->get("status_mudik"));
+        }
+        if ($this->request()->get("status_profile")) {
+            $query->where('status_profile', $this->request()->get("status_profile"));
+        }
         return $query;
     }
 
