@@ -47,7 +47,7 @@ class WaitingNotifCommand extends Command
         $threshold = Carbon::now()->subHour();
         $unconfirmedUsers = User::where('status_profile', 1)
             ->where('status_mudik', 'waiting')
-            ->where('created_at', '>=', $threshold)
+            ->where('created_at', '<=', $threshold)
             ->get();
 
         foreach ($unconfirmedUsers as $user) {
