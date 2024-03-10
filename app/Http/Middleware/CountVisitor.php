@@ -18,13 +18,13 @@ class CountVisitor
     public function handle(Request $request, Closure $next)
     {
         $ip = hash('sha512', $request->ip());
-        if (Visitor::where('date_visit', today())->where('ip_address', $ip)->count() < 1) {
-            Visitor::create([
-                'date_visit' => today(),
-                'ip_address' => $ip,
-                'agent' => $_SERVER['HTTP_USER_AGENT']
-            ]);
-        }
+        // if (Visitor::where('date_visit', today())->where('ip_address', $ip)->count() < 1) {
+        Visitor::create([
+            'date_visit' => today(),
+            'ip_address' => $ip,
+            'agent' => $_SERVER['HTTP_USER_AGENT']
+        ]);
+        // }
         return $next($request);
     }
 }
