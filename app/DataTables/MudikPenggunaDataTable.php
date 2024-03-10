@@ -72,7 +72,11 @@ class MudikPenggunaDataTable extends DataTable
             $query->where('status_mudik', $this->request()->get("status_mudik"));
         }
         if ($this->request()->get("status_profile")) {
-            $query->where('status_profile', $this->request()->get("status_profile"));
+            if($this->request()->get("status_profile") == 1){
+                $query->where('status_profile', 1);
+            }elseif($this->request()->get("status_profile") == 2){
+                $query->where('status_profile', 0);
+            }
         }
         return $query;
     }

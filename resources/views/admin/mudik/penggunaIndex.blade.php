@@ -50,7 +50,7 @@ $page_title = 'Verifikasi Mudik';
                                 {{ Form::select('status_profile', [
                                     ''=> 'Semua',
                                     1 => 'Lengkap',
-                                    0 => 'Belum Lengkap',
+                                    2 => 'Belum Lengkap',
                                 ], $request->status_profile , ['class' => 'form-control']) }}
                             </div>
                             <a class="btn btn-warning" href="{{ route('admin.mudik-pengguna.index') }}"><i class="fa fa-undo"></i> Reset Filter </a>
