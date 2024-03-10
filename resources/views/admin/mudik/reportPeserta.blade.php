@@ -166,7 +166,7 @@ $nomor = 1;
                     </td>
                     <td
                         style="text-align: left; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px;">
-                        {{ @$row->nomor_bus }}
+                        {{ @$row->nomor_kursi }}
                     </td>
                     <td
                         style="text-align: left; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px;">
