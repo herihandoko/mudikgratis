@@ -54,9 +54,8 @@ class SendNotifCommand extends Command
             foreach ($users as $key => $user) {
                 $ttlAnggota++;
                 $param = [
-                    // 'target' => $user->phone,
-                    'target' => '081380001903',
-                    'message' => "Informasi:\nYth. Bapak/Ibu Peserta Mudik Gratis Tahun 2024\n\nSehubungan pencocokan data peserta Mudik Gratis tahun 2024 telah dilaksanakan oleh panitia melalui data yang tersimpan dalam aplikasi jawaramudik.bantenprov.go.id, maka *tidak lagi diperlukan kehadiran* Bapak/Ibu dalam acara Verifikasi peserta pada tanggal *22-23 Maret 2024*.\n\nDemikian atas perhatian dan kerjasamanya, diucapkan terima kasih.\n\nUntuk informasi lebih lanjut dapat menghubungi Call Centre di 0852 1080 8700 atau klik link berikut: https://wa.me/6285210808700"
+                    'target' => $user->phone,
+                    'message' => "*Informasi*:\nYth. Bapak/Ibu Peserta Mudik Gratis Tahun 2024\n\nSehubungan pencocokan data peserta Mudik Gratis tahun 2024 telah dilaksanakan oleh panitia melalui data yang tersimpan dalam aplikasi jawaramudik.bantenprov.go.id, maka *tidak lagi diperlukan kehadiran* Bapak/Ibu dalam acara Verifikasi peserta pada tanggal *22-23 Maret 2024*.\n\nDemikian atas perhatian dan kerjasamanya, diucapkan terima kasih.\n\nUntuk informasi lebih lanjut dapat menghubungi Call Centre di 0852 1080 8700"
                 ];
                 $this->notificationApiService->sendNotification($param);
                 User::where('id', $user->id)->update([
