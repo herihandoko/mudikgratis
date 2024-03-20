@@ -6,6 +6,7 @@ use App\Console\Commands\CleanCancelledCommand;
 use App\Console\Commands\CleanRegisterCommand;
 use App\Console\Commands\CleanStatusCommand;
 use App\Console\Commands\KuotaSynchCommand;
+use App\Console\Commands\SendNotifCommand;
 use App\Console\Commands\WaitingNotifCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -23,7 +24,8 @@ class Kernel extends ConsoleKernel
         KuotaSynchCommand::class,
         WaitingNotifCommand::class,
         CleanStatusCommand::class,
-        CleanCancelledCommand::class
+        CleanCancelledCommand::class,
+        SendNotifCommand::class
     ];
 
     protected function schedule(Schedule $schedule)
@@ -33,6 +35,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('waiting:notif')->hourly();
         $schedule->command('peserta:status')->everyFiveMinutes();
         $schedule->command('users:cancelled')->everyFiveMinutes();
+        // $schedule->command('notif:verification')->everyMinute();
     }
 
     /**
