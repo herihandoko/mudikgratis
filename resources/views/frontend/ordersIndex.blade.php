@@ -60,21 +60,7 @@
                             @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')
                                 <div class="alert alert-success mt-2" role="alert">
                                     Selamat Data Peserta Mudik Anda Sudah tersimpan dengan Nomor Registrasi <b>{{ $user->nomor_registrasi }}</b>.<br>
-                                    Peserta Mudik yang di nyatakan terdaftar wajib hadir pada saat Verifikasi Waktu dan Tempat untuk Verifikasi sebagai
-                                    berikut :<br>
-                                    a. Peserta Mudik Gratis dari Provinsi Banten Keluar Provinsi Banten :<br>
-                                    <ul>
-                                        <li>Tanggal : <b>22 - 23 Maret 2024</b></li>
-                                        <li>Waktu :  <b>09.00 WIB s/d 17.00 WIB</b></li>
-                                        <li>Tempat :  <b>Kantor Dinas Perhubungan Provinsi Banten KP3B - Palima Kota Serang</b></li>
-                                    </ul>
-                                    b. Peserta Mudik Gratis dari Luar Provinsi Banten ke Provinsi Banten :<br>
-                                    <ul>
-                                        <li>Tanggal :  <b>22 - 23 Maret 2024</b></li>
-                                        <li>Waktu :  <b>09.00 WIB s/d 17.00 WIB</b></li>
-                                        <li>Tempat : <b>Akan di Informasikan lebih lanjut</b></li>
-                                    </ul>
-                                    Terima Kasih.
+                                    <b>Informasi:</b><br> Yth. Bapak/Ibu Peserta Mudik Gratis Tahun 2024 Sehubungan pencocokan data peserta Mudik Gratis tahun 2024 telah dilaksanakan oleh panitia melalui data yang tersimpan dalam aplikasi jawaramudik.bantenprov.go.id, maka tidak lagi diperlukan kehadiran Bapak/Ibu dalam acara Verifikasi peserta pada tanggal 22-23 Maret 2024. <br>Demikian atas perhatian dan kerjasamanya, diucapkan terima kasih. <br>Untuk informasi lebih lanjut dapat menghubungi Call Centre di 0852 1080 8700
                                 </div>
                             @endif
                             @if ($user->status_profile == 1 && $user->status_mudik == 'ditolak')
