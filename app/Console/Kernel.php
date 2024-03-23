@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('waiting:notif')->hourly();
         $schedule->command('peserta:status')->everyFiveMinutes();
         $schedule->command('users:cancelled')->everyFiveMinutes();
-        $schedule->command('notif:verification')->everyMinute();
+        // $schedule->command('notif:verification')->everyMinute();
     }
 
     /**
