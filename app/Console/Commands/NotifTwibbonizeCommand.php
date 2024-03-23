@@ -71,6 +71,7 @@ class NotifTwibbonizeCommand extends Command
                     ]);
                 }
                 $this->info("User $user->phone deleted because confirmation wasn't completed within one hour.");
+                sleep(5);
             }
         }
         $this->info('notification verification successfully.');

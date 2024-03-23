@@ -32,13 +32,13 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('notif:twibbonize')->everyMinute();
         $schedule->command('users:delete-unconfirmed')->everyMinute();
         $schedule->command('kuota:synch')->everyMinute();
         $schedule->command('waiting:notif')->hourly();
         $schedule->command('peserta:status')->everyFiveMinutes();
         $schedule->command('users:cancelled')->everyFiveMinutes();
         $schedule->command('notif:verification')->everyMinute();
-        $schedule->command('notif:twibbonize')->everyMinute();
     }
 
     /**
