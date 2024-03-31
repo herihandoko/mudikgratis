@@ -43,7 +43,7 @@ class NotifKedalamCommand extends Command
     public function handle()
     {
         date_default_timezone_set("Asia/Jakarta");
-        $users = User::with('kotatujuan')->where('status_mudik', 'diterima')->where('tujuan', 2)->orderBy('id', 'asc')->limit(10)->get();
+        $users = User::with('kotatujuan')->where('status_mudik', 'diterima')->where('tujuan', 2)->where('status_notification', '!=', 3)->orderBy('id', 'asc')->limit(10)->get();
         $groupNotif = NotificationGroup::where('status', 'sending')->exists();
         if ($users && !$groupNotif) {
             $groupWa = new NotificationGroup();
