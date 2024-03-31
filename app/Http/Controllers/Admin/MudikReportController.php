@@ -13,6 +13,7 @@ use App\Models\MudikPeriod;
 use App\Models\MudikTujuan;
 use App\Models\MudikTujuanKota;
 use App\Models\Peserta;
+use App\Models\PesertaCancelled;
 use App\Models\PesertaRejected;
 use App\Models\User;
 use App\Services\NotificationApiService;
@@ -43,7 +44,7 @@ class MudikReportController extends Controller
         } elseif ($request->type == 'pdf') {
             $bus = Bus::find($request->nomor_bus);
             $kotaTujuan = MudikTujuanKota::find($request->kota_tujuan_id);
-            $peserta = Peserta::select('id', 'nik', 'nama_lengkap', 'tgl_lahir', 'jenis_kelamin', 'kategori', 'user_id', 'nik', 'kota_tujuan_id', 'nomor_bus', 'status', 'reason','nomor_kursi');
+            $peserta = Peserta::select('id', 'nik', 'nama_lengkap', 'tgl_lahir', 'jenis_kelamin', 'kategori', 'user_id', 'nik', 'kota_tujuan_id', 'nomor_bus', 'status', 'reason', 'nomor_kursi');
             if ($request->periode_id) {
                 $peserta->where('periode_id', $request->periode_id);
             }
@@ -153,7 +154,15 @@ class MudikReportController extends Controller
      */
     public function destroy($id)
     {
-        Peserta::findOrFail($id)->delete();
+        $peserta = Peserta::find($id);
+        $dataPeserta = $peserta->toArray();
+        unset($dataPeserta['id']);
+        $dataPeserta['created_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['created_at']));
+        $dataPeserta['updated_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['updated_at']));
+        $id = PesertaCancelled::insert($dataPeserta);
+        if ($id) {
+            $peserta->delete();
+        }
         return response([
             'status' => 'success',
         ]);

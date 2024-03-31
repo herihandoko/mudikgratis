@@ -7,7 +7,9 @@ use App\DataTables\MudikPenggunaDataTable;
 use App\Models\MudikPeriod;
 use App\Models\MudikTujuan;
 use App\Models\Peserta;
+use App\Models\PesertaCancelled;
 use App\Models\User;
+use App\Models\UserInactive;
 use Illuminate\Http\Request;
 
 class MudikPenggunaController extends Controller
@@ -23,9 +25,33 @@ class MudikPenggunaController extends Controller
 
     public function destroy($id)
     {
-        if (User::findOrFail($id)->delete()) {
-            Peserta::where('user_id', $id)->delete();
+        $user = User::find($id);
+        if ($user) {
+            $pesertas = Peserta::where('user_id', $user->id)->get();
+            foreach ($pesertas as $key => $peserta) {
+                $dataPeserta = $peserta->toArray();
+                unset($dataPeserta['id']);
+                $dataPeserta['created_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['created_at']));
+                $dataPeserta['updated_at'] = date('Y-m-d H:i:s');
+                $id = PesertaCancelled::insert($dataPeserta);
+                if ($id) {
+                    Peserta::where('id', $peserta->id)->delete();
+                }
+            }
+            $dataUser = $user->toArray();
+            unset($dataUser['id']);
+            unset($dataUser['peserta']);
+            $dataUser['email_verified_at'] = date('Y-m-d H:i:s', strtotime($dataUser['email_verified_at']));
+            $dataUser['created_at'] = date('Y-m-d H:i:s', strtotime($dataUser['created_at']));
+            $dataUser['updated_at'] = date('Y-m-d H:i:s');
+            $id = UserInactive::insert($dataUser);
+            if ($id) {
+                $user->delete();
+            }
         }
+        // if (User::findOrFail($id)->delete()) {
+        //     Peserta::where('user_id', $id)->delete();
+        // }
         return response([
             'status' => 'success',
         ]);
