@@ -6,6 +6,7 @@ use App\Console\Commands\CleanCancelledCommand;
 use App\Console\Commands\CleanRegisterCommand;
 use App\Console\Commands\CleanStatusCommand;
 use App\Console\Commands\KuotaSynchCommand;
+use App\Console\Commands\NotifKedalamCommand;
 use App\Console\Commands\NotifTwibbonizeCommand;
 use App\Console\Commands\SendNotifCommand;
 use App\Console\Commands\WaitingNotifCommand;
@@ -27,7 +28,8 @@ class Kernel extends ConsoleKernel
         CleanStatusCommand::class,
         CleanCancelledCommand::class,
         SendNotifCommand::class,
-        NotifTwibbonizeCommand::class
+        NotifTwibbonizeCommand::class,
+        NotifKedalamCommand::class
     ];
 
     protected function schedule(Schedule $schedule)
@@ -39,6 +41,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('peserta:status')->everyFiveMinutes();
         $schedule->command('users:cancelled')->everyFiveMinutes();
         // $schedule->command('notif:verification')->everyMinute();
+        $schedule->command('notif:kedalam')->everyMinute();
     }
 
     /**

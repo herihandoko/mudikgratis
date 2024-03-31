@@ -99,23 +99,22 @@ class NotifKedalamCommand extends Command
                         break;
                 }
                 $param = [
-                    // 'target' => $user->phone,
-                    'target' => '081380001903',
+                    'target' => $user->phone,
                     'message' => "Informasi waktu dan Tempat keberangkatan asal tujuan *" . $tujuan . "* :  Keberangkatan Tanggal *" . $tglBerangkat . "* Titik kumpul & lokasi keberangkatan  di *" . $lokasi . "* waktu keberangkatan Pukul *" . $jam . "*, usahakan 1 jam sebelum keberangkatan sudah di lokasi karena ada proses registrasi dan pembagian perlengkapan peserta dan pemberhentian terakhir di Terminal Mandala, Terminal Kadubanen dan terminal Pakupatan\nTerima kasih.\n*NB:*\nMembawa foto copy KTP dan KK"
                 ];
                 $this->notificationApiService->sendNotification($param);
-                // User::where('id', $user->id)->update([
-                //     'status_notification' => 3,
-                //     'send_date' => date('Y-m-d H:i:s'),
-                //     'group_id' => $groupWa->id
-                // ]);
-                // if ($ttlAnggota == $users->count()) {
-                //     NotificationGroup::where('id', $groupWa->id)->update([
-                //         'status' => 'delivered',
-                //         'total_anggota' => $users->count(),
-                //         'updated_at' => date('Y-m-d H:i:s')
-                //     ]);
-                // }
+                User::where('id', $user->id)->update([
+                    'status_notification' => 3,
+                    'send_date' => date('Y-m-d H:i:s'),
+                    'group_id' => $groupWa->id
+                ]);
+                if ($ttlAnggota == $users->count()) {
+                    NotificationGroup::where('id', $groupWa->id)->update([
+                        'status' => 'delivered',
+                        'total_anggota' => $users->count(),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]);
+                }
                 $this->info("User $user->phone deleted because confirmation wasn't completed within one hour.");
                 sleep(5);
             }
