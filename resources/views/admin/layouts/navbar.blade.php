@@ -1,3 +1,6 @@
+<?php
+  $periodeMudik = listPeriodMudik();
+?>
 <nav class="navbar navbar-expand-lg main-navbar">
     <div class=" mr-auto">
       <ul class="navbar-nav mr-3">
@@ -5,13 +8,24 @@
       </ul>
     </div>
     <ul class="navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+          <div class="d-sm-none d-lg-inline-block">{{ session('name_period', 'Select Period') }}</div></a>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" style="width: 300px !important;">
+          @foreach ($periodeMudik as $key => $item)
+            <a href="{{route('admin.set-session.period',$item->id)}}" class="dropdown-item has-icon">
+              <i class="far fa-calendar"></i> {{ $item->name }}
+            </a>
+          @endforeach
+        </div>
+      </li>
         <li ><a href="{{url('/')}}" onclick="event.preventDefault(); window.open('{{url('/')}}')" class="nav-link nav-link-lg"> <i class="fas fa-globe-asia    "></i> </a>
         </li>
       <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
         <img alt="image" src="{{asset(Auth::guard('admin')->user()->avatar)}}" class="rounded-circle mr-1">
         <div class="d-sm-none d-lg-inline-block">Hi, {{Auth::guard('admin')->user()->name}}</div></a>
         <div class="dropdown-menu dropdown-menu-right">
-
           <a href="{{route('admin.user-profile.index')}}" class="dropdown-item has-icon">
             <i class="far fa-user"></i> {{trans('admin.Profile')}}
           </a>
@@ -19,8 +33,7 @@
             <i class="fas fa-cog"></i> {{trans('admin.Settings')}}
           </a>
           <div class="dropdown-divider"></div>
-          <a href="{{route('user.logout')}}" onclick="event.preventDefault();
-          document.getElementById('logout-form').submit();" class="dropdown-item has-icon text-danger">
+          <a href="{{route('user.logout')}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item has-icon text-danger">
             <i class="fas fa-sign-out-alt"></i> {{trans('admin.Logout')}}
           </a>
           <form id="logout-form" action="{{route('admin.logout')}}" method="POST" class="d-none">

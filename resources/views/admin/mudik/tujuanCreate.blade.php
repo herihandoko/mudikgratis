@@ -1,5 +1,5 @@
 @php
-$page_title = "Admin | Tambah Tujuan";
+    $page_title = 'Admin | Tambah Tujuan';
 @endphp
 @extends('admin.layouts.master')
 @section('content')
@@ -7,27 +7,42 @@ $page_title = "Admin | Tambah Tujuan";
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Tambah Periode</h1>
+                <h1>Tambah Tujuan ( {{ session('name_period') }} )</h1>
             </div>
-            <a class="btn btn-primary mb-4" href="{{route('admin.mudik-tujuan.index')}}" role="button"><i class="fas fa-arrow-alt-circle-left    "></i>{{trans('admin.Back')}}</a>
+            <a class="btn btn-primary mb-4" href="{{ route('admin.mudik-tujuan.index') }}" role="button"><i
+                    class="fas fa-arrow-alt-circle-left    "></i>{{ trans('admin.Back') }}</a>
             <div class="section-body">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{route('admin.mudik-tujuan.store')}}" method="POST">
+                        <form action="{{ route('admin.mudik-tujuan.store') }}" method="POST">
                             @csrf
+                            {{ Form::hidden('id_period', session('id_period', null)) }}
                             <div class="form-group">
-                                <label for="">Tujuan</label>
-                                <input type="text" class="form-control" name="name" required value="{{ old('name') }}">
+                                <label for="">Kategori</label>
+                                {{ Form::select(
+                                    'code',
+                                    [
+                                        'keluar-banten' => 'keluar-banten',
+                                        'kedalam-banten' => 'kedalam-banten',
+                                    ],
+                                    old('code'),
+                                    ['class' => 'form-control'],
+                                ) }}
                             </div>
                             <div class="form-group">
-                                <div class="control-label">{{trans('admin.Status')}}</div>
+                                <label for="">Tujuan</label>
+                                <input type="text" class="form-control" name="name" required
+                                    value="{{ old('name') }}">
+                            </div>
+                            <div class="form-group">
+                                <div class="control-label">{{ trans('admin.Status') }}</div>
                                 <label class="custom-switch pl-0 mt-2">
                                     <input type="checkbox" name="status" class="custom-switch-input">
                                     <span class="custom-switch-indicator"></span>
                                     <span class="custom-switch-description">Inactive / Active</span>
                                 </label>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block"> {{trans('admin.Save')}} </button>
+                            <button type="submit" class="btn btn-primary btn-block"> {{ trans('admin.Save') }} </button>
                         </form>
                     </div>
                 </div>

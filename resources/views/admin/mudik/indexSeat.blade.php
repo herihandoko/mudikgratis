@@ -7,7 +7,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Seat Bus</h1>
+                <h1>Seat Bus ( {{ session('name_period') }} )</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{ URL::previous() }}" role="button"><i class="fas fa-arrow-circle-left"></i>
                 {{ trans('admin.Back') }}</a>

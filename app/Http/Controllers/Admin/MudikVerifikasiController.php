@@ -30,7 +30,7 @@ class MudikVerifikasiController extends Controller
 
     public function index(Request $request)
     {
-        $tujuan = MudikTujuan::pluck('name', 'id');
+        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
         $dataTables = new MudikVerifikasiDataTable();
         return $dataTables->render('admin.mudik.verifikasiIndex', compact('tujuan', 'request'));
     }

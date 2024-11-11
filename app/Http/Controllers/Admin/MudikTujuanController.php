@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\MudikTujuanDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\MudikPeriod;
 use App\Models\MudikTujuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use DB;
 
 class MudikTujuanController extends Controller
 {
@@ -19,25 +21,31 @@ class MudikTujuanController extends Controller
         $this->middleware('permission:mudik-tujuan-delete', ['only' => ['destroy']]);
     }
 
-    public function index(MudikTujuanDataTable $dataTables)
+    public function index(Request $request, MudikTujuanDataTable $dataTables)
     {
-        return $dataTables->render('admin.mudik.tujuanIndex');
+        $periode = MudikPeriod::select('id', DB::raw("CONCAT(name, ' ( ', status, ' )') AS name"))->orderBy('id', 'desc')->pluck('name', 'id');
+        return $dataTables->render('admin.mudik.tujuanIndex', compact('periode', 'request'));
     }
 
     public function create()
     {
-        return view('admin.mudik.tujuanCreate');
+        $periode = MudikPeriod::select('id', DB::raw("CONCAT(name, ' ( ', status, ' )') AS name"))->orderBy('id', 'desc')->pluck('name', 'id');
+        return view('admin.mudik.tujuanCreate', compact('periode'));
     }
 
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'id_period' => 'required',
+            'code' => 'required|max:100',
         ];
         $this->validate($request, $rules);
         $periode = new MudikTujuan();
         $periode->name = $request->name;
-        $periode->status = isset($request->status)?'active':'inactive';
+        $periode->code = $request->code;
+        $periode->id_period = $request->id_period;
+        $periode->status = isset($request->status) ? 'active' : 'inactive';
         $periode->save();
         $notification =  trans('admin.Created Successfully');
         $notification = ['message' => $notification, 'alert-type' => 'success'];
@@ -47,18 +55,23 @@ class MudikTujuanController extends Controller
     public function edit($id)
     {
         $category = MudikTujuan::findOrFail($id);
-        return view('admin.mudik.tujuanEdit', compact('category'));
+        $periode = MudikPeriod::select('id', DB::raw("CONCAT(name, ' ( ', status, ' )') AS name"))->orderBy('id', 'desc')->pluck('name', 'id');
+        return view('admin.mudik.tujuanEdit', compact('category', 'periode'));
     }
 
     public function update(Request $request, $id)
     {
         $rules = [
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'id_period' => 'required',
+            'code' => 'required|max:100',
         ];
         $this->validate($request, $rules);
         $periode = MudikTujuan::findOrFail($id);
         $periode->name = $request->name;
-        $periode->status = isset($request->status)?'active':'inactive';
+        $periode->code = $request->code;
+        $periode->id_period = $request->id_period;
+        $periode->status = isset($request->status) ? 'active' : 'inactive';
         $periode->save();
         $notification = trans('admin.Updated Successfully');
         $notification = ['message' => $notification, 'alert-type' => 'success'];

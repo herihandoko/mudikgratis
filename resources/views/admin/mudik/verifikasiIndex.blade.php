@@ -7,7 +7,7 @@ $page_title = 'Verifikasi Mudik';
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Verifikasi Mudik</h1>
+                <h1>Verifikasi Mudik ( {{ session('name_period') }} )</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
             <div class="card text-dark">

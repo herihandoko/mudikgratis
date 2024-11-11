@@ -54,6 +54,9 @@ use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\Admin\StatisticItemController;
 use App\Http\Controllers\Admin\SubscriberController;
+use App\Http\Controllers\Admin\SurveiPertanyaanController;
+use App\Http\Controllers\Admin\SurveiReportController;
+use App\Http\Controllers\Admin\SurveiResponController;
 use App\Http\Controllers\Admin\TermsOfUseController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\TransactionController;
@@ -76,6 +79,8 @@ use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController
 use App\Http\Controllers\Frontend\Auth\VerificationController;
 use App\Http\Controllers\Frontend\RuteController;
 use App\Http\Controllers\Frontend\StatisticController as FrontendStatisticController;
+use App\Http\Controllers\Frontend\SurveyController;
+use App\Models\MudikPeriod;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -208,7 +213,7 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::resource('mudik-periode', MudikPeriodeController::class);
         Route::resource('mudik-tujuan', MudikTujuanController::class);
         Route::resource('mudik-kota', MudikKotaController::class);
-        Route::get('/admin/mudik-kota/provinsi', [MudikKotaController::class,'provinsi'])->name('mudik-kota.provinsi');
+        Route::get('/admin/mudik-kota/provinsi', [MudikKotaController::class, 'provinsi'])->name('mudik-kota.provinsi');
         Route::resource('mudik-bus', MudikBusController::class);
         Route::resource('mudik-peserta', MudikPesertaController::class);
         Route::resource('mudik-provinsi', MudikProvinsiController::class);
@@ -216,13 +221,28 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::resource('mudik-report', MudikReportController::class);
         Route::resource('mudik-pengguna', MudikPenggunaController::class);
 
-        Route::get('/admin/mudik-report/combo', [MudikReportController::class,'combo'])->name('mudik-report.combo');
-        Route::get('/admin/mudik-report/combobus', [MudikReportController::class,'combobus'])->name('mudik-report.combobus');
-        Route::get('/admin/mudik-verifikasi/seat', [MudikVerifikasiController::class,'seat'])->name('mudik-verifikasi.seat');
+        Route::get('/admin/mudik-report/combo', [MudikReportController::class, 'combo'])->name('mudik-report.combo');
+        Route::get('/admin/mudik-report/combobus', [MudikReportController::class, 'combobus'])->name('mudik-report.combobus');
+        Route::get('/admin/mudik-verifikasi/seat', [MudikVerifikasiController::class, 'seat'])->name('mudik-verifikasi.seat');
         Route::get('/admin/mudik-verifikasi/{id}/cetak',     [MudikVerifikasiController::class, 'cetak'])->name('mudik-verifikasi.cetak');
-        Route::post('/admin/mudik-verifikasi/seat/store', [MudikVerifikasiController::class,'seat_store'])->name('mudik-verifikasi.seat.store');
-        Route::post('/admin/mudik-verifikasi/bus/store', [MudikVerifikasiController::class,'bus_store'])->name('mudik-verifikasi.bus.store');
-        Route::get('/admin/mudik-verifikasi/combo', [MudikVerifikasiController::class,'combo'])->name('mudik-verifikasi.combo');
+        Route::post('/admin/mudik-verifikasi/seat/store', [MudikVerifikasiController::class, 'seat_store'])->name('mudik-verifikasi.seat.store');
+        Route::post('/admin/mudik-verifikasi/bus/store', [MudikVerifikasiController::class, 'bus_store'])->name('mudik-verifikasi.bus.store');
+        Route::get('/admin/mudik-verifikasi/combo', [MudikVerifikasiController::class, 'combo'])->name('mudik-verifikasi.combo');
+        Route::get('/admin/mudik-provinsi/combo', [MudikProvinsiController::class, 'combo'])->name('mudik-provinsi.combo');
+
+        /** Survei */
+        Route::resource('survei-pertanyaan', SurveiPertanyaanController::class);
+        Route::resource('survei-respon', SurveiResponController::class);
+        Route::resource('survei-report', SurveiReportController::class);
+
+        Route::get('admin/set-session/{selectedValue}', function ($selectedValue) {
+            $period = MudikPeriod::find($selectedValue);
+            session([
+                'id_period' => $selectedValue,
+                'name_period' => $period->name
+            ]);
+            return redirect()->back();
+        })->name('set-session.period');
 
         Route::get('/phpinfo', function () {
             phpinfo();
@@ -286,6 +306,8 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
 
     Route::get('/rute', [RuteController::class, 'index'])->name('rute');
     Route::get('/statistik-peserta', [FrontendStatisticController::class, 'index'])->name('statistik-peserta');
+    Route::get('/survei-kepuasan-masyarakat', [SurveyController::class, 'index'])->name('survei-kepuasan-masyarakat');
+    Route::post('/survei-kepuasan-masyarakat/store', [SurveyController::class, 'store'])->name('survei-kepuasan-masyarakat.store');
 
     Route::get('{slug}',                [DynamicPageController::class, 'page'])->name('page');
 

@@ -7,7 +7,7 @@ $page_title = "Admin | Report Peserta";
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Report Peserta</h1>
+                <h1>Report Peserta ( {{ session('name_period') }} )</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
             <div id="accordion">

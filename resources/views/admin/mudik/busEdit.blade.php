@@ -7,7 +7,7 @@ $page_title = "Admin | Edit Bus";
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Edit Bus</h1>
+                <h1>Edit Bus ( {{ session('name_period') }} )</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.mudik-bus.index')}}" role="button"><i class="fas fa-arrow-alt-circle-left    "></i>{{trans('admin.Back')}}</a>
             <div class="section-body">
@@ -35,6 +35,10 @@ $page_title = "Admin | Edit Bus";
                             <div class="form-group">
                                 <label for="">Nama Pendamping <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="pendamping" value="{{ $category->pendamping }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Telp Pendamping</label>
+                                <input type="text" class="form-control" name="telp_pendamping" value="{{ $category->telp_pendamping }}">
                             </div>
                             <div class="form-group">
                                 <label for="">Deskripsi</label>

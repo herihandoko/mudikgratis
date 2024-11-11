@@ -1,5 +1,5 @@
 @php
-$page_title = "Admin | Master Bus";
+$page_title = "Admin | Mudik Tujuan";
 @endphp
 @extends('admin.layouts.master')
 @section('content')
@@ -7,7 +7,7 @@ $page_title = "Admin | Master Bus";
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Master Bus ( {{ session('name_period') }} )</h1>
+                <h1>Pertanyaan  ( {{ session('name_period') }} )</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
             <div class="section-body">

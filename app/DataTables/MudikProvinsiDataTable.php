@@ -2,6 +2,8 @@
 
 namespace App\DataTables;
 
+use App\Models\MudikPeriod;
+use App\Models\MudikTujuan;
 use App\Models\MudikTujuanProvinsi;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -14,7 +16,7 @@ class MudikProvinsiDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('tujuan', function ($row) {
-                return isset($row->tujuan->name)?$row->tujuan->name:'-';
+                return isset($row->tujuan->name) ? $row->tujuan->name : '-';
             })
             ->addColumn('action', function ($action) {
                 $button = [
@@ -46,10 +48,11 @@ class MudikProvinsiDataTable extends DataTable
      */
     public function query(MudikTujuanProvinsi $model)
     {
-        $query = $model->newQuery();
+        $query = $model->where('id_period', session('id_period'))->newQuery();
         if ($this->request()->get("tujuan_id")) {
             $query->where('tujuan_id', $this->request()->get("tujuan_id"));
         }
+
         return $query;
     }
 

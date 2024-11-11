@@ -6,16 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class MudikTujuan extends Model
+class Correspondent extends Model
 {
     use HasFactory;
 
-    protected $table = "mudik_tujuan";
+    protected $table = "correspondent";
 
-    public function provinsis()
-    {
-        return $this->hasMany(MudikTujuanProvinsi::class, 'tujuan_id', 'id');
-    }
+    protected $fillable = [
+        'uuid',
+        'phone_number',
+        'id_period',
+        'id_user',
+        'created_at',
+        'created_by'
+    ];
+
     public function period(): HasOne
     {
         return $this->hasOne(MudikPeriod::class, 'id', 'id_period');

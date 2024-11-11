@@ -25,15 +25,15 @@ class MudikKotaController extends Controller
 
     public function index(Request $request)
     {
-        $tujuan = MudikTujuan::pluck('name', 'id');
+        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
         $dataTables = new MudikKotaDataTable();
         return $dataTables->render('admin.mudik.kotaIndex', compact('tujuan', 'request'));
     }
 
     public function create()
     {
-        $tujuan = MudikTujuan::pluck('name', 'id');
-        $bus = Bus::where('status', 'active')->pluck('name', 'id');
+        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
+        $bus = Bus::where('id_period', session('id_period'))->where('status', 'active')->pluck('name', 'id');
         return view('admin.mudik.kotaCreate', compact('tujuan', 'bus'));
     }
 
@@ -63,6 +63,7 @@ class MudikKotaController extends Controller
         $provinsi->tgl_keberangkatan = Carbon::parse($request->tgl_keberangkatan)->format('Y-m-d\TH:i');
         $provinsi->titik_awal = $request->titik_awal;
         $provinsi->titik_akhir = $request->titik_akhir;
+        $provinsi->id_period = session('id_period');
         $provinsi->save();
         $listBus = $request->bus_id;
         if ($listBus) {
@@ -71,7 +72,8 @@ class MudikKotaController extends Controller
                 $dataBus[] = [
                     'kota_tujuan' => $provinsi->id,
                     'bus_id' => $value,
-                    'created_at' => date('Y-m-d H:i:s')
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'id_period' => session('id_period')
                 ];
             }
             if ($dataBus)
@@ -85,8 +87,8 @@ class MudikKotaController extends Controller
     public function edit($id)
     {
         $category = MudikTujuanKota::findOrFail($id);
-        $tujuan = MudikTujuan::pluck('name', 'id');
-        $bus = Bus::where('status', 'active')->pluck('name', 'id');
+        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
+        $bus = Bus::where('id_period', session('id_period'))->where('status', 'active')->pluck('name', 'id');
         $valueBus = MudikTujuanKotaHasBus::select('bus_id')->where('kota_tujuan', $id)->pluck('bus_id');
         return view('admin.mudik.kotaEdit', compact('category', 'tujuan', 'bus', 'valueBus'));
     }
@@ -112,6 +114,7 @@ class MudikKotaController extends Controller
         $provinsi->tgl_keberangkatan = Carbon::parse($request->tgl_keberangkatan)->format('Y-m-d\TH:i');
         $provinsi->titik_awal = $request->titik_awal;
         $provinsi->titik_akhir = $request->titik_akhir;
+        $provinsi->id_period = session('id_period');
         $provinsi->save();
         $listBus = $request->bus_id;
         if ($listBus) {
@@ -121,7 +124,8 @@ class MudikKotaController extends Controller
                 $dataBus[] = [
                     'kota_tujuan' => $id,
                     'bus_id' => $value,
-                    'created_at' => date('Y-m-d H:i:s')
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'id_period' => session('id_period')
                 ];
             }
             if ($dataBus)

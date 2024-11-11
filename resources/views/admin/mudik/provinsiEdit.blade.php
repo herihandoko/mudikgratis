@@ -7,7 +7,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Edit Provinsi Tujuan</h1>
+                <h1>Edit Provinsi Tujuan ( {{ session('name_period') }} )</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{ route('admin.mudik-provinsi.index') }}" role="button"><i class="fas fa-arrow-alt-circle-left    "></i>{{ trans('admin.Back') }}</a>
             <div class="section-body">

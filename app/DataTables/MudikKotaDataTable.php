@@ -58,7 +58,7 @@ class MudikKotaDataTable extends DataTable
      */
     public function query(MudikTujuanKota $model)
     {
-        $query = $model->newQuery();
+        $query = $model->where('id_period', session('id_period'))->newQuery();
         if ($this->request()->get("tujuan_id")) {
             $query->where('tujuan_id', $this->request()->get("tujuan_id"));
         }

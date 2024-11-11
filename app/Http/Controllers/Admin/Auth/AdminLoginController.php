@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\MudikPeriod;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -49,6 +50,9 @@ class AdminLoginController extends Controller
 
             $notification = trans('admin.Successfully logged in..');
             $notification = ['message' => $notification, 'alert-type' => 'success'];
+            $periode = MudikPeriod::orderBy('id', 'desc')->first();
+            $request->session()->put('id_period', $periode->id);
+            $request->session()->put('name_period', $periode->name);
             return redirect()->intended(RouteServiceProvider::ADMIN)->with($notification);
         }
 

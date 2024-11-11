@@ -53,7 +53,7 @@ class MudikBusDataTable extends DataTable
      */
     public function query(Bus $model)
     {
-        $query = $model->newQuery();
+        $query = $model->where('id_period', session('id_period'))->newQuery();
         if ($this->request->status) {
             $query->whereHas('peserta', function ($q) {
                 $q->where('nomor_kursi', '!=', '');
@@ -95,6 +95,7 @@ class MudikBusDataTable extends DataTable
             Column::make('seat')->width(100),
             Column::make('total_terisi')->width(100),
             Column::make('pendamping')->width(100),
+            Column::make('telp_pendamping')->width(100),
             Column::make('status')->width(100),
             Column::computed('action')
                 ->exportable(false)

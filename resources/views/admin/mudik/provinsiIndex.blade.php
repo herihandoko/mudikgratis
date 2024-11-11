@@ -7,15 +7,16 @@ $page_title = "Admin | Provinsi Tujuan";
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Provinsi Tujuan</h1>
+                <h1>Provinsi Tujuan ( {{ session('name_period') }} )</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
             <div class="card text-dark">
                 <div class="card-body">
                     <form action="{{ route('admin.mudik-provinsi.index') }}" method="GET">
+                        {{ Form::hidden('id_period', session('id_period', null), ['id'=>'hidden-id-period']) }}
                         <div class="form-group">
                             <label for="">Tujuan</label>
-                            {{ Form::select('tujuan_id', $tujuan, $request->tujuan_id , ['class' => 'form-control']) }}
+                            {{ Form::select('tujuan_id', [], $request->tujuan_id , ['class' => 'form-control', 'id' => 'sel-tujuan']) }}
                         </div>
                         <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter </button>
                     </form>
@@ -68,7 +69,33 @@ $page_title = "Admin | Provinsi Tujuan";
                         }
                     });
                 }
-            })
+            });
         });
+
+        onChangeSelect('{{ route('admin.mudik-provinsi.combo') }}', $('#hidden-id-period').val());
+        function onChangeSelect(url, id) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {
+                    id: id
+                },
+                success: function(data) {
+                    $('#sel-tujuan').empty();
+                    $('#sel-tujuan').append('<option disabled selected>Silahkan Pilih Tujuan</option>');
+                    var sel_content = '';
+                    $.each(data, function(key, value) {
+                        _selected = '';
+                        if('{{ $request->tujuan_id }}' != ''){
+                            if(parseInt('{{ $request->tujuan_id }}') === value.id){
+                                _selected = 'selected';
+                            }
+                        }
+                        sel_content = '<option value="' + value.id + '" '+_selected+'>' + value.name + '</option>';
+                        $('#sel-tujuan').append(sel_content);
+                    });
+                }
+            });
+        }
     </script>
 @endpush

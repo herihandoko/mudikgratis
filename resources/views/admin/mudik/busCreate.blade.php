@@ -7,7 +7,7 @@ $page_title = "Admin | Tambah Bus";
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Tambah Bus</h1>
+                <h1>Tambah Bus ( {{ session('name_period') }} )</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.mudik-bus.index')}}" role="button"><i class="fas fa-arrow-alt-circle-left    "></i>{{trans('admin.Back')}}</a>
             <div class="section-body">
@@ -34,6 +34,10 @@ $page_title = "Admin | Tambah Bus";
                             <div class="form-group">
                                 <label for="">Nama Pendamping <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="pendamping" value="{{ old('pendamping') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Telp Pendamping</label>
+                                <input type="text" class="form-control" name="telp_pendamping" value="{{ old('telp_pendamping') }}">
                             </div>
                             <div class="form-group">
                                 <label for="">Deskripsi</label>

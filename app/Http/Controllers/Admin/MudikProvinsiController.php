@@ -4,14 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\DataTables\MudikProvinsiDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\MudikPeriod;
 use App\Models\MudikTujuan;
 use App\Models\MudikTujuanKota;
 use App\Models\MudikTujuanProvinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use DB;
+use Illuminate\Http\JsonResponse;
 
 class MudikProvinsiController extends Controller
 {
+
     function __construct()
     {
         $this->middleware('permission:mudik-provinsi-index|mudik-provinsi-create|mudik-provinsi-edit|mudik-provinsi-delete', ['only' => ['index', 'show']]);
@@ -24,12 +28,13 @@ class MudikProvinsiController extends Controller
     {
         $tujuan = MudikTujuan::pluck('name', 'id');
         $dataTables = new MudikProvinsiDataTable();
-        return $dataTables->render('admin.mudik.provinsiIndex', compact('tujuan', 'request'));
+        $periode = MudikPeriod::select('id', DB::raw("CONCAT(name, ' ( ', status, ' )') AS name"))->orderBy('id', 'desc')->pluck('name', 'id');
+        return $dataTables->render('admin.mudik.provinsiIndex', compact('tujuan', 'request', 'periode'));
     }
 
     public function create()
     {
-        $tujuan = MudikTujuan::pluck('name', 'id');
+        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
         return view('admin.mudik.provinsiCreate', compact('tujuan'));
     }
 
@@ -42,6 +47,7 @@ class MudikProvinsiController extends Controller
         $provinsi = new MudikTujuanProvinsi();
         $provinsi->name = $request->name;
         $provinsi->tujuan_id = $request->tujuan_id;
+        $provinsi->id_period = session('id_period');
         $provinsi->status = isset($request->status) ? 'active' : 'inactive';
         $provinsi->save();
         $notification = trans('admin.Create Successfully');
@@ -52,7 +58,7 @@ class MudikProvinsiController extends Controller
     public function edit($id)
     {
         $category = MudikTujuanProvinsi::findOrFail($id);
-        $tujuan = MudikTujuan::pluck('name', 'id');
+        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
         return view('admin.mudik.provinsiEdit', compact('category', 'tujuan'));
     }
 
@@ -64,6 +70,7 @@ class MudikProvinsiController extends Controller
         $this->validate($request, $rules);
         $provinsi = MudikTujuanProvinsi::findOrFail($id);
         $provinsi->name = $request->name;
+        $provinsi->id_period = session('id_period');
         $provinsi->tujuan_id = $request->tujuan_id;
         $provinsi->status = isset($request->status) ? 'active' : 'inactive';
         if ($provinsi->save()) {
@@ -82,5 +89,10 @@ class MudikProvinsiController extends Controller
         return response([
             'status' => 'success',
         ]);
+    }
+
+    public function combo(Request $request)
+    {
+        return MudikTujuan::where('id_period', $request->id)->get();
     }
 }

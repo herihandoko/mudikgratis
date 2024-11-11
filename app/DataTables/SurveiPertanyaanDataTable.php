@@ -5,6 +5,7 @@ namespace App\DataTables;
 use App\Models\BlogCategory;
 use App\Models\MudikPeriod;
 use App\Models\MudikTujuan;
+use App\Models\SurveyQuestion;
 use App\Models\User;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -12,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class MudikTujuanDataTable extends DataTable
+class SurveiPertanyaanDataTable extends DataTable
 {
     public function dataTable($query)
     {
@@ -21,12 +22,12 @@ class MudikTujuanDataTable extends DataTable
             ->addColumn('action', function ($action) {
                 $button = [
                     'edit' => [
-                        'link' => route('admin.mudik-tujuan.edit',  $action->id),
-                        'permission' => 'mudik-tujuan-edit',
+                        'link' => route('admin.survei-pertanyaan.edit',  $action->id),
+                        'permission' => 'survei-pertanyaan-edit',
                     ],
                     'delete' => [
-                        'link' => route('admin.mudik-tujuan.destroy', $action->id),
-                        'permission' => 'mudik-tujuan-delete',
+                        'link' => route('admin.survei-pertanyaan.destroy', $action->id),
+                        'permission' => 'survei-pertanyaan-delete',
                     ]
                 ];
                 $button = json_decode(json_encode($button), FALSE);
@@ -36,9 +37,9 @@ class MudikTujuanDataTable extends DataTable
                 return $row->period->name ?? '-';
             })
             ->addColumn('status', function ($status) {
-                if ($status->status !== 'active') {
-                    return '<div class="btn btn-danger btn-sm"> ' . $status->status . ' </div>';
-                } else return '<div class="btn btn-secondary btn-sm"> ' . $status->status . ' </div>';
+                if ($status->status !== 1) {
+                    return '<div class="btn btn-danger btn-sm"> Inactive </div>';
+                } else return '<div class="btn btn-success btn-sm"> Active </div>';
             })
             ->rawColumns(['action', 'status', 'id_period']);
     }
@@ -49,9 +50,9 @@ class MudikTujuanDataTable extends DataTable
      * @param \App\Models\BlogCategory $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(MudikTujuan $model)
+    public function query(SurveyQuestion $model)
     {
-        $query =  $model->where('id_period', session('id_period'))->newQuery();
+        $query =  $model->where('id_period', session('id_period'))->orderBy('sorting', 'asc')->newQuery();
         return $query;
     }
 
@@ -63,7 +64,7 @@ class MudikTujuanDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('mudik-tujuan-table')
+            ->setTableId('survei-pertanyaan-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
@@ -71,8 +72,8 @@ class MudikTujuanDataTable extends DataTable
             ->buttons(
                 // Button::make('create'),
                 Button::make('create')
-                    ->text('<i class="fa fa-plus"></i> Tambah Tujuan')
-                    ->action('function() { window.location.href = "' . route('admin.mudik-tujuan.create') . '" }'),
+                    ->text('<i class="fa fa-plus"></i> Tambah Pertanyaan')
+                    ->action('function() { window.location.href = "' . route('admin.survei-pertanyaan.create') . '" }'),
                 Button::make('reset')
             );
     }
@@ -86,8 +87,11 @@ class MudikTujuanDataTable extends DataTable
     {
         return [
             Column::make('id')->width(10),
-            Column::make('name')->title('Tujuan')->width(100),
+            Column::make('pertanyaan')->title('Pertanyaan'),
+            Column::make('kategori')->width(10),
+            Column::make('type_jawaban')->width(10),
             Column::make('status')->width(10),
+            Column::make('sorting')->width(10),
             Column::make('id_period')->title('Period')->width(100),
             Column::computed('action')
                 ->exportable(false)
@@ -104,6 +108,6 @@ class MudikTujuanDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'MudikTujuan_' . date('YmdHis');
+        return 'SurveiPertanyaan_' . date('YmdHis');
     }
 }

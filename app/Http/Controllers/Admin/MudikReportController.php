@@ -34,8 +34,8 @@ class MudikReportController extends Controller
 
     public function index(Request $request)
     {
-        $periode = MudikPeriod::pluck('name', 'id');
-        $tujuan = MudikTujuan::pluck('name', 'id');
+        $periode = MudikPeriod::where('id', session('id_period'))->pluck('name', 'id');
+        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
         $dataTables = new MudikPesertaDataTable();
         if ($request->type == 'export') {
             $bus = Bus::find($request->nomor_bus);

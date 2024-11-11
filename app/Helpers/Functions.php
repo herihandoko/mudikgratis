@@ -6,6 +6,7 @@ use App\Models\EmailSetting;
 use App\Models\GoogleAnalytic;
 use App\Models\GoogleRecaptcha;
 use App\Models\Media;
+use App\Models\MudikPeriod;
 use App\Models\PageFooter;
 use App\Models\PageHeader;
 use App\Models\PaymentGateway;
@@ -15,6 +16,7 @@ use App\Models\ShopSetting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Request;
 
 function Countries()
 {
@@ -178,6 +180,13 @@ function MailConfig($property)
 function ActiveSidebar($route)
 {
     if (route($route) == url()->current()) {
+        return 'active';
+    }
+}
+
+function ActiveSidebarNew($route)
+{
+    if (Request::routeIs($route)) {
         return 'active';
     }
 }
@@ -427,7 +436,12 @@ function removeTag($content)
     return $content;
 }
 
-function showHtml($content){
+function showHtml($content)
+{
     return clean(html_entity_decode($content));
+}
 
+function listPeriodMudik()
+{
+    return MudikPeriod::select('id', 'name')->get();
 }
