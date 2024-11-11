@@ -43,7 +43,7 @@
                     <div class="col-md-10 mt-5">
                         <div class="row">
                             <div class="col-md-9 col-sm-12">
-                                <h4><i class="fa fa-users"></i> Peserta Mudik Lainnya (Maksimal {{ auth()->user()->jumlah }} Orang)</h4>
+                                <h4><i class="fa fa-users"></i> Peserta Mudik Lainnya ( {{ auth()->user()->jumlah }} Orang)</h4>
                             </div>
                             <div class="col-md-3 col-sm-12 text-right">
                                 @if ($user->status_mudik !== 'dikirim')
@@ -75,7 +75,7 @@
                                     Silahkan perbarui data peserta mudik Anda. <a href="{{ route('user.peserta') }}"><b>Klik!</b></a>
                                 </div>
                             @endif
-                            @if ($user->status_profile == 1 && $user->status_mudik == 'waiting')
+                            @if ($user->status_profile == 1 && $user->status_mudik == 'waiting' && $stskirim)
                                 <div class="alert alert-warning mt-2" role="alert">
                                     Pastikan Anda klik button <b>Kirim</b> setelah melengkapi data peserta, Data yang sudah
                                     di Submit/Kirim tidak bisa di <b>edit</b> dan akan diperiksa terlebih dahulu oleh Admin
@@ -89,6 +89,11 @@
                                     <b>{{ trans('frontend.Save') }}</b> untuk mendapatkan tiket mudik.
                                     <b><span id="demo"></span></b><a href="{{ route('user.profile') }}">
                                         {{ trans('frontend.Profile') }}</a>
+                                </div>
+                            @endif
+                            @if(!$stskirim)
+                                <div class="alert alert-danger" role="alert"> 
+                                    <b>Silahkan lengkapi daftar peserta mudik Anda, sebelum dikirim! ( {{ auth()->user()->jumlah }} Orang)</b>, dengan klik button Tambah Peserta
                                 </div>
                             @endif
                             {{-- <table class="table table-bordered w-100 mt-4 mb-4"> --}}
@@ -165,9 +170,15 @@
                             <div class="row">
                                 <div class="col-md-10 col-sm-12">
                                 </div>
-                                <div class="col-md-2 col-sm-12 text-right">
-                                    <a href="{{ route('user.peserta.submit') }}" class="btn btn-danger btn-xs w-100"><i class="fa fa-paper-plan"></i> Kirim</a>
-                                </div>
+                                @if($stskirim)
+                                    <div class="col-md-2 col-sm-12 text-right">
+                                        <a href="{{ route('user.peserta.submit') }}" class="btn btn-danger btn-xs w-100"><i class="fa fa-paper-plan"></i> Kirim</a>
+                                    </div>
+                                @else
+                                    <div class="col-md-2 col-sm-12 text-right">
+                                        <button class="btn btn-danger btn-xs w-100" disabled><i class="fa fa-paper-plan"></i> Kirim</button>
+                                    </div>
+                                @endif
                             </div>
                         @endif
                     </div>

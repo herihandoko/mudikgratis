@@ -2,20 +2,21 @@
 
 namespace App\Rules;
 
+use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 
-class KartuKeluargaRule implements Rule
+class UserNikRule implements Rule
 {
-    public $tujuanId;
+    public $idPeriode;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct($tujuanId)
+    public function __construct($idPeriode)
     {
         //
-        $this->tujuanId = $tujuanId;
+        $this->idPeriode = $idPeriode;
     }
 
     /**
@@ -27,8 +28,8 @@ class KartuKeluargaRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
-        if (($this->tujuanId == 'keluar-banten') && (substr(trim($value), 0, 2) != 36)) {
+        $userExist = User::where('nik', $value)->where('periode_id', $this->idPeriode)->exists();
+        if ($userExist) {
             return false;
         } else {
             return true;
@@ -42,6 +43,6 @@ class KartuKeluargaRule implements Rule
      */
     public function message()
     {
-        return 'Maaf untuk sementara, Mudik Bersama ini berlaku hanya untuk pendaftar yang berasal dari Provinsi Banten (Kartu Keluarga di Wilayah Propinsi Banten)';
+        return 'Maaf nomor NIK sudah terdaftar';
     }
 }

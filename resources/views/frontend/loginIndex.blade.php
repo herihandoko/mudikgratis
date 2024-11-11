@@ -44,7 +44,7 @@ $page_title =  'Login';
                                     </div>
                                 @enderror
 
-                                @error('email')
+                                @error('phone')
                                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>{{trans('frontend.Error!')}}</strong> {{$message}}.
                                     </div>
@@ -56,17 +56,13 @@ $page_title =  'Login';
                                 @enderror
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
-                                        <label for="form_username_email">{{trans('frontend.Email')}}</label>
-                                        <input id="form_username_email" name="email" class="form-control" type="email"
-                                        @if (env('DEMO_MODE'))
-                                            value="user@gmail.com"
-                                        @endif
-                                        >
+                                        <label for="form_username_email">Nomor Telepon <span class="text-danger">*</span></label>
+                                        <input id="form_username_email" name="phone" class="form-control" type="text"  placeholder="0813XXXXXXX">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
-                                        <label for="form_password">{{trans('frontend.Password')}}</label>
+                                        <label for="form_password">{{trans('frontend.Password')}} <span class="text-danger">*</span></label>
                                         <input id="form_password" name="password" class="form-control" type="password" @if (env('DEMO_MODE')) value="1234" @endif >
                                     </div>
                                 </div>

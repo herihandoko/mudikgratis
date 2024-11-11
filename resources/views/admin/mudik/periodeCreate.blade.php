@@ -20,6 +20,14 @@ $page_title = "Admin | Tambah Periode";
                                 <input type="text" class="form-control" name="name" required value="{{ old('name') }}">
                             </div>
                             <div class="form-group">
+                                <div class="control-label">Status Pendaftaran</div>
+                                <label class="custom-switch pl-0 mt-2">
+                                    <input type="checkbox" name="status_pendaftaran" class="custom-switch-input">
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">Close / Open</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
                                 <label for="">Mulai Pendaftaran</label>
                                 <input type="datetime-local" class="form-control" name="start_date" value="{{ old('start_date') }}">
                             </div>

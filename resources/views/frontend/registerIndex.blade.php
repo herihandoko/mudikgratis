@@ -25,9 +25,9 @@
                     <div class="row">
                         <div class="col-md-6 offset-md-3 mb-40">
                             @if($statusMudik)
-                            <h4 class="text-gray mt-0 pt-10"> {{ trans('frontend.Register') }} </h4>
+                            <h4 class="text-gray mt-0 pt-10"> Form Pendaftaran</h4>
                             <hr>
-                            <p>Daftar Akun Mudik Gratis 2024</p>
+                            <p>{{ $period->name }}</p>
                             <form name="login-form" class="clearfix" method="POST" action="{{ route('user.register') }}">
                                 @csrf
                                 @error('error')
@@ -249,7 +249,7 @@
     <script>
         var _kotaTujuan = '{!! old('kota_tujuan') !!}';
         var _tujuan = $('.sel-tujuan').val();
-        if((_tujuan.length > 0) && (_tujuan == 2)){
+        if((_tujuan.length > 0) && (_tujuan == 'kedalam-banten')){
             $('.row-tempat-lahir').show();
             $('.row-tgl-lahir').show();
             $('label#label-kota-tujuan').html('Kota Asal <span style="margin-left:5px; color:red;">*</span>');
@@ -261,7 +261,7 @@
         onChangeSelect('{{ route('user.register.cities') }}', $('.sel-tujuan').val());
         $('.sel-tujuan').on('change', function() {
             onChangeSelect('{{ route('user.register.cities') }}', $(this).val());
-            if(parseInt($(this).val()) === 1){
+            if($(this).val() == 'keluar-banten'){
                 $('.row-tempat-lahir').hide();
                 $('.row-tgl-lahir').hide();
                 $('label#label-kota-tujuan').html('Kota Tujuan <span style="margin-left:5px; color:red;">*</span>');

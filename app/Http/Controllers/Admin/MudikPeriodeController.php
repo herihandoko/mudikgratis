@@ -47,6 +47,7 @@ class MudikPeriodeController extends Controller
         $periode->end_date = Carbon::parse($request->end_date)->format('Y-m-d\TH:i');
         $periode->description = $request->description;
         $periode->status = $request->status ? 'active' : 'inactive';
+        $periode->status_pendaftaran = $request->status_pendaftaran ? 'open' : 'close';
         $periode->save();
         $notification = "Tambah periode mudik berhasil";
         $notification = ['message' => $notification, 'alert-type' => 'success'];
@@ -76,6 +77,7 @@ class MudikPeriodeController extends Controller
         $periode->end_date = Carbon::parse($request->end_date)->format('Y-m-d\TH:i');
         $periode->description = $request->description;
         $periode->status = $request->status ? 'active' : 'inactive';
+        $periode->status_pendaftaran = $request->status_pendaftaran ? 'open' : 'close';
         $periode->save();
         $notification = trans('admin.Updated Successfully');
         $notification = ['message' => $notification, 'alert-type' => 'success'];

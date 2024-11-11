@@ -40,7 +40,11 @@ class UserPanelController extends Controller
     {
         $pesertas = Auth::user()->peserta()->latest()->paginate(4);
         $user = Auth::user();
-        return view('frontend.pesertaIndex', compact('pesertas', 'user'));
+        $stskirim = false;
+        if ($pesertas->count() == auth()->user()->jumlah) {
+            $stskirim = true;
+        }
+        return view('frontend.pesertaIndex', compact('pesertas', 'user', 'stskirim'));
     }
 
     public function peserta_eticket($id)
@@ -559,7 +563,7 @@ class UserPanelController extends Controller
     {
         $user = User::find(auth()->user()->id);
         $user->status_mudik = 'dikirim';
-        if($user->save()){
+        if ($user->save()) {
             Peserta::where('user_id', $user->id)->update([
                 'status' => 'dikirim'
             ]);

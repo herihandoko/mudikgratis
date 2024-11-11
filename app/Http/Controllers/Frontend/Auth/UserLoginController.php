@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\MudikPeriod;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -40,13 +41,11 @@ class UserLoginController extends Controller
 
     public function userCheckLogin(Request $request)
     {
-
-
-
+        $period = MudikPeriod::where('status', 'active')->first();
         $this->validate($request, [
-            'email' => ['required', function ($attribute, $value, $fail) {
-                $email = User::where('email', $value)->first();
-                if ($email == null) {
+            'phone' => ['required', function ($attribute, $value, $fail) use ($period) {
+                $phone = User::where('phone', $value)->where('periode_id', $period->id)->first();
+                if ($phone == null) {
                     $fail($attribute . ' does not exist.');
                 }
             },],
@@ -56,14 +55,14 @@ class UserLoginController extends Controller
 
 
 
-        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+        if (Auth::guard('web')->attempt(['phone' => $request->phone, 'password' => $request->password, 'periode_id' => $period->id], $request->get('remember'))) {
             $user = User::find(auth()->user()->id);
             $user->last_login = date('Y-m-d H:i:s');
             $user->save();
             return redirect()->intended(RouteServiceProvider::USERPANEL);
         }
 
-        return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors([
+        return redirect()->back()->withInput($request->only('phone', 'remember'))->withErrors([
             'error' => 'Wrong password.',
         ]);
     }

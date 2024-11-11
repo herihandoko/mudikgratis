@@ -9,8 +9,12 @@ use App\Models\MudikTujuan;
 use App\Models\MudikTujuanProvinsi;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Rules\EmailRegisterRule;
 use App\Rules\KartuKeluargaRule;
 use App\Rules\KuotaRule;
+use App\Rules\UserKkRule;
+use App\Rules\UserNikRule;
+use App\Rules\UserPhoneRule;
 use App\Services\NotificationApiService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -20,6 +24,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Laravolt\Indonesia\Models\City;
 use Laravolt\Indonesia\Models\District;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UserRegisterController extends Controller
 {
@@ -61,13 +67,14 @@ class UserRegisterController extends Controller
         if (auth()->check()) {
             return redirect()->intended(RouteServiceProvider::USERPANEL);
         } else {
-            $tujuan = MudikTujuan::where('status', 'active')->pluck('name', 'id')->prepend('Pilih Tujuan Mudik Gratis', '');
+            $period = MudikPeriod::where('status', 'active')->orderBy('id', 'desc')->first();
+            $tujuan = MudikTujuan::where('status', 'active')->where('id_period', $period->id)->pluck('name', 'code')->prepend('Pilih Tujuan Mudik Gratis', '');
             $cityCode = City::select('code')->where('province_code', 36)->get();
             $tempatLahir = District::whereIn('city_code', $cityCode)->pluck('name', 'name')->prepend('Pilih Tempat Lahir', '');
-            $period = MudikPeriod::where('status', 'active')->orderBy('id', 'desc')->first();
             $statusMudik = false;
-            if ($period)
+            if ($period && $period->status_pendaftaran == 'open') {
                 $statusMudik = $this->cekStatusAktif($period->start_date, $period->end_date);
+            }
             return view('frontend.registerIndex', compact('tujuan', 'tempatLahir', 'statusMudik', 'period'));
         }
     }
@@ -79,18 +86,48 @@ class UserRegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $period = MudikPeriod::where('status', 'active')->where('status_pendaftaran', 'open')->first();
         $validation = [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['unique:users'],
-            // 'password' => ['required', 'string', 'min:4', 'confirmed'],
-            'no_kk' => ['required', 'string', 'min:16', 'max:16', 'unique:users', new KartuKeluargaRule($data['tujuan'])],
-            'nik' => ['required', 'string', 'min:16', 'max:16', 'unique:users'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                new EmailRegisterRule($period->id)
+            ],
+            'phone' => [
+                'required',
+                'regex:/^[0-9]{9,15}$/',
+                'min:8',
+                'max:15',
+                new UserPhoneRule($period->id)
+            ],
+            'no_kk' => [
+                'required',
+                'string',
+                'min:16',
+                'max:16',
+                new UserKkRule($period->id),
+                new KartuKeluargaRule($data['tujuan'])
+            ],
+            'nik' => [
+                'required',
+                'string',
+                'min:16',
+                'max:16',
+                new UserNikRule($period->id)
+            ],
             'tujuan' => ['required'],
             'kota_tujuan' => ['required'],
-            'jumlah' => ['required', 'max:4', new KuotaRule($data['kota_tujuan'])],
-            'tgl_lahir' => $data['tujuan'] == 2 ? 'required|date_format:Y-m-d|before:today' : [],
-            'tempat_lahir' =>  $data['tujuan'] == 2 ? 'required|max:255' : [],
+            'jumlah' => [
+                'required',
+                'min:1',
+                'max:4',
+                new KuotaRule($data['kota_tujuan'], $period->id)
+            ],
+            'tgl_lahir' => $data['tujuan'] == 'kedalam-banten' ? 'required|date_format:Y-m-d|before:today' : [],
+            'tempat_lahir' =>  $data['tujuan'] == 'kedalam-banten' ? 'required|max:255' : [],
             'g-recaptcha-response' =>  ReCaptcha('recaptcha_status') == 1 ? ['required', 'captcha'] : [],
         ];
 
@@ -114,6 +151,7 @@ class UserRegisterController extends Controller
         date_default_timezone_set('Asia/Jakarta');
         $password = $this->generatePassword();
         $period = MudikPeriod::where('status', 'active')->first();
+        $mudikTujuan = MudikTujuan::where('id_period', $period->id)->where('code', $data['tujuan'])->where('status', 'active')->first();
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -121,7 +159,7 @@ class UserRegisterController extends Controller
             'phone' => $data['phone'],
             'no_kk' => $data['no_kk'],
             'nik' => $data['nik'],
-            'tujuan' => $data['tujuan'],
+            'tujuan' => $mudikTujuan->id,
             'kota_tujuan' => $data['kota_tujuan'],
             'jumlah' => $data['jumlah'],
             'tgl_lahir' => isset($data['tgl_lahir']) ? $data['tgl_lahir'] : null,
@@ -129,7 +167,9 @@ class UserRegisterController extends Controller
             'password' => Hash::make($password),
             'email_verified_at' => now(),
             'pass_code' => $password,
-            'periode_id' => isset($period->id) ? $period->id : ''
+            'periode_id' => isset($period->id) ? $period->id : '',
+            'uuid' => (string) Str::uuid()
+
         ]);
 
         // $template = EmailTemplate::find(3);
@@ -145,7 +185,7 @@ class UserRegisterController extends Controller
         event(new Registered($user));
         $param = [
             'target' => $data['phone'],
-            'message' => "[Register Mudik Bersama] - Jawara Mudik \nPendaftaran Anda sebagai peserta mudik bersama Dishub Banten berhasil. \nSilahkan login ke (" . url('login') . ") dan lengkapi profil Anda sebelum *".date('d M Y H:i', strtotime('1 hour'))."* dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $data['email'] . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: " . route('user.reset') . " \n\nTerima kasih"
+            'message' => "[Register Mudik Bersama] - Jawara Mudik \nPendaftaran Anda sebagai peserta mudik bersama Dishub Banten berhasil. \nSilahkan login ke (" . url('login') . ") dan lengkapi profil Anda sebelum *" . date('d M Y H:i', strtotime('1 hour')) . "* dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $data['email'] . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: " . route('user.reset') . " \n\nTerima kasih"
         ];
         $response = $this->notificationApiService->sendNotification($param);
         if ($response['status']) {
@@ -153,13 +193,15 @@ class UserRegisterController extends Controller
             $usr->status_wa = 1;
             $usr->save();
         }
-        alert()->success('Pendaftaran Mudik Bersama Berhasil, silahkan lengkapi profile Anda sebelum '.date('d M Y H:i', strtotime('1 hour')).' dan login dengan username dan password yang telah dikirim ke no whatsapp Anda!');
+        alert()->success('Pendaftaran Mudik Bersama Berhasil, silahkan lengkapi profile Anda sebelum ' . date('d M Y H:i', strtotime('1 hour')) . ' dan login dengan username dan password yang telah dikirim ke no whatsapp Anda!');
         return $user;
     }
 
     public function userRegisterCities(Request $request)
     {
-        return MudikTujuanProvinsi::with('kota')->where('tujuan_id', $request->id)->where('status', 'active')->get();
+        $period = MudikPeriod::where('status', 'active')->orderBy('id', 'desc')->first();
+        $mudikTujuan = MudikTujuan::where('code', $request->id)->where('status', 'active')->where('id_period', $period->id)->first();
+        return MudikTujuanProvinsi::with('kota')->where('tujuan_id', $mudikTujuan->id)->where('status', 'active')->get();
     }
 
     function cekStatusAktif($start_date, $end_date)

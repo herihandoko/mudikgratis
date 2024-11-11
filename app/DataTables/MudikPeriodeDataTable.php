@@ -27,12 +27,17 @@ class MudikPeriodeDataTable extends DataTable
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
+            ->addColumn('status_pendaftaran', function ($status) {
+                if ($status->status_pendaftaran !== 'open') {
+                    return '<div class="btn btn-danger btn-sm"> ' . $status->status_pendaftaran . ' </div>';
+                } else return '<div class="btn btn-success btn-sm"> ' . $status->status_pendaftaran . ' </div>';
+            })
             ->addColumn('status', function ($status) {
                 if ($status->status !== 'active') {
                     return '<div class="btn btn-danger btn-sm"> ' . $status->status . ' </div>';
                 } else return '<div class="btn btn-secondary btn-sm"> ' . $status->status . ' </div>';
             })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action', 'status', 'status_pendaftaran']);
     }
 
     /**
@@ -77,6 +82,7 @@ class MudikPeriodeDataTable extends DataTable
             Column::make('name')->title('Judul')->width(100),
             Column::make('start_date')->title('Tanggal Pembukaan')->width(100),
             Column::make('end_date')->title('Tanggal Penutupan')->width(100),
+            Column::make('status_pendaftaran')->width(100),
             Column::make('status')->width(100),
             Column::computed('action')
                 ->exportable(false)

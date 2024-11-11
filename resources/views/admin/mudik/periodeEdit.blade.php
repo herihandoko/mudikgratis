@@ -21,6 +21,14 @@ $page_title = "Admin | Edit Periode";
                                 <input type="text" class="form-control" name="name" required value="{{ $category->name }}">
                             </div>
                             <div class="form-group">
+                                <div class="control-label">Status Pendaftaran</div>
+                                <label class="custom-switch pl-0 mt-2">
+                                    <input type="checkbox" name="status_pendaftaran" class="custom-switch-input" @if($category->status_pendaftaran == 'open')checked @endif>
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">Close / Open</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
                                 <label for="">Mulai Pendaftaran</label>
                                 <input type="datetime-local" class="form-control" name="start_date" value="{{ $category->start_date }}">
                             </div>
