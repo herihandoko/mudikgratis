@@ -50,7 +50,8 @@ Thumbs.db
 
 # Vendor
 vendor/
-public/
+# public/
+public/assets/uploads
 
 #Env
 .env

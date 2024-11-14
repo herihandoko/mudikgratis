@@ -168,8 +168,8 @@
     </div>
 @endsection
 @push('script')
-    <link href="{{ asset('vendor/jquery-image-viewer-magnify/css/jquery.magnify.min.css') }}" rel="stylesheet" />
-    <script src="{{ asset('vendor/jquery-image-viewer-magnify/js/jquery.magnify.min.js') }}"></script>
+    <link href="{{ asset('assets/admin/jquery-image-viewer-magnify/css/jquery.magnify.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('assets/admin/jquery-image-viewer-magnify/js/jquery.magnify.min.js') }}"></script>
     <script>
         var _stsOld = $('#status_mudik').val();
         if (_stsOld == 'diterima') {
