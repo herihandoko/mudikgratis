@@ -8,6 +8,7 @@ use App\Console\Commands\CleanStatusCommand;
 use App\Console\Commands\KuotaSynchCommand;
 use App\Console\Commands\NotifKedalamCommand;
 use App\Console\Commands\NotifTwibbonizeCommand;
+use App\Console\Commands\SendMessageCommand;
 use App\Console\Commands\SendNotifCommand;
 use App\Console\Commands\WaitingNotifCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
         WaitingNotifCommand::class,
         CleanStatusCommand::class,
         CleanCancelledCommand::class,
+        SendMessageCommand::class
         // SendNotifCommand::class,
         // NotifTwibbonizeCommand::class,
         // NotifKedalamCommand::class
@@ -40,6 +42,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('waiting:notif')->hourly();
         $schedule->command('peserta:status')->everyFiveMinutes();
         $schedule->command('users:cancelled')->everyFiveMinutes();
+        $schedule->command('notif:message')->everyMinute();
         // $schedule->command('notif:verification')->everyMinute();
         // $schedule->command('notif:kedalam')->everyMinute();
     }
