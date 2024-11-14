@@ -62,15 +62,19 @@
                             <tbody>
                                 <tr>
                                     <td>Foto KK</td>
-                                    <td colspan="2"><a href="{{ url($user->foto_kk) }}" target="_blank"><img src="{{ url($user->foto_kk) }}" height="200" style="padding: 5px"><br>Lihat/Download</a></td>
+                                    <td colspan="2"><a href="{{ url($user->foto_kk) }}" data-magnify="gallery" data-caption="{{ $user->name }}" data-group="a"><img src="{{ url($user->foto_kk) }}" height="200" style="padding: 5px"><br>Lihat/Download</a></td>
                                 </tr>
                                 <tr>
                                     <td>Foto KTP</td>
-                                    <td colspan="2"><a href="{{ url($user->foto_ktp) }}" target="_blank"><img src="{{ url($user->foto_ktp) }}" height="200" style="padding: 5px"><br>Lihat/Download</a></td>
+                                    <td colspan="2"><a href="{{ url($user->foto_ktp) }}" data-magnify="gallery" data-caption="{{ $user->name }}" data-group="a"><img
+                                                src="{{ url($user->foto_ktp) }}" height="200"
+                                                style="padding: 5px"><br>Lihat/Download</a></td>
                                 </tr>
                                 <tr>
                                     <td>Foto Selfie</td>
-                                    <td colspan="2"><a href="{{ url($user->foto_selfie) }}" target="_blank"><img src="{{ url($user->foto_selfie) }}" height="200" style="padding: 5px"><br>Lihat/Download</a></td>
+                                    <td colspan="2"><a href="{{ url($user->foto_selfie) }}"  data-magnify="gallery" data-caption="{{ $user->name }}" data-group="a"><img
+                                                src="{{ url($user->foto_selfie) }}" height="200"
+                                                style="padding: 5px"><br>Lihat/Download</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -83,11 +87,14 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="">Status Permohonan Mudik Gratis<span class="text-danger">*</span></label>
+                                <label for="">Status Permohonan Mudik Gratis<span
+                                        class="text-danger">*</span></label>
                                 <select class="form-control" name="status_mudik" id="status_mudik">
                                     <option disabled selected>Pilih Status Permohonan Mudik</option>
-                                    <option value="ditolak" @if((old('status_mudik') == 'ditolak') or ($user->status_mudik == 'ditolak')) selected @endif>Di Tolak</option>
-                                    <option value="diterima" @if((old('status_mudik') == 'diterima') or ($user->status_mudik == 'diterima') or $user->nomor_bus) selected @endif>Di Terima</option>
+                                    <option value="ditolak" @if (old('status_mudik') == 'ditolak' or $user->status_mudik == 'ditolak') selected @endif>Di Tolak
+                                    </option>
+                                    <option value="diterima" @if (old('status_mudik') == 'diterima' or $user->status_mudik == 'diterima' or $user->nomor_bus) selected @endif>Di Terima
+                                    </option>
                                 </select>
                             </div>
                             <div id="container-ditolak" style="display: none;">
@@ -103,7 +110,9 @@
                                         <option disabled selected>Pilih Bus</option>
                                         @if (isset($kotatujuan->bus))
                                             @foreach ($kotatujuan->bus as $bus)
-                                                <option value="{{ $bus->id }}" @if((old('bus_mudik') == $bus->id) || ($user->nomor_bus == $bus->id)) selected @endif>{{ $bus->name }}</option>
+                                                <option value="{{ $bus->id }}"
+                                                    @if (old('bus_mudik') == $bus->id || $user->nomor_bus == $bus->id) selected @endif>{{ $bus->name }}
+                                                </option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -131,12 +140,17 @@
                                                 <td>{{ $peserta->jenis_kelamin == 'L' ? 'Laki-Laki' : 'Perempuan' }}</td>
                                                 <td>{{ $peserta->kategori }}</td>
                                                 <td>
-                                                    @if($peserta->nomor_kursi)
-                                                        <button type="button" class="btn btn-sm btn-link seat-peserta" onclick="pilihSeat({{ $peserta->id }})">{{ $peserta->nomor_kursi }}</button>
-                                                        <input type="hidden" name="kursi_peserta[{{ $peserta->id }}]" value="{{ $peserta->nomor_kursi }}">
+                                                    @if ($peserta->nomor_kursi)
+                                                        <button type="button" class="btn btn-sm btn-link seat-peserta"
+                                                            onclick="pilihSeat({{ $peserta->id }})">{{ $peserta->nomor_kursi }}</button>
+                                                        <input type="hidden" name="kursi_peserta[{{ $peserta->id }}]"
+                                                            value="{{ $peserta->nomor_kursi }}">
                                                     @else
-                                                        <button type="button" class="btn btn-sm btn-success seat-peserta" onclick="pilihSeat({{ $peserta->id }})">Pilih Kursi Kursi</button>
-                                                        <input type="hidden" name="kursi_peserta[{{ $peserta->id }}]" value="">
+                                                        <button type="button" class="btn btn-sm btn-success seat-peserta"
+                                                            onclick="pilihSeat({{ $peserta->id }})">Pilih Kursi
+                                                            Kursi</button>
+                                                        <input type="hidden" name="kursi_peserta[{{ $peserta->id }}]"
+                                                            value="">
                                                     @endif
                                                 </td>
                                             </tr>
@@ -144,7 +158,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block" role="button"> {{ trans('admin.Save') }} </button>
+                            <button type="submit" class="btn btn-primary btn-block" role="button">
+                                {{ trans('admin.Save') }} </button>
                         </form>
                     </div>
                 </div>
@@ -153,36 +168,38 @@
     </div>
 @endsection
 @push('script')
+    <link href="{{ asset('vendor/jquery-image-viewer-magnify/css/jquery.magnify.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('vendor/jquery-image-viewer-magnify/js/jquery.magnify.min.js') }}"></script>
     <script>
         var _stsOld = $('#status_mudik').val();
-        if(_stsOld == 'diterima'){
+        if (_stsOld == 'diterima') {
             $('#container-ditolak').hide();
             // $('#container-diterima').show();
-        }else if(_stsOld == 'ditolak'){
+        } else if (_stsOld == 'ditolak') {
             $('#container-ditolak').show();
             // $('#container-diterima').hide();
-        }else{
+        } else {
             $('#container-ditolak').hide();
             // $('#container-diterima').hide();
         }
         $('#status_mudik').on('change', function() {
             var _sts = $(this).val();
-            if(_sts == 'diterima'){
+            if (_sts == 'diterima') {
                 $('#container-ditolak').hide();
                 // $('#container-diterima').show();
-            }else{
+            } else {
                 $('#container-ditolak').show();
                 // $('#container-diterima').hide();
             }
-         });
+        });
 
         $('#bus-peserta').on('change', function() {
             $.ajax({
                 type: 'POST',
                 url: "<?= route('admin.mudik-verifikasi.bus.store') ?>",
                 data: {
-                    idbus:$(this).val(),
-                    iduser:'<?= $user->id ?>'
+                    idbus: $(this).val(),
+                    iduser: '<?= $user->id ?>'
                 },
                 success: function(data) {
                     if (data.status == 'success') {
@@ -192,14 +209,21 @@
             });
         });
 
-        function pilihSeat(id){
+        function pilihSeat(id) {
             var busId = $('#bus-peserta').val();
-            if(busId == null){
+            if (busId == null) {
                 toastr.error('Silahkan pilih bus terlebih dahulu.');
-            }else{
-                var url =  "<?= route('admin.mudik-verifikasi.seat') ?>?idbus="+busId+'&idpeserta='+id;
+            } else {
+                var url = "<?= route('admin.mudik-verifikasi.seat') ?>?idbus=" + busId + '&idpeserta=' + id;
                 window.location.href = url;
             }
         }
+
+        $('[data-magnify=gallery]').magnify({
+            initMaximized: true,
+            headToolbar: ['close'],
+            progressiveLoading:true,
+            footToolbar: ['zoomIn', 'zoomOut', 'fullscreen', 'rotateRight', 'rotateLeft'],
+        });
     </script>
 @endpush
