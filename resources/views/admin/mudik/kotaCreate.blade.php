@@ -54,6 +54,11 @@
                                 <label for="titik_akhir">Titik Akhir Tujuan <span class="text-danger">*</span></label>
                                 {{ Form::textarea('titik_akhir',  old('titik_akhir') , ['class' => 'form-control','rows'=>10]) }}
                             </div>
+                            <hr>
+                            <div class="form-group">
+                                <label for="id_rute">Rute <span class="text-danger">*</span></label>
+                                {{ Form::select('id_rute[]', $rutes, old('id_rute') , ['class' => 'form-control','multiple'=>true]) }}
+                            </div>
                             <button type="submit" class="btn btn-primary btn-block"> {{ trans('admin.Save') }} </button>
                         </form>
                     </div>

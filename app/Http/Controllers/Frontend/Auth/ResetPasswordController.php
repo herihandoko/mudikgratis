@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\MudikPeriod;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -47,6 +48,7 @@ class ResetPasswordController extends Controller
 
     public function resetPassword(Request $request)
     {
+        $period = MudikPeriod::where('status', 'active')->first();
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
             'old_password' => 'required',
@@ -56,7 +58,7 @@ class ResetPasswordController extends Controller
             return redirect()->back()->withErrors(['email' => 'Please complete the form']);
         }
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->where('periode_id', $period->id)->where('periode_id', $period->id)->first();
         if (!$user) return redirect()->back()->withInput()->withErrors(['email' => 'Email not found']);
 
         if (!$user || !Hash::check($request->old_password, $user->password)) {

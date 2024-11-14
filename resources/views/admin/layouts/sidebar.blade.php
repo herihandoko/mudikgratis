@@ -49,6 +49,11 @@
                                 <a class="nav-link" href="{{ route('admin.mudik-kota.index') }}">Master Kota Tujuan</a>
                             </li>
                         @endcan
+                        @can('mudik-rute-index')
+                            <li class="{{ ActiveSidebarNew('admin.mudik-rute.*') }}">
+                                <a class="nav-link" href="{{ route('admin.mudik-rute.index') }}">Master Rute</a>
+                            </li>
+                        @endcan
                         @can('mudik-peserta-index')
                             <li class="{{ ActiveSidebarNew('admin.mudik-peserta.*') }}">
                                 <a class="nav-link" href="{{ route('admin.mudik-peserta.index') }}">Peserta Gagal</a>
@@ -67,6 +72,16 @@
                         @can('mudik-pengguna-index')
                             <li class="{{ ActiveSidebarNew('admin.mudik-pengguna.*') }}">
                                 <a class="nav-link" href="{{ route('admin.mudik-pengguna.index') }}">Pengguna</a>
+                            </li>
+                        @endcan
+                        @can('brodcast-pengguna-index')
+                            <li class="{{ ActiveSidebarNew('admin.broadcast-pengguna.*') }}">
+                                <a class="nav-link" href="{{ route('admin.broadcast-pengguna.index') }}">Kirim Notifikasi</a>
+                            </li>
+                        @endcan
+                        @can('history-notifikasi-index')
+                            <li class="{{ ActiveSidebarNew('admin.history-notifikasi.*') }}">
+                                <a class="nav-link" href="{{ route('admin.history-notifikasi.index') }}">History Notifikasi</a>
                             </li>
                         @endcan
                     </ul>

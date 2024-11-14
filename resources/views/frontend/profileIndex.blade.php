@@ -161,7 +161,7 @@
                                         </div>
                                         <div class="form-group mb-2">
                                             <label for="">
-                                                @if ($user->mudiktujuan->id == 1)
+                                                @if ($user->mudiktujuan->code == 'keluar-banten')
                                                     Kota Tujuan Mudik
                                                 @else
                                                     Kota Asal Mudik
@@ -190,8 +190,11 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-2">
-                                            <label for="is_peserta">Pendaftar termasuk Peserta Mudik <span
-                                                    class="text-danger">*</span></label>
+                                            <label for="is_peserta">Kota Pemberhentian Penumpang <span class="text-danger">*</span></label>
+                                            {{ Form::select('id_rute', @$user->kotatujuan->rutes->pluck('name','id')->prepend('Select Kota Pemberhentian', '') , @$user->id_rute ?: old('id_rute'), ['class' => 'form-control']) }}
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label for="is_peserta">Pendaftar termasuk Peserta Mudik <span class="text-danger">*</span></label>
                                             @if ($user->status_profile == 0 || $user->status_profile == null)
                                                 {{ Form::select('is_peserta', ['Ya' => 'Ya', 'Tidak' => 'Tidak'], @$user->is_peserta ?: old('is_peserta'), ['class' => 'form-control', 'required' => true]) }}<br>
                                             @else

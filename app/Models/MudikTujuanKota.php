@@ -30,4 +30,9 @@ class MudikTujuanKota extends Model
     {
         return $this->hasMany(User::class, 'kota_tujuan', 'id');
     }
+
+    public function rutes()
+    {
+        return $this->belongsToMany(MudikRute::class, 'mudik_kota_has_rute', 'id_kota', 'id_rute');
+    }
 }

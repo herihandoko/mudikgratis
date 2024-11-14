@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\EmailTemplate;
+use App\Models\MudikPeriod;
 use App\Models\User;
 use App\Notifications\WhatsappNotification;
 use App\Services\NotificationApiService;
@@ -40,8 +41,8 @@ class ForgotPasswordController extends Controller
 
     public function resetLink(Request $request, NotificationApiService $notificationService)
     {
-
-        if (User::where(['nik' => $request->nik])->where(['phone' => $request->phone])->count()) {
+        $period = MudikPeriod::where('status', 'active')->first();
+        if (User::where(['nik' => $request->nik])->where(['phone' => $request->phone])->where('periode_id', $period->id)->count()) {
 
             $token = Str::random(64);
             $password = $this->generatePassword();
@@ -53,15 +54,15 @@ class ForgotPasswordController extends Controller
                 'created_at' => Carbon::now()
             ]);
 
-            $dataUser = User::where(['nik' => $request->nik])->where(['phone' => $request->phone])->first();
-            User::where(['nik' => $request->nik])->where(['phone' => $request->phone])->update([
+            $dataUser = User::where(['nik' => $request->nik])->where(['phone' => $request->phone])->where('periode_id', $period->id)->first();
+            User::where(['nik' => $request->nik])->where(['phone' => $request->phone])->where('periode_id', $period->id)->update([
                 'password' => Hash::make($password),
                 'pass_code' => $password
             ]);
 
             $param = [
                 'target' => $request->phone,
-                'message' => "[Reset Password] - Jawara Mudik \nReset Password Jawara Mudik DISHUB Propinsi Banten berhasil. \nSilahkan login ke (" . url('login') . ") dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $dataUser->email . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: ". route('user.reset') ." \n \n\nTerima kasih"
+                'message' => "[Reset Password] - Jawara Mudik \nReset Password Jawara Mudik DISHUB Propinsi Banten berhasil. \nSilahkan login ke (" . url('login') . ") dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $dataUser->email . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: " . route('user.reset') . " \n \n\nTerima kasih"
             ];
             $notificationService->sendNotification($param);
 

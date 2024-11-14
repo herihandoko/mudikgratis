@@ -11,16 +11,16 @@
                 <div class="container padding-small">
                     <div class="row">
                         <div class="col-md-8 title-content sm-text-center">
-                            <h2 class="text-white">Rute &amp; Mudik</h2>
+                            <h2 class="text-white">Rute Mudik</h2>
                         </div>
                         <div class="col-md-4 title-content text-center">
                             <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumbs">
                                 <div class="breadcrumbs">
-                                    <span><a href="https://mudik.test" rel="home">Home</a></span>
+                                    <span><a href="{{ route('home') }}" rel="home">Home</a></span>
                                     <span><i class="fa fa-angle-right"></i></span>
                                     <span>Pages</span>
                                     <span><i class="fa fa-angle-right"></i></span>
-                                    <span class="a ctive">Rute &amp; Mudik</span>
+                                    <span class="active">Rute Mudik</span>
                                 </div>
                             </nav>
                         </div>
@@ -34,78 +34,58 @@
                         <div class="site-wrapper-inner">
                             <div class="row">
                                 <div class="col-md-12 col-md-offset-1">
-                                    {{-- <h2 class="addMarginTop50 text-center text-blackGrey animated slideInDown">
-                                        <strong>RUTE MUDIK</strong>
-                                    </h2>
-                                    <p class="text-center">Mudik Dinanti, Mudik Di Hati<br>Bersama Dinas Perhubungan Provinsi Banten 2024</p> --}}
                                     <div class="inDiv login-box-body addMarginBottom20">
                                         <h4 class="noMargin"><strong><i class="fa fa-bus"></i> Rute Bus</strong></h4>
                                         <hr>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-condensed table-striped noMargin">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">#</th>
-                                                        <th class="text-center">Asal</th>
-                                                        <th class="text-center">Tujuan</th>
-                                                        <th class="text-center">Rute</th>
-                                                        <th class="text-center">Tanggal Berangkat</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-center"><b>1</b></td>
-                                                        <td class="text-center">Serang</td>
-                                                        <td class="text-center">Surabaya (Rute Utara)</td>
-                                                        <td class="text-center">Serang -&gt; Cirebon -&gt; Brebes -&gt;
-                                                            Tegal -&gt;
-                                                            Pemalang -&gt; Pekalongan -&gt; Semarang -&gt; Boyolali -&gt;
-                                                            Surakarta
-                                                            -&gt; Solo -&gt; Sragen -&gt; Ngawi -&gt; Madiun -&gt; Mojokerto
-                                                            -&gt;
-                                                            Surabaya</td>
-                                                        <td class="text-center">01 Apr 2024</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-center"><b>2</b></td>
-                                                        <td class="text-center">Serang</td>
-                                                        <td class="text-center">Malang (Rute Selatan)</td>
-                                                        <td class="text-center">Serang -&gt; Bandung(Cileunyi ) -&gt;
-                                                            Tasikmalaya -&gt;
-                                                            Ciamis -&gt; Majenang -&gt; Karang Pucung -&gt; Purwokerto -&gt;
-                                                            Sumpyuh
-                                                            -&gt; Karanganyar -&gt; Kebumen -&gt; Purworejo -&gt; Borobudur
-                                                            -&gt;
-                                                            Muntilan -&gt; Sleman -&gt; Yogyakarta ( terminal Giwangan )
-                                                            -&gt; Wonosari
-                                                            -&gt; Pracimantoro -&gt; Pacitan -&gt; Ponorogo -&gt; Trenggalek
-                                                            -&gt;
-                                                            Tulungagung -&gt; Blitar -&gt; Malang</td>
-                                                        <td class="text-center">01 Apr 2024</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="inDiv login-box-body addMarginBottom100 hide">
-                                        <h4 class="noMargin"><strong><i class="fa fa-ship"></i> Rute Kapal Laut</strong>
-                                        </h4>
-                                        <hr>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-condensed table-striped noMargin">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">#</th>
-                                                        <th class="text-center">Asal</th>
-                                                        <th class="text-center">Tujuan</th>
-                                                        <th class="text-center">Rute</th>
-                                                        <th class="text-center">Tanggal Berangkat</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        @foreach ($tujuans as $item => $tujuan)
+                                            <div class="row text-center mt-5">
+                                                <h4>{{ $tujuan->name }}</h4>
+                                            </div>
+                                            <?php $no = 1; ?>
+                                            @foreach ($tujuan->provinsis as $key => $provinsi)
+                                                <div class="row text-sm-right text-md-center mt-3">
+                                                    <h5>{{ $no++ }} . {{ $provinsi->name }} </h5>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table cellspacing="0" cellpadding="0" class="table table-condensed table-striped table-statistic">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">#</th>
+                                                                @if($tujuan->code == 'keluar-banten')
+                                                                    <th class="text-center">Kota Tujuan</th>
+                                                                @else
+                                                                    <th class="text-center">Kota Asal</th>
+                                                                @endif
+                                                                <th class="text-center">Rute</th>
+                                                                <th class="text-center">Tanggal Berangkat</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php $nox = 1; ?>
+                                                            @forelse ($provinsi->kota as $keyx => $val)
+                                                                <tr>
+                                                                    <td class="text-left">{{ $nox++ }}</td>
+                                                                    <td class="text-left">{{ $val->name }}</td>
+                                                                    <td class="text-center">
+                                                                        @forelse($val->rutes as $keyrute => $itemrute)
+                                                                            {{ $itemrute->name }} {!! !$loop->last ? '<i class="fa fa-arrow-right"></i>' : '' !!}
+                                                                        @empty
+                                                                            -
+                                                                        @endforelse
+                                                                    </td>
+                                                                    <td class="text-right">{{ $val->tgl_keberangkatan ? date('d M Y',strtotime($val->tgl_keberangkatan)) : '-' }}</td>
+                                                                </tr>
+                                                            @empty
+                                                                <tr>
+                                                                    <td  class="text-center" colspan="4">Tidak ada data tersedia</td>
+                                                                </tr>
+                                                            @endforelse
+                                                            </body>
+                                                    </table>
+                                                </div>
+                                            @endforeach
+                                        @endforeach
+                                        <i class="fa fa-arrow-circle-right"></i> Baca <a href="{{ url('syarat-dan-ketentuan') }}">Syarat & Ketentuan</a>
                                     </div>
                                 </div>
                             </div>

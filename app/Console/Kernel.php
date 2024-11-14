@@ -27,9 +27,9 @@ class Kernel extends ConsoleKernel
         WaitingNotifCommand::class,
         CleanStatusCommand::class,
         CleanCancelledCommand::class,
-        SendNotifCommand::class,
-        NotifTwibbonizeCommand::class,
-        NotifKedalamCommand::class
+        // SendNotifCommand::class,
+        // NotifTwibbonizeCommand::class,
+        // NotifKedalamCommand::class
     ];
 
     protected function schedule(Schedule $schedule)
@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('peserta:status')->everyFiveMinutes();
         $schedule->command('users:cancelled')->everyFiveMinutes();
         // $schedule->command('notif:verification')->everyMinute();
-        $schedule->command('notif:kedalam')->everyMinute();
+        // $schedule->command('notif:kedalam')->everyMinute();
     }
 
     /**

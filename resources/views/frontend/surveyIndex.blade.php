@@ -60,8 +60,7 @@
                                                 @enderror
                                                 <div class="col-md-6 col-6">
                                                     {{ Form::text('phone_number', old('phone_number'), ['class' => 'form-control ' . $invalid, 'placeholder' => '0813XXXXXXX']) }}
-                                                    <span
-                                                        style="color:red !important;">{{ $errors->first('phone_number') }}</span>
+                                                    <span style="color:red !important;">{{ $errors->first('phone_number') }}</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -7,7 +7,7 @@ $page_title = 'Verifikasi Mudik';
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Pengguna Mudik X</h1>
+                <h1>Pengguna Mudik</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
             <div id="accordion">

@@ -1,6 +1,7 @@
     @php
         $contact = @App\Models\ContactPage::first();
-        $tujuans = App\Models\MudikTujuan::with('provinsis')->where('status','active')->get();
+        $period = App\Models\MudikPeriod::where('status', 'active')->first();
+        $tujuans = App\Models\MudikTujuan::with('provinsis')->where('status', 'active')->where('id_period', $period->id)->get();
     @endphp
     <section class="our-testimonials">
         <div class="container pt-lg-25" style="padding-top: 20px !important; padding-bottom: 0px !important;">
@@ -73,6 +74,7 @@
                                     </div>
                                 @endforeach
                             @endforeach
+                            <i class="fa fa-arrow-circle-right"></i> Baca <a href="{{ url('syarat-dan-ketentuan') }}">Syarat & Ketentuan</a>
                         </div>
                     </div>
                 </div>

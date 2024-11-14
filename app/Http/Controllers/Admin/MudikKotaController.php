@@ -6,6 +6,8 @@ use App\DataTables\MudikKotaDataTable;
 use App\DataTables\MudikProvinsiDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Bus;
+use App\Models\MudikKotaHasRute;
+use App\Models\MudikRute;
 use App\Models\MudikTujuan;
 use App\Models\MudikTujuanKota;
 use App\Models\MudikTujuanKotaHasBus;
@@ -33,8 +35,9 @@ class MudikKotaController extends Controller
     public function create()
     {
         $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
+        $rutes = MudikRute::where('id_period', session('id_period'))->pluck('name', 'id');
         $bus = Bus::where('id_period', session('id_period'))->where('status', 'active')->pluck('name', 'id');
-        return view('admin.mudik.kotaCreate', compact('tujuan', 'bus'));
+        return view('admin.mudik.kotaCreate', compact('tujuan', 'bus', 'rutes'));
     }
 
     public function provinsi(Request $request)
@@ -79,6 +82,23 @@ class MudikKotaController extends Controller
             if ($dataBus)
                 MudikTujuanKotaHasBus::insert($dataBus);
         }
+
+        $listRute = $request->id_rute;
+        if ($listRute) {
+            $dataRute = [];
+            foreach ($listRute as $key => $value) {
+                $dataRute[] = [
+                    'id_kota' => $provinsi->id,
+                    'id_rute' => $value,
+                    'sorting' => $key + 1,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'id_period' => session('id_period')
+                ];
+            }
+            if ($dataRute)
+                MudikKotaHasRute::insert($dataRute);
+        }
+
         $notification = trans('admin.Create Successfully');
         $notification = ['message' => $notification, 'alert-type' => 'success'];
         return redirect()->route('admin.mudik-kota.index')->with($notification);
@@ -89,8 +109,10 @@ class MudikKotaController extends Controller
         $category = MudikTujuanKota::findOrFail($id);
         $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
         $bus = Bus::where('id_period', session('id_period'))->where('status', 'active')->pluck('name', 'id');
+        $rutes = MudikRute::where('id_period', session('id_period'))->pluck('name', 'id');
         $valueBus = MudikTujuanKotaHasBus::select('bus_id')->where('kota_tujuan', $id)->pluck('bus_id');
-        return view('admin.mudik.kotaEdit', compact('category', 'tujuan', 'bus', 'valueBus'));
+        $valueRute = MudikKotaHasRute::select('id_rute')->where('id_kota', $id)->orderBy('sorting', 'asc')->pluck('id_rute');
+        return view('admin.mudik.kotaEdit', compact('category', 'tujuan', 'bus', 'valueBus', 'rutes', 'valueRute'));
     }
 
     public function update(Request $request, $id)
@@ -131,6 +153,24 @@ class MudikKotaController extends Controller
             if ($dataBus)
                 MudikTujuanKotaHasBus::insert($dataBus);
         }
+
+        $listRute = $request->id_rute;
+        if ($listRute) {
+            MudikKotaHasRute::where('id_kota', $id)->delete();
+            $dataRute = [];
+            foreach ($listRute as $key => $value) {
+                $dataRute[] = [
+                    'id_kota' => $provinsi->id,
+                    'id_rute' => $value,
+                    'sorting' => $key + 1,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'id_period' => session('id_period')
+                ];
+            }
+            if ($dataRute)
+                MudikKotaHasRute::insert($dataRute);
+        }
+
         $notification = trans('admin.Updated Successfully');
         $notification = ['message' => $notification, 'alert-type' => 'success'];
         return redirect()->route('admin.mudik-kota.index')->with($notification);

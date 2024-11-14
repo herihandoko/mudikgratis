@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\DataTables\OrderDataTable;
 use App\DataTables\TransactionDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\MudikTujuanKota;
 use App\Models\OrderItem;
 use App\Models\Peserta;
 use App\Models\User;
@@ -70,6 +71,7 @@ class UserPanelController extends Controller
     public  function profile()
     {
         $user = Auth::user();
+        //$user->kotatujuan->rutes->pluck('id','name')
         return view('frontend.profileIndex', compact('user'));
     }
     public function update_profile(Request $request)
@@ -90,8 +92,10 @@ class UserPanelController extends Controller
             'provinsi' => 'required|integer',
             'kecamatan' => 'required|integer',
             'kelurahan' => 'required|integer',
-            'is_peserta' => 'required'
+            'is_peserta' => 'required',
+            'id_rute' => 'required|integer',
         ];
+
         if ($request->hasFile('foto_ktp')) {
             $attributes['foto_ktp'] = 'required|max:2000|mimes:jpg,jpeg,png,JPG,JPEG,PNG';
         }
@@ -131,6 +135,11 @@ class UserPanelController extends Controller
             }
             if ($validator->errors()->has('address')) {
                 toast(trans('frontend.Address required!'), 'error')->width('300px');
+                return redirect()->back()->withInput();
+            }
+
+            if ($validator->errors()->has('id_rute')) {
+                toast(trans('Kota pemberhentian wajib disi'), 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
 
@@ -269,6 +278,7 @@ class UserPanelController extends Controller
         $user->gender = $request->gender ?: $user->gender;
         $user->tgl_lahir = $request->tgl_lahir ?: $user->tgl_lahir;
         $user->tempat_lahir = $request->tempat_lahir ?: $user->tempat_lahir;
+        $user->id_rute = $request->id_rute;
 
         $user->save();
         if ($request->is_peserta == 'Ya') {
