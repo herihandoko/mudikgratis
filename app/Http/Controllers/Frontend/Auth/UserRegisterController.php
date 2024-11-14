@@ -185,7 +185,7 @@ class UserRegisterController extends Controller
         event(new Registered($user));
         $param = [
             'target' => $data['phone'],
-            'message' => "[Register Mudik Bersama] - Jawara Mudik \nPendaftaran Anda sebagai peserta mudik bersama Dishub Banten berhasil. \nSilahkan login ke (" . url('login') . ") dan lengkapi profil Anda sebelum *" . date('d M Y H:i', strtotime('1 hour')) . "* dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $data['email'] . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: " . route('user.reset') . " \n\nTerima kasih"
+            'message' => "[Register Mudik Bersama] - Jawara Mudik \nPendaftaran Anda sebagai peserta mudik bersama Dishub Banten berhasil. \nSilahkan login ke (" . url('login') . ") dan lengkapi profil Anda sebelum *" . date('d M Y H:i', strtotime('1 hour')) . "* dengan data sebagai berikut \n\n=========Credentials========== \n\nusername: *" . $data['phone'] . "* \npassword: *" . $password . "* \n\n========================== \n\nHarap segera mengganti password Anda setelah melakukan login atau klik link berikut: " . route('user.reset') . " \n\nTerima kasih"
         ];
         $response = $this->notificationApiService->sendNotification($param);
         if ($response['status']) {
