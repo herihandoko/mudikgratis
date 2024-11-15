@@ -40,10 +40,16 @@ class SendMessageController extends Controller
 
     public function store(MessageRequest $messageRequest)
     {
+        $ikm = '';
+        $message = $messageRequest->message;
+        if ($messageRequest->skm) {
+            $ikm = url('survei-kepuasan-masyarakat');
+            $message = $message . '\n' . $ikm;
+        }
         if ($messageRequest->target == 'input') {
             $notifHistory = new NotifHistory();
             $notifHistory->recipient_number = $messageRequest->phone_number;
-            $notifHistory->message  = $messageRequest->message;
+            $notifHistory->message  = $message;
             $notifHistory->status = 'sent';
             $notifHistory->created_by = auth()->user()->name;
             $notifHistory->source = 'send-message';
@@ -57,7 +63,7 @@ class SendMessageController extends Controller
             foreach ($result as $key => $value) {
                 $notifHistory = new NotifHistory();
                 $notifHistory->recipient_number = $value->phone;
-                $notifHistory->message  = $messageRequest->message;
+                $notifHistory->message  = $message;
                 $notifHistory->status = 'sent';
                 $notifHistory->created_by = auth()->user()->name;
                 $notifHistory->source = 'send-message';

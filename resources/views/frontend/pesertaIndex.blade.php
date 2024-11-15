@@ -136,8 +136,14 @@
                                                         <span class="badge bg-danger"> {{ ucwords($peserta->status) }} </span>
                                                     @elseif($peserta->status == 'belum dikirim')    
                                                         <span class="badge bg-warning"> {{ ucwords($peserta->status) }} </span>
-                                                    @elseif($peserta->status == 'dikirim')    
-                                                        <span class="badge bg-info"> Menunggu Verifikasi</span>    
+                                                    @elseif($peserta->status == 'dikirim')
+                                                        @if($user->status_mudik == 'ditolak')    
+                                                            <span class="badge bg-info"> Ditolak</span>  
+                                                        @elseif($user->status_mudik == 'waiting')   
+                                                            <span class="badge bg-warning"> Belum Dikirim </span>
+                                                        @else
+                                                            <span class="badge bg-info"> Menunggu Verifikasi</span>  
+                                                        @endif  
                                                     @else
                                                         @if($peserta->status)
                                                             <span class="badge bg-success"> {{ ucwords($peserta->status) }} </span>
