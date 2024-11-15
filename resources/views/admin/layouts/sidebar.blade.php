@@ -84,6 +84,11 @@
                                 <a class="nav-link" href="{{ route('admin.history-notifikasi.index') }}">History Notifikasi</a>
                             </li>
                         @endcan
+                        @can('peserta-cancel-index')
+                            <li class="{{ ActiveSidebarNew('admin.peserta-cancel.*') }}">
+                                <a class="nav-link" href="{{ route('admin.peserta-cancel.index') }}">Peserta Cancelled</a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
             @endcanany
