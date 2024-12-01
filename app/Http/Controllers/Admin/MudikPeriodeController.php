@@ -67,6 +67,7 @@ class MudikPeriodeController extends Controller
             'start_date' => 'required|date_format:Y-m-d\TH:i|before_or_equal:end_date',
             'end_date' => 'required|date_format:Y-m-d\TH:i|after_or_equal:start_date',
         ];
+
         $this->validate($request, $rules);
         $periode = MudikPeriod::findOrFail($id);
         if ($request->status) {

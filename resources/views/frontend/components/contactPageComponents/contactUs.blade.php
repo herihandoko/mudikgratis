@@ -11,7 +11,7 @@
                         <div class="tm-sc-section-title section-title text-center" style="margin-bottom: 0px !important">
                             <div class="title-wrapper">
                                 <h4 class="title text-theme-colored2">Statistik Ketersedian</h4>
-                                <h6 class="subtitle" style="color: #009b4d !important;">Mudik Bahagia, Bersama Pemerintah <br> Provinsi Banten {{ date('Y') }}</h6>
+                                <h6 class="subtitle" style="color: #009b4d !important;">{{ $period->name }} <br> Mudik Bahagia, Bersama Pemerintah Provinsi Banten</h6>
                                 <h5>Program ini bisa didapatkan secara gratis,<br>tanpa dipungut biaya sedikitpun.</h5>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">#</th>
-                                                    @if($tujuan->id == 1)
+                                                    @if ($tujuan->code == 'keluar-banten')
                                                         <th class="text-center">Kota Tujuan</th>
                                                     @else
                                                         <th class="text-center">Kota Asal</th>
@@ -94,46 +94,27 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="mb-3">
-                                    <label>{{ trans('frontend.Name') }} <small>*</small></label>
+                                    <label>{{ trans('frontend.Name') }} <small class="text-danger">*</small></label>
                                     <input name="name" class="form-control" type="text"
-                                        placeholder="{{ trans('frontend.Enter Name') }}" required>
+                                        placeholder="{{ trans('frontend.Enter Name') }}" value="{{ old('name') }}" required>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="mb-3">
-                                    <label>{{ trans('frontend.Email') }} <small>*</small></label>
-                                    <input name="email" class="form-control required email" type="email"
-                                        placeholder="{{ trans('frontend.Enter Email') }}" required>
+                                    <label>{{ trans('frontend.Phone') }} <small class="text-danger">*</small></label>
+                                    <input name="phone" class="form-control" type="number" value="{{ old('phone') }}"
+                                        placeholder="0813XXXXXXXX" required>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <label>{{ trans('frontend.Subject') }} <small>*</small></label>
-                                    <input name="subject" class="form-control" type="text"
-                                        placeholder="{{ trans('frontend.Enter Subject') }}" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <label>{{ trans('frontend.Phone (Optional)') }}</label>
-                                    <input name="phone" class="form-control" type="text"
-                                        placeholder="{{ trans('frontend.Enter Phone') }}">
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="mb-3">
                             <label>{{ trans('frontend.Message') }}</label>
                             <textarea name="message" class="form-control required" rows="5"
-                                placeholder="{{ trans('frontend.Enter Message') }}" required></textarea>
+                                placeholder="{{ trans('frontend.Enter Message') }}" required>{{ old('message') }}</textarea>
                         </div>
                         <div class="mb-3">
-
                             <button type="submit"
                                 class="btn btn-flat btn-theme-colored1 text-uppercase mt-10 mb-sm-30 border-left-theme-color-2-4px">{{ trans('frontend.Send your message') }}</button>
-
                         </div>
                     </form>
 

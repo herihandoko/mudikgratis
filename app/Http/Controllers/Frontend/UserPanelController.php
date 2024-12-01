@@ -582,6 +582,8 @@ class UserPanelController extends Controller
                 'message' => "[Pendaftaran Peserta Mudik] - Jawara Mudik \nPendaftaran Peserta Jawara Mudik DISHUB Propinsi Banten berhasil, Data yang sudah di Submit/Kirim akan diperiksa terlebih dahulu oleh Admin Kami. Kami akan beritahu Anda via Whatsapp atau selalu cek dashboard aplikasi Anda (" . url('login') . ") apabila data Anda memenuhi syarat sebagai Peserta Mudik \n\nTerima kasih"
             ];
             $notificationService->sendNotification($param);
+
+            
         }
         alert()->success('Data peserta mudik berhasil dikirim, Data yang sudah di Submit/Kirim akan diperiksa terlebih dahulu oleh Admin Kami. Terima kasih.');
         return redirect()->back();

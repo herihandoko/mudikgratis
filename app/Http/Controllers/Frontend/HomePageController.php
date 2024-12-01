@@ -8,6 +8,7 @@ use App\Models\ContactMessage;
 use App\Models\EmailTemplate;
 use App\Models\Product;
 use App\Models\Subscriber;
+use App\Services\NotificationApiService;
 use Carbon\Carbon;
 use Gloudemans\Shoppingcart\Cart;
 use Illuminate\Http\Request;
@@ -163,27 +164,61 @@ class HomePageController extends Controller
             'status' => 'success'
         ]);
     }
-    public function contact_message(Request $request)
+    public function contact_message(Request $request, NotificationApiService $notificationService)
     {
-        $template = EmailTemplate::find(5);
-        $body = str_replace('{name}', $request->name, $template->description);
-        $body = str_replace('{email}', $request->email, $body);
-        $body = str_replace('{phone}', $request->phone, $body);
-        $body = str_replace('{subject}', $request->subject, $body);
-        $body = str_replace('{message}', $request->message, $body);
-        Mail::send('frontend.emailHtml', ['body' => html_entity_decode($body)], function ($message) use ($request, $template) {
-            $message->to($request->email);
-            $message->subject($template->subject);
-        });
-        if (GetSetting('save_contact_message') == 1) {
-            $message = new ContactMessage();
-            $message->name = $request->name;
-            $message->email = $request->email;
-            $message->phone = $request->phone;
-            $message->subject = $request->subject;
-            $message->message = $request->message;
-            $message->save();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:3|max:255',
+            'phone' => 'required|regex:/^0[1-9][0-9]{7,10}$/',
+            'message' => 'required|min:5|max:500',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            if ($errors->has('name')) {
+                toast($errors->get('name')[0], 'error')->width('300px');
+                return redirect()->back()->withInput();
+            }
+            if ($errors->has('phone')) {
+                toast($errors->get('phone')[0], 'error')->width('300px');
+                return redirect()->back()->withInput();
+            }
+            if ($errors->has('message')) {
+                toast($errors->get('message')[0], 'error')->width('300px');
+                return redirect()->back()->withInput();
+            }
         }
+
+        // $template = EmailTemplate::find(5);
+        // $body = str_replace('{name}', $request->name, $template->description);
+        // $body = str_replace('{email}', $request->email, $body);
+        // $body = str_replace('{phone}', $request->phone, $body);
+        // $body = str_replace('{subject}', $request->subject, $body);
+        // $body = str_replace('{message}', $request->message, $body);
+        // Mail::send('frontend.emailHtml', ['body' => html_entity_decode($body)], function ($message) use ($request, $template) {
+        //     $message->to($request->email);
+        //     $message->subject($template->subject);
+        // });
+        // if (GetSetting('save_contact_message') == 1) {
+        $message = new ContactMessage();
+        $message->name = $request->name;
+        $message->email = $request->email;
+        $message->phone = $request->phone;
+        $message->subject = $request->subject;
+        $message->message = $request->message;
+        if ($message->save()) {
+            $param = [
+                'target' => $request->phone,
+                'message' => "*Terima kasih atas pertanyaan Anda tentang Mudik Gratis!*\nKami senang Anda tertarik untuk ikut serta dalam program Mudik Gratis yang kami tawarkan. Berikut adalah informasi singkat mengenai program ini:\n*Apa itu Mudik Gratis?*\nMudik Gratis adalah program tahunan yang diselenggarakan untuk membantu masyarakat yang ingin mudik ke kampung halaman dengan menggunakan fasilitas transportasi yang disediakan secara gratis. Tujuannya adalah untuk mengurangi beban biaya perjalanan serta meningkatkan kenyamanan selama mudik.\nJika Anda tertarik untuk mendaftar atau ingin mendapatkan informasi lebih lanjut, Anda bisa mengunjungi https://jawaramudik.bantenprov.go.id/register atau menghubungi kami di ".env('CS_PHONE_NUMBER').". \n\nSalam hangat,\n[Tim Kami]"
+            ];
+            $notificationService->sendNotification($param);
+
+            $param = [
+                'target' => env('CS_PHONE_NUMBER'),
+                'message' => "Halo Admin,\n\nKami menerima pesan baru dari pengguna melalui Kontak Kami. Berikut adalah detail pesan yang masuk:\nNama Pengirim : ".$request->name."\Phone Pengirim : ".$request->phone."\nPesan : ".$request->message." \n\nMohon untuk segera menindaklanjuti pesan ini. Jika ada informasi lebih lanjut yang dibutuhkan, kami siap membantu.\nTerima kasih atas perhatian dan kerjasamanya.\nSalam  \n[Tim Kami]"
+            ];
+            $notificationService->sendNotification($param);
+        }
+        // }
         toast(trans('frontend.Message Sent!'), 'success')->width('350px');
         return redirect()->back();
     }
