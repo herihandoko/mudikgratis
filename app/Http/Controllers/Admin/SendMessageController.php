@@ -44,7 +44,7 @@ class SendMessageController extends Controller
         $message = $messageRequest->message;
         if ($messageRequest->skm) {
             $ikm = url('survei-kepuasan-masyarakat');
-            $message = $message . '\n' . $ikm;
+            $message = $message . " \n " . $ikm;
         }
         if ($messageRequest->target == 'input') {
             $notifHistory = new NotifHistory();
