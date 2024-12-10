@@ -174,6 +174,7 @@
                                                         @else
                                                             <th class="text-center">Kota Asal</th>
                                                         @endif
+                                                        <th class="text-center">Rute</th>
                                                         <th class="text-center">Total Bus</th>
                                                         <th class="text-center">Total Kuota</th>
                                                         <th class="text-center">Total Pendaftar</th>
@@ -186,6 +187,13 @@
                                                         <tr>
                                                             <td class="text-left">{{ $nox++ }}</td>
                                                             <td class="text-left">{{ $val->name }}</td>
+                                                            <td class="text-center">
+                                                                @forelse($val->rutes as $keyrute => $itemrute)
+                                                                    {{ $itemrute->name }} {!! !$loop->last ? '<i class="fa fa-arrow-right"></i>' : '' !!}
+                                                                @empty
+                                                                    -
+                                                                @endforelse
+                                                            </td>
                                                             <td class="text-right">{{ $val->bus->count() }} Bus</td>
                                                             <td class="text-right">
                                                                 {{ $val->bus->sum('jumlah_kursi') }} Kursi
