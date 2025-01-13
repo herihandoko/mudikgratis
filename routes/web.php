@@ -114,6 +114,7 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         // Dashoboard
         Route::get('/',          [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboard/export', [DashboardController::class, 'export'])->name('dashboard.export');
 
         // Menu Builder Routes
         Route::get('/menubuilder/menu_items', [MenuBuilderController::class, 'menu_items'])->name('menu_items');

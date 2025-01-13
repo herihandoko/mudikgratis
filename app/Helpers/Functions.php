@@ -445,3 +445,45 @@ function listPeriodMudik()
 {
     return MudikPeriod::select('id', 'name')->get();
 }
+
+function formatTanggalIndonesia($tanggal)
+{
+    // Array nama hari dalam bahasa Indonesia
+    $namaHari = [
+        'Minggu',
+        'Senin',
+        'Selasa',
+        'Rabu',
+        'Kamis',
+        'Jumat',
+        'Sabtu'
+    ];
+
+    // Array nama bulan dalam bahasa Indonesia
+    $namaBulan = [
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember'
+    ];
+
+    // Mengubah string tanggal menjadi timestamp
+    $timestamp = strtotime($tanggal);
+
+    // Format hari, tanggal, bulan, dan tahun
+    $hari = $namaHari[date('w', $timestamp)];
+    $tanggal = date('d', $timestamp);
+    $bulan = $namaBulan[(int)date('m', $timestamp)];
+    $tahun = date('Y', $timestamp);
+
+    // Menggabungkan dalam format "Hari, DD Bulan YYYY"
+    return "$hari, $tanggal $bulan $tahun";
+}

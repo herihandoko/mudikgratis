@@ -147,7 +147,10 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Statistik Ketersedian Bus</h4>
+                                <div class="col-md-10">
+                                    <h4>Statistik Ketersedian Bus</h4>
+                                </div>
+                                <div class="col-md-2"><a target="_blank" href="{{ route('admin.dashboard.export') }}" class="btn btn-success">Cetak PDF</a></div>
                             </div>
                             <div class="card-body">
                                 @foreach ($tujuans as $item => $tujuan)
