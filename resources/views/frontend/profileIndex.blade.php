@@ -94,8 +94,12 @@
                                             <input type="text" class="form-control" name="nik" required value="{{ @$user->nik ?: old('nik') }}" readonly>
                                         </div>
                                         <div class="form-group mb-2">
+                                            <label for="profession">Pekerjaan <span class="text-danger">*</span></label>
+                                            {{ Form::select('profession',$profession->prepend('Select Pekerjaan',''), @$user->id_profession ?: old('profession'), ['class' => 'form-control']) }}
+                                        </div>
+                                        <div class="form-group mb-2">
                                             <label for="gender">{{ trans('frontend.Gender') }} <span class="text-danger">*</span></label>
-                                            {{ Form::select('gender', ['L' => 'Laki-laki', 'P' => 'Perempuan'], @$user->gender ?: old('gender'), ['class' => 'form-control', 'required' => true]) }}
+                                            {{ Form::select('gender', ['L' => 'Laki-laki', 'P' => 'Perempuan'], @$user->gender ?: old('gender'), ['class' => 'form-control']) }}
                                         </div>
                                         <div class="form-group mb-2">
                                             <label for="tgl_lahir">{{ trans('frontend.Birthdate') }} <span class="text-danger">*</span></label>

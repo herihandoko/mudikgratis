@@ -54,6 +54,11 @@
                                 <a class="nav-link" href="{{ route('admin.mudik-rute.index') }}">Master Rute</a>
                             </li>
                         @endcan
+                        @can('profession-index')
+                            <li class="{{ ActiveSidebarNew('admin.profession.*') }}">
+                                <a class="nav-link" href="{{ route('admin.profession.index') }}">Master Pekerjaan</a>
+                            </li>
+                        @endcan
                         @can('mudik-peserta-index')
                             <li class="{{ ActiveSidebarNew('admin.mudik-peserta.*') }}">
                                 <a class="nav-link" href="{{ route('admin.mudik-peserta.index') }}">Peserta Gagal</a>

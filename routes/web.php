@@ -45,6 +45,7 @@ use App\Http\Controllers\Admin\MudikRuteController;
 use App\Http\Controllers\Admin\MudikTujuanController;
 use App\Http\Controllers\Admin\MudikVerifikasiController;
 use App\Http\Controllers\Admin\PesertaCancelController;
+use App\Http\Controllers\Admin\ProfessionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SendBroadcastController;
 use App\Http\Controllers\Admin\SendMessageController;
@@ -230,6 +231,7 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::resource('broadcast-pengguna', SendMessageController::class);
         Route::resource('history-notifikasi', HistoryNotifikasiController::class);
         Route::resource('peserta-cancel', PesertaCancelController::class);
+        Route::resource('profession', ProfessionController::class);
 
         Route::get('/admin/mudik-report/combo', [MudikReportController::class, 'combo'])->name('mudik-report.combo');
         Route::get('/admin/mudik-report/combobus', [MudikReportController::class, 'combobus'])->name('mudik-report.combobus');

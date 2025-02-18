@@ -39,7 +39,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'pass_code',
         'last_login',
         'periode_id',
-        'uuid'
+        'uuid',
+        'id_profession'
     ];
 
     /**

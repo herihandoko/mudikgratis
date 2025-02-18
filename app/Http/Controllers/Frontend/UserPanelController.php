@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MudikTujuanKota;
 use App\Models\OrderItem;
 use App\Models\Peserta;
+use App\Models\Profession;
 use App\Models\User;
 use App\Models\UserAdress;
 use App\Models\UserInactive;
@@ -71,8 +72,8 @@ class UserPanelController extends Controller
     public  function profile()
     {
         $user = Auth::user();
-        //$user->kotatujuan->rutes->pluck('id','name')
-        return view('frontend.profileIndex', compact('user'));
+        $profession = Profession::pluck('name', 'id');
+        return view('frontend.profileIndex', compact('user', 'profession'));
     }
     public function update_profile(Request $request)
     {
@@ -94,6 +95,7 @@ class UserPanelController extends Controller
             'kelurahan' => 'required|integer',
             'is_peserta' => 'required',
             'id_rute' => 'required|integer',
+            'profession' => 'required|integer',
         ];
 
         if ($request->hasFile('foto_ktp')) {
@@ -155,6 +157,11 @@ class UserPanelController extends Controller
 
             if ($validator->errors()->has('foto_selfie')) {
                 toast($validator->messages()->get('foto_selfie')[0], 'error')->width('300px');
+                return redirect()->back()->withInput();
+            }
+
+            if ($validator->errors()->has('profession')) {
+                toast('Jenis Pekerjaan', 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
         }
@@ -279,6 +286,7 @@ class UserPanelController extends Controller
         $user->tgl_lahir = $request->tgl_lahir ?: $user->tgl_lahir;
         $user->tempat_lahir = $request->tempat_lahir ?: $user->tempat_lahir;
         $user->id_rute = $request->id_rute;
+        $user->id_profession = $request->profession;
 
         $user->save();
         if ($request->is_peserta == 'Ya') {
@@ -582,8 +590,6 @@ class UserPanelController extends Controller
                 'message' => "[Pendaftaran Peserta Mudik] - Jawara Mudik \nPendaftaran Peserta Jawara Mudik DISHUB Propinsi Banten berhasil, Data yang sudah di Submit/Kirim akan diperiksa terlebih dahulu oleh Admin Kami. Kami akan beritahu Anda via Whatsapp atau selalu cek dashboard aplikasi Anda (" . url('login') . ") apabila data Anda memenuhi syarat sebagai Peserta Mudik \n\nTerima kasih"
             ];
             $notificationService->sendNotification($param);
-
-            
         }
         alert()->success('Data peserta mudik berhasil dikirim, Data yang sudah di Submit/Kirim akan diperiksa terlebih dahulu oleh Admin Kami. Terima kasih.');
         return redirect()->back();
