@@ -51,7 +51,7 @@
                         @endcan
                         @can('mudik-rute-index')
                             <li class="{{ ActiveSidebarNew('admin.mudik-rute.*') }}">
-                                <a class="nav-link" href="{{ route('admin.mudik-rute.index') }}">Master Rute</a>
+                                <a class="nav-link" href="{{ route('admin.mudik-rute.index') }}">Rute & Pemberhentian</a>
                             </li>
                         @endcan
                         @can('profession-index')

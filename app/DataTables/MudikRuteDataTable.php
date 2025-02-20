@@ -71,6 +71,8 @@ class MudikRuteDataTable extends DataTable
         return [
             Column::make('id')->width(10),
             Column::make('name')->title('Nama')->width(100),
+            Column::make('is_rute')->title('Rute')->width(100),
+            Column::make('is_stop')->title('')->width(100),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

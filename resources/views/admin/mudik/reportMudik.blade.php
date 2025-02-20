@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 
+@php
+    date_default_timezone_set('Asia/Jakarta');
+    $path = public_path('assets/admin/images/logo-banten-1.png');
+    $type = pathinfo($path, PATHINFO_EXTENSION);
+    $data = file_get_contents($path);
+    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+@endphp
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +17,9 @@
         body {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 10px;
+            background: url('{{ $base64 }}') no-repeat center center;
+            background-size: 75%;
+            background-position: center;
         }
 
         .header {
@@ -20,6 +31,7 @@
             margin: 20px auto;
             width: 90%;
             overflow-x: auto;
+            color: black;
         }
 
         table {
@@ -48,19 +60,22 @@
             text-align: center;
             margin-top: 20px;
         }
+
     </style>
 </head>
 
 <body>
+    <div class="background"></div>
     <div class="header">
         <h1>Mudik Ceria Penuh Makna</h1>
         <h3>Pemerintah Provinsi Banten</h3>
-        <p>Hari: {{ formatTanggalIndonesia(date('Y-m-d')) }}</p>
+        <p>Hari: {{ formatTanggalIndonesia(date('Y-m-d H:i')) }}</p>
     </div>
 
     <div class="table-container">
         <div style="text-align: center;">
             <h3>Data Peserta Mudik Gratis Tahun {{ date('Y') }}</h3>
+
         </div>
         @foreach ($tujuans as $item => $tujuan)
             <h4>{{ $tujuan->name }}</h4>

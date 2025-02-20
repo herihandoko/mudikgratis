@@ -483,7 +483,10 @@ function formatTanggalIndonesia($tanggal)
     $tanggal = date('d', $timestamp);
     $bulan = $namaBulan[(int)date('m', $timestamp)];
     $tahun = date('Y', $timestamp);
+    $jam = date('H', $timestamp);
+    $menit = date('i', $timestamp);
+    $pukul = 'pukul';
 
     // Menggabungkan dalam format "Hari, DD Bulan YYYY"
-    return "$hari, $tanggal $bulan $tahun";
+    return "$hari, $tanggal $bulan $tahun $pukul $jam:$menit WIB";
 }
