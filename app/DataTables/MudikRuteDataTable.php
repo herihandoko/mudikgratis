@@ -28,7 +28,17 @@ class MudikRuteDataTable extends DataTable
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
-            ->rawColumns(['action']);
+            ->addColumn('is_rute', function ($status) {
+                if ($status->is_rute == 1) {
+                    return '<div class="btn btn-success btn-sm"> Ya </div>';
+                } else return '<div class="btn btn-danger btn-sm"> Tidak </div>';
+            })
+            ->addColumn('is_stop', function ($status) {
+                if ($status->is_stop == 1) {
+                    return '<div class="btn btn-success btn-sm"> Ya </div>';
+                } else return '<div class="btn btn-danger btn-sm"> Tidak </div>';
+            })
+            ->rawColumns(['action', 'is_rute', 'is_stop']);
     }
 
     /**
@@ -72,7 +82,7 @@ class MudikRuteDataTable extends DataTable
             Column::make('id')->width(10),
             Column::make('name')->title('Nama')->width(100),
             Column::make('is_rute')->title('Rute')->width(100),
-            Column::make('is_stop')->title('')->width(100),
+            Column::make('is_stop')->title('Pemberhentian')->width(100),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)

@@ -39,6 +39,8 @@ class MudikRuteController extends Controller
         $mudikRute->created_at = date('Y-m-d H:i:s');
         $mudikRute->created_by = auth()->user()->name;
         $mudikRute->id_period = session('id_period');
+        $mudikRute->is_rute = $request->is_rute ? 1 : 0;
+        $mudikRute->is_stop = $request->is_stop ? 1 : 0;
         $mudikRute->save();
         $notification = "Tambah rute mudik berhasil";
         $notification = ['message' => $notification, 'alert-type' => 'success'];
@@ -62,6 +64,8 @@ class MudikRuteController extends Controller
         $rute->updated_at = date('Y-m-d H:i:s');
         $rute->updated_by = auth()->user()->name;
         $rute->id_period = session('id_period');
+        $rute->is_rute = $request->is_rute ? 1 : 0;
+        $rute->is_stop = $request->is_stop ? 1 : 0;
         $rute->save();
         $notification = trans('admin.Updated Successfully');
         $notification = ['message' => $notification, 'alert-type' => 'success'];

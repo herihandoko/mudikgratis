@@ -95,10 +95,9 @@
                 <tbody>
                     <?php $no = 1; ?>
                     @foreach ($tujuan->provinsis as $key => $provinsi)
-                        <?php $nox = 1; ?>
                         @foreach ($provinsi->kota as $keyx => $val)
                             <tr>
-                                <td>1</td>
+                                <td>{{ $no++ }}</td>
                                 @if ($tujuan->code == 'keluar-banten')
                                     <td style="text-align: left;">Provinsi Banten</td>
                                 @else

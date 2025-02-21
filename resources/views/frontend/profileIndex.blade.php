@@ -195,7 +195,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-2">
                                             <label for="is_peserta">Kota Pemberhentian Penumpang <span class="text-danger">*</span></label>
-                                            {{ Form::select('id_rute', @$user->kotatujuan->rutes->pluck('name','id')->prepend('Select Kota Pemberhentian', '') , @$user->id_rute ?: old('id_rute'), ['class' => 'form-control']) }}
+                                            {{ Form::select('id_rute', @$user->kotatujuan->pemberhentian->pluck('name','id')->prepend('Select Kota Pemberhentian', '') , @$user->id_rute ?: old('id_rute'), ['class' => 'form-control']) }}
                                         </div>
                                         <div class="form-group mb-2">
                                             <label for="is_peserta">Pendaftar termasuk Peserta Mudik <span class="text-danger">*</span></label>

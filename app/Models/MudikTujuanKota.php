@@ -33,6 +33,11 @@ class MudikTujuanKota extends Model
 
     public function rutes()
     {
-        return $this->belongsToMany(MudikRute::class, 'mudik_kota_has_rute', 'id_kota', 'id_rute');
+        return $this->belongsToMany(MudikRute::class, 'mudik_kota_has_rute', 'id_kota', 'id_rute')->where('is_rute', 1);
+    }
+
+    public function pemberhentian()
+    {
+        return $this->belongsToMany(MudikRute::class, 'mudik_kota_has_rute', 'id_kota', 'id_rute')->where('is_stop', 1);
     }
 }

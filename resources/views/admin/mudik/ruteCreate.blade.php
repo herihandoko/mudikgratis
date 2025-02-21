@@ -19,6 +19,13 @@ $page_title = "Admin | Tambah Rute";
                                 <label for="">Name</label>
                                 <input type="text" class="form-control" name="name" required value="{{ old('name') }}">
                             </div>
+                            <label>Kategori : </label>
+                            <div class="form-group">
+                                <input type="checkbox" name="is_rute" value="1"> <label for="">Rute</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="is_stop" value="1"> <label for="">Pemberhentian / Penurunan Penumpang</label>
+                            </div>
                             <button type="submit" class="btn btn-primary btn-block"> {{trans('admin.Save')}} </button>
                         </form>
                     </div>
