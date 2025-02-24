@@ -57,7 +57,6 @@ class SendMessageController extends Controller
             $notifHistory->source = 'send-message';
             $notifHistory->save();
         } else {
-            dd($messageRequest);
             $users = User::where('periode_id', $messageRequest->target);
             if ($messageRequest->status_mudik) {
                 $users->where('status_mudik', $messageRequest->status_mudik);
