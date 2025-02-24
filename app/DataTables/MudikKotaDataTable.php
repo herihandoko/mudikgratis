@@ -28,6 +28,12 @@ class MudikKotaDataTable extends DataTable
             ->addColumn('jumlah_kursi', function ($row) {
                 return $row->bus->sum('jumlah_kursi');
             })
+            ->addColumn('rute', function ($row) {
+                return '<a href="' . route('admin.setting-rute.index', ['tujuan_id' => $this->request()->get("tujuan_id"), 'kota_tujuan_id' => $row->id, 'search' => 1]) . '">' . $row->rutes->count() . '</a>';
+            })
+            ->addColumn('pemberhentian', function ($row) {
+                return '<a href="' . route('admin.setting-stop.index', ['tujuan_id' => $this->request()->get("tujuan_id"), 'kota_tujuan_id' => $row->id, 'search' => 1]) . '">' . $row->pemberhentian->count() . '</a>';
+            })
             ->addColumn('action', function ($action) {
                 $button = [
                     'edit' => [
@@ -47,7 +53,7 @@ class MudikKotaDataTable extends DataTable
                     return '<div class="btn btn-danger btn-sm"> ' . $status->status . ' </div>';
                 } else return '<div class="btn btn-secondary btn-sm"> ' . $status->status . ' </div>';
             })
-            ->rawColumns(['action', 'provinsi', 'jumlah_bus', 'status', 'jumlah_kursi']);
+            ->rawColumns(['action', 'provinsi', 'jumlah_bus', 'status', 'jumlah_kursi', 'rute', 'pemberhentian']);
     }
 
     /**
@@ -97,6 +103,8 @@ class MudikKotaDataTable extends DataTable
             Column::make('name')->title('Kota')->width(100),
             Column::make('jumlah_bus')->title('Jumlah Bus')->width(100),
             Column::make('jumlah_kursi')->title('Jumlah Kursi')->width(100),
+            Column::make('rute')->title('Rute')->width(100),
+            Column::make('pemberhentian')->title('Pemberhentian')->width(100),
             Column::make('status')->width(100),
             Column::computed('action')
                 ->exportable(false)

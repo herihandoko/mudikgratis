@@ -107,6 +107,7 @@ class MudikKotaController extends Controller
     public function edit($id)
     {
         $category = MudikTujuanKota::findOrFail($id);
+        // dd($category);
         $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
         $bus = Bus::where('id_period', session('id_period'))->where('status', 'active')->pluck('name', 'id');
         $rutes = MudikRute::where('id_period', session('id_period'))->pluck('name', 'id');

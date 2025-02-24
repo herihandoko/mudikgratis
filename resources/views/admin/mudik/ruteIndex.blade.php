@@ -7,7 +7,7 @@ $page_title = "Admin | Rute Mudik";
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Master Rute Mudik</h1>
+                <h1>Master Rute Mudik & Pemberhentian</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i
                     class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>

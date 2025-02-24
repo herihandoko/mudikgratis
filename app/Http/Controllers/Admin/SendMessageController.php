@@ -7,6 +7,7 @@ use App\DataTables\MudikPenggunaDataTable;
 use App\Http\Requests\MessageRequest;
 use App\Models\MudikPeriod;
 use App\Models\MudikTujuan;
+use App\Models\MudikTujuanKota;
 use App\Models\NotifHistory;
 use App\Models\Peserta;
 use App\Models\PesertaCancelled;
@@ -35,7 +36,8 @@ class SendMessageController extends Controller
     {
         $periode = MudikPeriod::pluck('name', 'id')->prepend('Pilih Taget Notifikasi', '');
         $periode = collect(['input' => 'Input Manual'])->union(MudikPeriod::select('name', 'id')->pluck('name', 'id'));
-        return view('admin.sendMessageIndex', compact('periode'));
+        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
+        return view('admin.sendMessageIndex', compact('periode', 'tujuan'));
     }
 
     public function store(MessageRequest $messageRequest)
@@ -55,9 +57,16 @@ class SendMessageController extends Controller
             $notifHistory->source = 'send-message';
             $notifHistory->save();
         } else {
+            dd($messageRequest);
             $users = User::where('periode_id', $messageRequest->target);
             if ($messageRequest->status_mudik) {
                 $users->where('status_mudik', $messageRequest->status_mudik);
+            }
+            if ($messageRequest->tujuan_id) {
+                $users->where('tujuan', $messageRequest->tujuan_id);
+            }
+            if ($messageRequest->kota_tujuan_id) {
+                $users->where('kota_tujuan', $messageRequest->kota_tujuan_id);
             }
             $result = $users->get();
             foreach ($result as $key => $value) {
@@ -73,5 +82,10 @@ class SendMessageController extends Controller
         $notification = 'Notifkasi Berhasil Dikirim';
         $notification = ['message' => $notification, 'alert-type' => 'success'];
         return redirect()->route('admin.history-notifikasi.index')->with($notification);
+    }
+
+    public function combo(Request $request)
+    {
+        return MudikTujuanKota::with('tujuan')->where('tujuan_id', $request->id)->get();
     }
 }

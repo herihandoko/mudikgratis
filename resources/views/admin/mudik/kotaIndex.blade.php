@@ -15,18 +15,24 @@ $page_title = "Admin | Kota Tujuan";
                     <form action="{{ route('admin.mudik-kota.index') }}" method="GET">
                         <div class="form-group">
                             <label for="">Tujuan</label>
-                            {{ Form::select('tujuan_id', $tujuan, $request->tujuan_id , ['class' => 'form-control']) }}
+                            {{ Form::select('tujuan_id', $tujuan->prepend('Pilih kota tujuan', ''), old('tujuan_id',$request->tujuan_id) , ['class' => 'form-control']) }}
                         </div>
                         <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter </button>
                     </form>
                 </div>
             </div>
             <div class="section-body">
-                <div class="card">
-                    <div class="card-body wsus_custom_overflow">
-                        {{$dataTable->table()}}
+                @if(!$request->tujuan_id)
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Silahkan pilih kota tujuan terlebih dahulu!</strong>
                     </div>
-                </div>
+                @else
+                    <div class="card">
+                        <div class="card-body wsus_custom_overflow">
+                            {{$dataTable->table()}}
+                        </div>
+                    </div>
+                @endif
             </div>
         </section>
     </div>

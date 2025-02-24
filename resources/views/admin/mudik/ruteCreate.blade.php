@@ -7,7 +7,7 @@ $page_title = "Admin | Tambah Rute";
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Tambah Rute</h1>
+                <h1>Tambah Rute & Pemberhentian</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.mudik-rute.index')}}" role="button"><i class="fas fa-arrow-alt-circle-left    "></i>{{trans('admin.Back')}}</a>
             <div class="section-body">

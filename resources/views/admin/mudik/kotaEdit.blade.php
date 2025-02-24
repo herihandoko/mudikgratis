@@ -23,8 +23,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Provinsi</label>
-                                <select class="form-control sel-provinsi-tujuan" name="provinsi_id" required
-                                    id="provinsi_id">
+                                <select class="form-control sel-provinsi-tujuan" name="provinsi_id" required id="provinsi_id">
                                     <option value="">Pilih Provinsi</option>
                                 </select>
                             </div>
@@ -61,10 +60,6 @@
                                 {{ Form::textarea('titik_akhir', $category->titik_akhir, ['class' => 'form-control', 'rows' => 10]) }}
                             </div>
                             <hr>
-                            <div class="form-group">
-                                <label for="id_rute">Rute <span class="text-danger">*</span></label>
-                                {{ Form::select('id_rute[]', $rutes, old('id_rute', $valueRute), ['class' => 'form-control', 'multiple' => true]) }}
-                            </div>
                             <button type="submit" class="btn btn-primary btn-block"> {{ trans('admin.Save') }} </button>
                         </form>
                     </div>
@@ -93,12 +88,13 @@
                     var _provinsiId = '{!! $category->provinsi_id !!}';
                     var sel_content = '';
                     $.each(data, function(key, value) {
-                        if (_provinsiId == value.id) {
-                            sel_content = '<option value="' + value.id + '" selected>' + value.name +
-                                '</option>';
-                        } else sel_content = '<option value="' + value.id + '">' + value.name +
-                            '</option>';
-                        $('.sel-provinsi-tujuan').append(sel_content);
+                        if (parseInt(_provinsiId) == value.id) {
+                            console.log(123);
+                            sel_content = '<option value="' + value.id + '" selected>' + value.name + '</option>';
+                        } else {
+                            sel_content = '<option value="' + value.id + '">' + value.name + '</option>'
+                        };
+                        $('#provinsi_id').append(sel_content);
                     });
                 }
             });

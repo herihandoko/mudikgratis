@@ -49,6 +49,8 @@ use App\Http\Controllers\Admin\ProfessionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SendBroadcastController;
 use App\Http\Controllers\Admin\SendMessageController;
+use App\Http\Controllers\Admin\SettingRuteController;
+use App\Http\Controllers\Admin\SettingStopController;
 use App\Http\Controllers\Admin\ShippingCountryController;
 use App\Http\Controllers\Admin\ShopDiscountController;
 use App\Http\Controllers\Admin\ShopServiceController;
@@ -228,10 +230,19 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::resource('mudik-report', MudikReportController::class);
         Route::resource('mudik-pengguna', MudikPenggunaController::class);
         Route::resource('mudik-rute', MudikRuteController::class);
+
         Route::resource('broadcast-pengguna', SendMessageController::class);
+        Route::get('/admin/broadcast-pengguna/combo', [SendMessageController::class, 'combo'])->name('broadcast-pengguna.combo');
+
         Route::resource('history-notifikasi', HistoryNotifikasiController::class);
         Route::resource('peserta-cancel', PesertaCancelController::class);
         Route::resource('profession', ProfessionController::class);
+
+        Route::resource('setting-rute', SettingRuteController::class);
+        Route::get('/admin/setting-rute/combo', [SettingRuteController::class, 'combo'])->name('setting-rute.combo');
+
+        Route::resource('setting-stop', SettingStopController::class);
+        Route::get('/admin/setting-stop/combo', [SettingStopController::class, 'combo'])->name('setting-stop.combo');
 
         Route::get('/admin/mudik-report/combo', [MudikReportController::class, 'combo'])->name('mudik-report.combo');
         Route::get('/admin/mudik-report/combobus', [MudikReportController::class, 'combobus'])->name('mudik-report.combobus');

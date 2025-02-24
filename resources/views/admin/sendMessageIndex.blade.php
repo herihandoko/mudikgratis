@@ -36,14 +36,26 @@
                                 {{ Form::text('phone_number', old('phone_number'), ['class' => 'form-control ' . $invalid2, 'placeholder' => '0813XXXXXXX']) }}
                                 <span style="color:red !important;">{{ $errors->first('phone_number') }}</span>
                             </div>
-                            <div class="form-group" id="status-mudik">
-                                <label for="">Status Peserta</label>
-                                {{ Form::select('status_mudik', [
-                                    ''=> 'Semua',
-                                    'diterima'=> 'Diterima',
-                                    'dikirm'=>'Dikirim',
-                                    'waiting'=>'Menunggu User'
-                                ], old('status_mudik') , ['class' => 'form-control']) }}
+                            <div id="status-mudik">
+                                <div class="form-group">
+                                    <label for="">Tujuan</label>
+                                    {{ Form::select('tujuan_id', $tujuan, old('tujuan_id',@$request->tujuan_id) , ['class' => 'form-control','id'=>'sel-tujuan']) }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="kota_tujuan_id" id="label-kota_tujuan_id">Kota Tujuan <span class="text-danger">*</span></label>
+                                    <select class="form-control sel-kota-tujuan" name="kota_tujuan_id" id="kota_tujuan_id">
+                                        <option value="">Pilih Kota Tujuan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Status Peserta</label>
+                                    {{ Form::select('status_mudik', [
+                                        ''=> 'Semua',
+                                        'diterima'=> 'Diterima',
+                                        'dikirm'=>'Dikirim',
+                                        'waiting'=>'Menunggu User'
+                                    ], old('status_mudik') , ['class' => 'form-control']) }}
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Pesan</label>
@@ -88,5 +100,37 @@
                 $('#status-mudik').show();
             }
         });
+
+        onChangeSelect('{{ route('admin.broadcast-pengguna.combo') }}', $('#sel-tujuan').val());
+        $('#sel-tujuan').on('change', function() {
+            onChangeSelect('{{ route('admin.broadcast-pengguna.combo') }}', $(this).val());
+        });
+
+        function onChangeSelect(url, id) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {
+                    id: id
+                },
+                success: function(data) {
+                    $('.sel-kota-tujuan').empty();
+                    $('.sel-kota-tujuan').append('<option disabled selected>Silahkan Pilih Kota Tujuan</option>');
+                    var sel_content = '';
+                    var kotaTujuan = '';
+                    $.each(data, function(key, value) {
+                        _selected = '';
+                        sel_content = '<option value="' + value.id + '" '+_selected+'>' + value.name + '</option>';
+                        kotaTujuan = value.tujuan.code;
+                        $('.sel-kota-tujuan').append(sel_content);
+                    });
+                    if( kotaTujuan == 'kedalam-banten'){
+                        $('#label-kota_tujuan_id').html('Kota Asal');
+                    }else{
+                        $('#label-kota_tujuan_id').html('Kota Tujuan');
+                    }
+                }
+            });
+        }
     </script>
 @endpush

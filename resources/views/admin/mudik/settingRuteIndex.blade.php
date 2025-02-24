@@ -1,5 +1,5 @@
 @php
-$page_title = 'Verifikasi Mudik';
+$page_title = "Admin | Rute Mudik";
 @endphp
 @extends('admin.layouts.master')
 @section('content')
@@ -7,41 +7,38 @@ $page_title = 'Verifikasi Mudik';
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Verifikasi Mudik ( {{ session('name_period') }} )</h1>
+                <h1>Setting Rute Bus (Pengaturan untuk rute perjalanan)</h1>
             </div>
             <a class="btn btn-primary mb-4" href="{{route('admin.dashboard')}}" role="button"><i class="fas fa-arrow-circle-left"></i> {{trans('admin.Back')}}</a>
             <div class="card text-dark">
                 <div class="card-body">
-                    <form action="{{ route('admin.mudik-verifikasi.index') }}" method="GET">
+                    <form action="{{ route('admin.setting-rute.index') }}" method="GET">
                         <div class="form-group">
                             <label for="">Tujuan</label>
-                            {{ Form::select('tujuan_id', $tujuan, $request->tujuan_id , ['class' => 'form-control','id'=>'sel-tujuan']) }}
+                            {{ Form::select('tujuan_id', $tujuan, $request->tujuan_id , ['class' => 'form-control','id'=>'sel-tujuan','required'=> true]) }}
                         </div>
                         <div class="form-group">
                             <label for="kota_tujuan_id" id="label-kota_tujuan_id">Kota Tujuan <span class="text-danger">*</span></label>
-                            <select class="form-control sel-kota-tujuan" name="kota_tujuan_id" id="kota_tujuan_id">
+                            <select class="form-control sel-kota-tujuan" name="kota_tujuan_id" id="kota_tujuan_id" required>
                                 <option value="">Pilih Kota Tujuan</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="status_mudik" id="label-status_mudik">Status</label>
-                            <select class="form-control" name="status_mudik" id="status_mudik">
-                                <option value="dikirim" @if($request->status_mudik == 'dikirim') selected @endif>Menunggu Verifikasi</option>
-                                <option value="diterima" @if($request->status_mudik == 'diterima') selected @endif>Diterima</option>
-                                <option value="ditolak" @if($request->status_mudik == 'ditolak') selected @endif>Ditolak</option>
-                                <option value="dibatalkan" @if($request->status_mudik == 'dibatalkan') selected @endif>Dibatalkan</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-info"><i class="fa fa-filter"></i> Filter </button>
+                        <button type="submit" class="btn btn-info" name="search" value="1"><i class="fa fa-save"></i> View </button>
                     </form>
                 </div>
             </div>
             <div class="section-body">
-                <div class="card">
-                    <div class="card-body wsus_custom_overflow">
-                        {{$dataTable->table()}}
+                @if(!$request->kota_tujuan_id || !$request->search || !$request->tujuan_id)
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Silahkan pilih kota tujuan !</strong>
                     </div>
-                </div>
+                @else  
+                    <div class="card">
+                        <div class="card-body wsus_custom_overflow">
+                            {{ $dataTable->table() }}
+                        </div>
+                    </div>
+                @endif
             </div>
         </section>
     </div>
@@ -49,9 +46,9 @@ $page_title = 'Verifikasi Mudik';
 @push('script')
     {{$dataTable->scripts()}}
     <script>
-        onChangeSelect('{{ route('admin.mudik-verifikasi.combo') }}', $('#sel-tujuan').val());
+        onChangeSelect('{{ route('admin.setting-rute.combo') }}', $('#sel-tujuan').val());
         $('#sel-tujuan').on('change', function() {
-            onChangeSelect('{{ route('admin.mudik-verifikasi.combo') }}', $(this).val());
+            onChangeSelect('{{ route('admin.setting-rute.combo') }}', $(this).val());
         });
 
         function onChangeSelect(url, id) {

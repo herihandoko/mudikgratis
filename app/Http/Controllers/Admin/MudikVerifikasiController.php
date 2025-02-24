@@ -217,7 +217,7 @@ class MudikVerifikasiController extends Controller
 
     public function combo(Request $request)
     {
-        return MudikTujuanKota::where('tujuan_id', $request->id)->get();
+        return MudikTujuanKota::with('tujuan')->where('tujuan_id', $request->id)->get();
     }
 
     public function cetak($id)
