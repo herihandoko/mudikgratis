@@ -52,6 +52,15 @@
                             <form action="{{ route('user.peserta.store_cancel') }}" method="post" enctype="multipart/form-data" id="form-pembatalan">
                                 @csrf
                                 <div class="form-group row mb-2">                       
+                                    <label class="col-lg-3 col-form-label text-sm-left text-md-right col-sm-12" for="reason">Peserta yang dibatalkan <span class="text-danger">*</span></label>
+                                    <div class="col-lg-9 col-sm-12">
+                                        @foreach ($peserta as $key => $item)
+                                            <input type="checkbox" name="peserta_id[]" value="{{ $item->id }}"> {{ $item->nama_lengkap }} <br>
+                                        @endforeach
+                                        <div class="error" id="nik-error" style="color:red"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-2">                       
                                     <label class="col-lg-3 col-form-label text-sm-left text-md-right col-sm-12" for="reason">Alasan Pembatalan <span class="text-danger">*</span></label>
                                     <div class="col-lg-9 col-sm-12">
                                         <textarea class="form-control" name="reason" rows="4"></textarea>

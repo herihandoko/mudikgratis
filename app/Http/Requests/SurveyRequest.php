@@ -30,6 +30,8 @@ class SurveyRequest extends FormRequest
         $rules = [
             'phone_number' => ['required', 'regex:/^[0-9]{9,15}$/', new SurveyPhoneRule(), new SurveyRule()],
             'jawaban' => 'required|array',
+            'saran' => 'nullable|max:255',
+            'masukan' => 'nullable|max:255'
         ];
         $period = MudikPeriod::select('id')->where('status', 'active')->first();
         $questions = SurveyQuestion::with('answers')->where('status', 1)->where('id_period', $period->id)->orderBy('sorting', 'asc')->get();
@@ -44,7 +46,7 @@ class SurveyRequest extends FormRequest
         return [
             'phone_number.required' => 'Nomor telepon wajib diisi .',
             'phone_number.regex' => 'Format nomor telepon tidak sesuai.',
-            'jawaban.*.required' => 'Jawaban tidak boleh kosong.'
+            'jawaban.*.required' => 'Jawaban tidak boleh kosong.',
         ];
     }
 }

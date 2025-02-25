@@ -537,39 +537,62 @@ class UserPanelController extends Controller
     public function peserta_cancel(Request $request)
     {
         $user = Auth::user();
-        return view('frontend.pesertaCancel', compact('user'));
+        $peserta = Peserta::where('user_id', $user->id)->where('periode_id', $user->periode_id)->orderBy('id', 'asc')->get();
+        return view('frontend.pesertaCancel', compact('user', 'peserta'));
     }
 
     public function store_cancel(Request $request, NotificationApiService $notificationService)
     {
         $validator = Validator::make($request->all(), [
-            'reason' => 'required|min:4|max:255'
+            'reason' => 'required|min:4|max:255',
+            'peserta_id'   => ['required', 'array'], // Wajib dikirim sebagai array
+            'peserta_id.*' => ['required', 'integer']
         ]);
         if ($validator->fails()) {
+            if ($validator->errors()->has('peserta_id')) {
+                toast('Silahkan pilih peserta yang dibatalkan', 'error')->width('300px');
+                return redirect()->back()->withInput();
+            }
             if ($validator->errors()->has('reason')) {
                 toast('Silahkan isi alasan pembatalan', 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
         }
-
+        // dd($request->peserta_id);
         $user = User::find(auth()->user()->id);
-        if ($user) {
-            $user->reason = $request->reason;
-            $user->status_mudik = 'dibatalkan';
-            $user->updated_at = date('Y-m-d H:i:s');
-            if ($user->save()) {
-                Peserta::where('user_id', $user->id)->update([
+        $listPeserta = $request->peserta_id;
+        if ($user && $listPeserta) {
+            // $user->reason = $request->reason;
+            // $user->status_mudik = 'dibatalkan';
+            // $user->updated_at = date('Y-m-d H:i:s');
+            // if ($user->save()) {
+            // Peserta::where('user_id', $user->id)->update([
+            //     'nomor_bus' => null,
+            //     'nomor_kursi' => null,
+            //     'status' => 'dibatalkan',
+            //     'reason' => $request->reason
+            // ]);
+            $totalDibatalkan = count($listPeserta);
+            $totalBooking = $user->jumlah;
+            foreach ($listPeserta as $key => $value) {
+                Peserta::where('id', $value)->update([
                     'nomor_bus' => null,
                     'nomor_kursi' => null,
                     'status' => 'dibatalkan',
                     'reason' => $request->reason
                 ]);
-                $param = [
-                    'target' => $user->phone,
-                    'message' => "[Pembatalan Mudik] - Jawara Mudik \nPembatalan dan Penghapusan Peserta Jawara Mudik DISHUB Propinsi Banten berhasil. \n\nTerima kasih"
-                ];
-                $notificationService->sendNotification($param);
             }
+            $sisaBooking = $totalBooking - $totalDibatalkan;
+            $user->jumlah = $sisaBooking;
+            $user->status_mudik = ($sisaBooking == 0) ? 'dibatalkan' : $user->status_mudik;
+            $user->updated_at = date('Y-m-d H:i:s');
+            $user->save();
+            $param = [
+                'target' => $user->phone,
+                'message' => "[Pembatalan Mudik] - Jawara Mudik \nPembatalan dan Penghapusan Peserta Jawara Mudik DISHUB Propinsi Banten berhasil. \n\nTerima kasih"
+            ];
+            $notificationService->sendNotification($param);
+            // }
             return redirect()->route('home');
         } else {
             toast('Pembatalan gagal', 'error')->width('300px');

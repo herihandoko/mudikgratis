@@ -85,7 +85,7 @@ class MudikKotaDataTable extends DataTable
             ->dom('Bfrtip')
             ->orderBy(0)
             ->buttons(
-                Button::make('create'),
+                Button::make('create')->action("window.location = '" . route('admin.mudik-kota.create') . "';"),
                 Button::make('reset')
             );
     }

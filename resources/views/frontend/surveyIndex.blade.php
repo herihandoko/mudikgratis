@@ -51,15 +51,14 @@
                                             <label class="form-label"><b>A. Profil Responden</b></label>
                                         </div>
                                         <div class="mb-4">
-                                            <label class="form-label">1. Nomor Telepon <span
-                                                    class="text-danger">*</span></label>
+                                            <label class="form-label">1. Nomor Telepon <span class="text-danger">*</span></label>
                                             <div class="row">
                                                 <?php $invalid = ''; ?>
                                                 @error('phone_number')
                                                     <?php $invalid = 'is-invalid'; ?>
                                                 @enderror
                                                 <div class="col-md-6 col-6 col-sm-12">
-                                                    {{ Form::text('phone_number', old('phone_number'), ['class' => 'form-control ' . $invalid, 'placeholder' => '0813XXXXXXX']) }}
+                                                    {{ Form::text('phone_number', old('phone_number',$request->phone_number), ['class' => 'form-control ' . $invalid, 'placeholder' => '0813XXXXXXX']) }}
                                                     <span style="color:red !important;">{{ $errors->first('phone_number') }}</span>
                                                 </div>
                                             </div>
@@ -108,8 +107,28 @@
                                             </div>
                                         @endforeach
                                         <div class="mb-0">
-                                            <label class="form-label text-danger"><i>* Jawaban survei tidak boleh
-                                                    kosong.</i></label>
+                                            <label class="form-label"><b>C. Saran dan Masukan</b></label>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">1. Apa yang bisa ditingkatkan agar layanan Mudik Gratis ini lebih baik di tahun berikutnya?</label>
+                                            <div class="row">
+                                                <div class="col-md-12 col-12 col-sm-12">
+                                                    {{ Form::textarea('saran', old('saran',$request->saran), ['class' => 'form-control ', 'placeholder' => '', 'rows'=>2]) }}
+                                                    <span style="color:red !important;">{{ $errors->first('saran') }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">2. Apakah ada fasilitas atau layanan tambahan yang sebaiknya disediakan dalam program Mudik Gratis ini? Jelaskan.</label>
+                                            <div class="row">
+                                                <div class="col-md-12 col-12 col-sm-12">
+                                                    {{ Form::textarea('masukan', old('masukan',$request->masukan), ['class' => 'form-control ', 'placeholder' => '', 'rows'=>2]) }}
+                                                    <span style="color:red !important;">{{ $errors->first('masukan') }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-0">
+                                            <label class="form-label text-danger"><i>* Jawaban survei tidak boleh kosong.</i></label>
                                         </div>
                                     </div>
                                 </div>

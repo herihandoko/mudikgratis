@@ -7,6 +7,7 @@ use App\Http\Requests\SurveyRequest;
 use App\Models\Correspondent;
 use App\Models\CorrespondentHasAnswer;
 use App\Models\MudikPeriod;
+use App\Models\MudikSaran;
 use App\Models\SurveyAnswer;
 use App\Models\SurveyQuestion;
 use App\Models\User;
@@ -16,11 +17,11 @@ use Illuminate\Http\Request;
 class SurveyController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
         $period = MudikPeriod::select('id')->where('status', 'active')->first();
         $questions = SurveyQuestion::with('answers')->where('status', 1)->where('id_period', $period->id)->orderBy('sorting', 'asc')->get();
-        return view('frontend.surveyIndex', compact('questions'));
+        return view('frontend.surveyIndex', compact('questions', 'request'));
     }
 
     public function store(SurveyRequest $surveyRequest, NotificationApiService $notificationService)
@@ -34,6 +35,11 @@ class SurveyController extends Controller
             'id_user' => $pesertaMudik->id ?? null,
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $pesertaMudik->name  ?? null,
+        ]);
+        MudikSaran::create([
+            'phone_number' => $surveyRequest->phone_number,
+            'masukan' => $surveyRequest->masukan,
+            'saran' => $surveyRequest->saran,
         ]);
         if ($correspondent) {
             $jawaban = $surveyRequest->jawaban;
