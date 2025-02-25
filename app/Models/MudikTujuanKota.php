@@ -33,12 +33,12 @@ class MudikTujuanKota extends Model
 
     public function rutes()
     {
-        return $this->belongsToMany(MudikRute::class, 'mudik_kota_has_rute', 'id_kota', 'id_rute')->where('is_rute', 1);
+        return $this->belongsToMany(MudikRute::class, 'mudik_kota_has_rute', 'id_kota', 'id_rute')->where('is_rute', 1)->orderBy('sorting','asc');
     }
 
     public function pemberhentian()
     {
-        return $this->belongsToMany(MudikRute::class, 'mudik_kota_has_stop', 'id_kota', 'id_rute')->where('is_stop', 1);
+        return $this->belongsToMany(MudikRute::class, 'mudik_kota_has_stop', 'id_kota', 'id_rute')->where('is_stop', 1)->orderBy('sorting','asc');
     }
 
     public function tujuan()
