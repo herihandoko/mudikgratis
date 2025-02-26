@@ -186,7 +186,7 @@
             </div>
         </div>
     </section>
-    <a href="https://wa.me/{{ env('CS_PHONE_NUMBER') }}" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/6281385582399" class="whatsapp-float" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Chat via WhatsApp" width="50">
     </a>    
     @push('scripts')
