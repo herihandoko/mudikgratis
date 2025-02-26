@@ -186,9 +186,24 @@
             </div>
         </div>
     </section>
+    <a href="https://wa.me/{{ env('CS_PHONE_NUMBER') }}" class="whatsapp-float" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Chat via WhatsApp" width="50">
+    </a>    
     @push('scripts')
     <link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/datatables.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
+    <style>
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25D366;
+            border-radius: 50%;
+            padding: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+    </style>
     @endpush
     @push('scripts')
         <script src="{{url('assets/admin/bundles/datatables/datatables.min.js')}}"></script>
