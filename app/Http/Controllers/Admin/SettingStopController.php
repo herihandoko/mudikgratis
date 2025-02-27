@@ -34,7 +34,7 @@ class SettingStopController extends Controller
     public function create(Request $request)
     {
         $tujuanKota = MudikTujuanKota::find($request->kota_tujuan_id);
-        $rute = MudikRute::where('id_period', session('id_period'))->where('is_rute', 1)->pluck('name', 'id');
+        $rute = MudikRute::where('id_period', session('id_period'))->where('is_stop', 1)->pluck('name', 'id');
         return view('admin.mudik.settingStopCreate', compact('tujuanKota', 'rute', 'request'));
     }
 
@@ -65,7 +65,7 @@ class SettingStopController extends Controller
     {
         $category = MudikKotaHasStop::findOrFail($id);
         $tujuanKota = MudikTujuanKota::find($request->kota_tujuan_id);
-        $rute = MudikRute::where('id_period', session('id_period'))->where('is_rute', 1)->pluck('name', 'id');
+        $rute = MudikRute::where('id_period', session('id_period'))->where('is_stop', 1)->pluck('name', 'id');
         return view('admin.mudik.settingStopEdit', compact('category', 'tujuanKota', 'rute', 'request'));
     }
 
