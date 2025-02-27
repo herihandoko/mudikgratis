@@ -73,7 +73,7 @@ class NotifInformasiCommand extends Command
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
                 }
-                $dataMessage = [
+                $dataMessage[] = [
                     'recipient_number' => $user->phone,
                     'message' => $message,
                     'status' => 'delivered',
