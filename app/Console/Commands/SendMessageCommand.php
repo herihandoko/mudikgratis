@@ -44,7 +44,7 @@ class SendMessageCommand extends Command
     public function handle()
     {
         date_default_timezone_set("Asia/Jakarta");
-        $notifHistory = NotifHistory::where('status', 'sent')->get();
+        $notifHistory = NotifHistory::where('status', 'sent')->limit(10)->get();
         foreach ($notifHistory as $key => $value) {
             $param = [
                 'target' => $value->recipient_number,
@@ -55,6 +55,7 @@ class SendMessageCommand extends Command
                 'delivered_at' => date('Y-m-d H:i:s'),
                 'status' => 'delivered'
             ]);
+            sleep(5);
         }
         $this->info('notification message successfully.');
     }
