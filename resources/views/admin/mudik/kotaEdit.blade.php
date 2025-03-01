@@ -33,6 +33,10 @@
                                     value="{{ $category->name }}">
                             </div>
                             <div class="form-group">
+                                <label for="">Spare Kuota</label>
+                                <input type="number" class="form-control" name="quota_spare_system" value="{{ $category->quota_spare_system }}">
+                            </div>
+                            <div class="form-group">
                                 <div class="control-label">{{ trans('admin.Status') }}</div>
                                 <label class="custom-switch pl-0 mt-2">
                                     <input type="checkbox" name="status" class="custom-switch-input"

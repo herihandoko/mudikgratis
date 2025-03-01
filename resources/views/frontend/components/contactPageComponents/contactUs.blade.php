@@ -1,7 +1,7 @@
     @php
         $contact = @App\Models\ContactPage::first();
         $period = App\Models\MudikPeriod::where('status', 'active')->first();
-        $tujuans = App\Models\MudikTujuan::with('provinsis')->where('status', 'active')->where('id_period', $period->id)->get();
+        $tujuans = App\Models\MudikTujuan::with('provinsis')->where('status', 'active')->where('id_period', @$period->id)->get();
     @endphp
     <section class="our-testimonials">
         <div class="container pt-lg-25" style="padding-top: 20px !important; padding-bottom: 0px !important;">
@@ -10,9 +10,13 @@
                     <div class="col-lg-6">
                         <div class="tm-sc-section-title section-title text-center" style="margin-bottom: 0px !important">
                             <div class="title-wrapper">
+                                @if(isset($period->id))
                                 <h4 class="title text-theme-colored2">Statistik Ketersedian</h4>
-                                <h6 class="subtitle" style="color: #009b4d !important;">{{ $period->name }} <br> Mudik Bahagia, Bersama Pemerintah Provinsi Banten</h6>
+                                <h6 class="subtitle" style="color: #009b4d !important;">{{ @$period->name }} <br> Mudik Bahagia, Bersama Pemerintah Provinsi Banten</h6>
                                 <h5>Program ini bisa didapatkan secara gratis,<br>tanpa dipungut biaya sedikitpun.</h5>
+                                @else
+                                <div class="alert alert-info"><b>Maaf!</b> Registrasi peserta mudik sementara ditutup.</div>
+                                @endif
                             </div>
                         </div>
                     </div>

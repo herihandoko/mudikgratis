@@ -36,7 +36,7 @@
                                     <div class="inDiv login-box-body addMarginBottom20">
                                         <h4 class="noMargin"><strong><i class="fa fa-bus"></i> Statistik Peserta</strong></h4>
                                         <hr>
-                                        @foreach ($tujuans as $item => $tujuan)
+                                        @forelse ($tujuans as $item => $tujuan)
                                             <div class="row text-center mt-5">
                                                 <h4>{{ $tujuan->name }}</h4>
                                             </div>
@@ -93,7 +93,9 @@
                                                     </table>
                                                 </div>
                                             @endforeach
-                                        @endforeach
+                                        @empty
+                                            <div class="alert alert-info text-center"><b>Maaf!</b> Registrasi peserta mudik sementara ditutup.</div><br> 
+                                        @endforelse
                                         <i class="fa fa-arrow-circle-right"></i> Baca <a href="{{ url('syarat-dan-ketentuan') }}">Syarat & Ketentuan</a>
                                     </div>
                                 </div>

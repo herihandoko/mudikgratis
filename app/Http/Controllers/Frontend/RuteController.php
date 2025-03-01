@@ -13,7 +13,7 @@ class RuteController extends Controller
     public function index()
     {
         $period = MudikPeriod::where('status', 'active')->first();
-        $tujuans = MudikTujuan::with('provinsis')->where('status', 'active')->where('id_period', $period->id)->get();
+        $tujuans = MudikTujuan::with('provinsis')->where('status', 'active')->where('id_period', $period->id ?? 0)->get();
         return view('frontend.ruteIndex', compact('tujuans'));
     }
 }

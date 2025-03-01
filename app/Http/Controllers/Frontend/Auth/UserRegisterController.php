@@ -68,7 +68,7 @@ class UserRegisterController extends Controller
             return redirect()->intended(RouteServiceProvider::USERPANEL);
         } else {
             $period = MudikPeriod::where('status', 'active')->orderBy('id', 'desc')->first();
-            $tujuan = MudikTujuan::where('status', 'active')->where('id_period', $period->id)->pluck('name', 'code')->prepend('Pilih Tujuan Mudik Gratis', '');
+            $tujuan = MudikTujuan::where('status', 'active')->where('id_period', $period->id ?? 0)->pluck('name', 'code')->prepend('Pilih Tujuan Mudik Gratis', '');
             $cityCode = City::select('code')->where('province_code', 36)->get();
             $tempatLahir = District::whereIn('city_code', $cityCode)->pluck('name', 'name')->prepend('Pilih Tempat Lahir', '');
             $statusMudik = false;
@@ -206,6 +206,7 @@ class UserRegisterController extends Controller
 
     function cekStatusAktif($start_date, $end_date)
     {
+        date_default_timezone_set('Asia/Jakarta'); 
         // Konversi tanggal ke dalam format timestamp untuk perbandingan
         $start_timestamp = strtotime($start_date);
         $end_timestamp = strtotime($end_date);

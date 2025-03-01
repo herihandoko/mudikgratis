@@ -149,7 +149,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group mb-2">
-                                            <label for="">{{ trans('frontend.Full Address') }}</label>
+                                            <label for="">{{ trans('frontend.Full Address') }} <span class="text-danger">*</span></label>
                                             <textarea type="text" class="form-control" name="address" value="">{!! @filterTag(clean($user->address->address)) !!}</textarea>
                                         </div>
                                     </div>
@@ -259,9 +259,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
+                                <p><span class="text-danger"><b>*</b>: Wajib diisi.</span></p>
                                 <div class="col-xs-12 col-md-3 box">
-                                    <button class="btn btn-theme-colored1 mt-2 w-100"
-                                        type="submit">{{ trans('frontend.Save') }}</button>
+                                    <button class="btn btn-theme-colored1 mt-2 w-100" type="submit">{{ trans('frontend.Save') }}</button>
                                 </div>
                             </form>
                         </div>

@@ -105,6 +105,7 @@ class MudikKotaDataTable extends DataTable
             Column::make('jumlah_kursi')->title('Jumlah Kursi')->width(100),
             Column::make('rute')->title('Rute')->width(100),
             Column::make('pemberhentian')->title('Pemberhentian')->width(100),
+            Column::make('quota_spare_system')->title('Spare Kuota')->width(100),
             Column::make('status')->width(100),
             Column::computed('action')
                 ->exportable(false)
