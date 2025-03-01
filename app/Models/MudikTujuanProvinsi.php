@@ -11,11 +11,18 @@ class MudikTujuanProvinsi extends Model
 
     protected $table = "mudik_tujuan_provinsi";
 
-    public function tujuan(){
+    public function tujuan()
+    {
         return $this->hasOne(MudikTujuan::class, 'id', 'tujuan_id');
     }
 
-    public function kota(){
+    public function kota()
+    {
         return $this->hasMany(MudikTujuanKota::class, 'provinsi_id', 'id');
+    }
+
+    public function kotax()
+    {
+        return $this->hasMany(MudikTujuanKota::class, 'provinsi_id', 'id')->where('status', 'inactive');
     }
 }
