@@ -105,7 +105,7 @@ class MudikReportController extends Controller
                 }
                 $tujuan = MudikTujuan::find($user->tujuan);
                 if ($tujuan->code == 'kedalam-banten') {
-                    $message = "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nPeserta Mudik yang di nyatakan terdaftar wajib hadir pada saat Verifikasi Waktu dan Tempat untuk Verifikasi sebagai berikut:\n\n============================= \n\nTanggal: *03 - 25 Maret 2025*\nWaktu:*09.00 WIB s/d 17.00 WIB*\nTempat:*Akan di Informasikan lebih lanjut*\n\n============================= \n\nTerima kasih";
+                    $message = "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nPeserta Mudik yang di nyatakan terdaftar wajib hadir pada saat Verifikasi Waktu dan Tempat untuk Verifikasi sebagai berikut:\n\n============================= \n\nTanggal: *03 - 25 Maret 2025*\nWaktu:*09.00 WIB s/d 17.00 WIB*\nTempat:*Via Online*\n\n============================= \n\nTerima kasih";
                 } else {
                     $message = "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nPeserta Mudik yang di nyatakan terdaftar wajib hadir pada saat Verifikasi Waktu dan Tempat untuk Verifikasi sebagai berikut:\n\n============================= \n\nTanggal: *03 - 25 Maret 2025*\nWaktu:*09.00 WIB s/d 17.00 WIB*\nTempat:*Via Online*\n\n============================= \n\nTerima kasih";
                 }
