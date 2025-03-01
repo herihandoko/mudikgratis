@@ -66,7 +66,7 @@
                             @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')
                             <div class="alert alert-success mt-2" role="alert">
                                 Selamat Data Peserta Mudik Anda Sudah tersimpan dengan Nomor Registrasi <b>{{ $user->nomor_registrasi }}</b>.<br>
-                                <b>Informasi:</b><br> Yth. Bapak/Ibu Peserta Mudik Gratis Tahun 2024 Sehubungan pencocokan data peserta Mudik Gratis tahun 2024 telah dilaksanakan oleh panitia melalui data yang tersimpan dalam aplikasi jawaramudik.bantenprov.go.id, maka tidak lagi diperlukan kehadiran Bapak/Ibu dalam acara Verifikasi peserta pada tanggal 22-23 Maret 2024. <br>Demikian atas perhatian dan kerjasamanya, diucapkan terima kasih. <br>Untuk informasi lebih lanjut dapat menghubungi Call Centre di 0852 1080 8700
+                                <b>Informasi:</b><br> Yth. Bapak/Ibu Peserta Mudik Gratis Tahun 2025 Sehubungan pencocokan data peserta Mudik Gratis tahun 2025 telah dilaksanakan oleh panitia melalui data yang tersimpan dalam aplikasi jawaramudik.bantenprov.go.id, maka tidak lagi diperlukan kehadiran Bapak/Ibu dalam acara Verifikasi peserta pada tanggal 03-25 Maret 2025. <br>Demikian atas perhatian dan kerjasamanya, diucapkan terima kasih. <br>Untuk informasi lebih lanjut dapat menghubungi Call Centre di 0813 8558 2399
                             </div>
                             @endif
                             @if ($user->status_profile == 1 && $user->status_mudik == 'ditolak')
