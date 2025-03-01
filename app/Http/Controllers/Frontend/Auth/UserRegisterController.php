@@ -202,7 +202,9 @@ class UserRegisterController extends Controller
     {
         $period = MudikPeriod::where('status', 'active')->orderBy('id', 'desc')->first();
         $mudikTujuan = MudikTujuan::where('code', $request->id)->where('status', 'active')->where('id_period', $period->id)->first();
-        return MudikTujuanProvinsi::with('kota')->where('tujuan_id', $mudikTujuan->id)->where('status', 'active')->get();
+        return MudikTujuanProvinsi::with(['kota' => function ($q) {
+            $q->where('status', 'active');
+        }])->where('tujuan_id', $mudikTujuan->id)->where('status', 'active')->get();
     }
 
     function cekStatusAktif($start_date, $end_date)
