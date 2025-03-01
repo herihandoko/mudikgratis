@@ -122,6 +122,7 @@ class UserRegisterController extends Controller
             'kota_tujuan' => ['required'],
             'jumlah' => [
                 'required',
+                'numeric',
                 'min:1',
                 'max:4',
                 new KuotaRule($data['kota_tujuan'], $period->id)
@@ -206,7 +207,7 @@ class UserRegisterController extends Controller
 
     function cekStatusAktif($start_date, $end_date)
     {
-        date_default_timezone_set('Asia/Jakarta'); 
+        date_default_timezone_set('Asia/Jakarta');
         // Konversi tanggal ke dalam format timestamp untuk perbandingan
         $start_timestamp = strtotime($start_date);
         $end_timestamp = strtotime($end_date);

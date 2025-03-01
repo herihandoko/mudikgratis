@@ -37,7 +37,7 @@ $nomor = 1;
         <table width="100%">
             <tr>
                 <td style="text-align: center;">
-                    DAFTAR PESERTA MUDIK GRATIS BERSAMA PEMERINTAH PROVINSI BANTEN TAHUN 2024/1445H
+                    DAFTAR PESERTA MUDIK GRATIS BERSAMA PEMERINTAH PROVINSI BANTEN TAHUN 2025/1446H
                 </td>
             </tr>
             <tr>
