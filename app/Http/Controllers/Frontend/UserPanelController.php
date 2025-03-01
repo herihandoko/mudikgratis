@@ -398,7 +398,8 @@ class UserPanelController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama_lengkap' => 'required',
-            'nik' => 'required|min:16|max:24|unique:pesertas,nik',
+            // 'nik' => 'required|min:16|max:24|unique:pesertas,nik',
+            'nik' => 'required|min:16|max:24',
             'tgl_lahir' => 'required|date_format:Y-m-d|before:today',
             'jenis_kelamin' => 'required',
         ]);
