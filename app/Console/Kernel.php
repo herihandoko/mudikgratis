@@ -25,12 +25,12 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         CleanRegisterCommand::class,
-        KuotaSynchCommand::class,
+        // KuotaSynchCommand::class,
         WaitingNotifCommand::class,
         CleanStatusCommand::class,
         CleanCancelledCommand::class,
         SendMessageCommand::class,
-        NotifInformasiCommand::class
+        // NotifInformasiCommand::class
         // SendNotifCommand::class,
         // NotifTwibbonizeCommand::class,
         // NotifKedalamCommand::class
