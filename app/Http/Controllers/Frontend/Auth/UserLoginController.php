@@ -49,7 +49,7 @@ class UserLoginController extends Controller
                     $fail($attribute . ' does not exist.');
                 }
             },],
-            'g-recaptcha-response' =>  ReCaptcha('recaptcha_status') == 1 ? 'required|captcha' : [],
+            // 'g-recaptcha-response' =>  ReCaptcha('recaptcha_status') == 1 ? 'required|captcha' : [],
             'password' => 'required|min:4'
         ]);
 
