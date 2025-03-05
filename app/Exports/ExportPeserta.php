@@ -57,7 +57,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
             ["Hari/Tanggal", $formatted],
             ["Bus", isset($this->bus->name) ? $this->bus->name : "-"],
             ["Pendamping", isset($this->bus->pendamping) ? $this->bus->pendamping : "-"],
-            ["NO", "NOMOR KARTU KELUARGA", "NOMOR INDUK KEPENDUDUKAN (NIK)", "NAMA LENGKAP (SESUAI KTP/KK)", "ALAMAT (SESUAI KTP/KK)", "JENIS KELAMIN", "NO TELEPON/HP (WA AKTIF)", "KOTA/KAB", "NOMOR KURSI", "STATUS", "KET"]
+            ["NO", "NOMOR KARTU KELUARGA", "NOMOR INDUK KEPENDUDUKAN (NIK)", "NAMA LENGKAP (SESUAI KTP/KK)", "ALAMAT (SESUAI KTP/KK)", "JENIS KELAMIN", "NO TELEPON/HP (WA AKTIF)", "KOTA/KAB", "NOMOR KURSI", "STATUS", "TITIK TURUN", "KET"]
         ];
     }
 
@@ -74,8 +74,9 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
                 $event->sheet->getDelegate()->getColumnDimension('G')->setAutoSize(true);
                 $event->sheet->getDelegate()->getColumnDimension('H')->setAutoSize(true);
                 $event->sheet->getDelegate()->getColumnDimension('I')->setAutoSize(true);
-                $event->sheet->getDelegate()->mergeCells('A1:K1');
-                $event->sheet->getDelegate()->mergeCells('A2:K2');
+                $event->sheet->getDelegate()->getColumnDimension('J')->setAutoSize(true);
+                $event->sheet->getDelegate()->mergeCells('A1:L1');
+                $event->sheet->getDelegate()->mergeCells('A2:L2');
                 $styleArray = [
                     'font' => [
                         'bold' => true,
@@ -85,8 +86,8 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
                         'vertical' => Alignment::VERTICAL_CENTER,
                     ],
                 ];
-                $event->sheet->getDelegate()->getStyle('A1:K1')->applyFromArray($styleArray);
-                $event->sheet->getDelegate()->getStyle('A2:K2')->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A1:L1')->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A2:L2')->applyFromArray($styleArray);
 
                 $styleArray = [
                     'font' => [
@@ -102,7 +103,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
                     ],
                 ];
 
-                $event->sheet->getDelegate()->getStyle('A6:K6')->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A6:L6')->applyFromArray($styleArray);
             },
         ];
     }
@@ -136,6 +137,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
             isset($row->profile->userCity->name) ? $row->profile->userCity->name : '-',
             isset($row->nomor_kursi) ? $row->nomor_kursi : '-',
             $row->status,
+            $row->profile->pointstop->name ?? '-',
             $row->reason
         ];
     }

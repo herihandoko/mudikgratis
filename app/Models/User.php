@@ -92,6 +92,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(MudikTujuanKota::class, 'id', 'kota_tujuan');
     }
 
+    public function pointstop()
+    {
+        return $this->hasOne(MudikRute::class, 'id', 'id_rute')->where('is_stop', 1);
+    }
+
     public function bus()
     {
         return $this->hasOne(Bus::class, 'id', 'nomor_bus');

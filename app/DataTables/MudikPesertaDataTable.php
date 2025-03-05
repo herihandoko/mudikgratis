@@ -47,7 +47,11 @@ class MudikPesertaDataTable extends DataTable
             ->addColumn('kota_tujuan', function ($row) {
                 return $row->KotaTujuan->name;
             })
-            ->rawColumns(['no_kk', 'action', 'status_mudik', 'alamat', 'phone']);
+            ->addColumn('stop_point', function ($row) {
+                return @$row->profile->pointstop->name ?? '-';
+                // return '-';
+            })
+            ->rawColumns(['no_kk', 'action', 'status_mudik', 'alamat', 'phone', 'stop_point']);
     }
 
     /**
@@ -107,6 +111,7 @@ class MudikPesertaDataTable extends DataTable
             Column::make('kota_tujuan')->title('KOTA TUJUAN')->width(100),
             Column::make('nomor_kursi')->title('NOMOR KURSI')->width(100),
             Column::make('status')->title('STATUS')->width(100),
+            Column::make('stop_point')->title('TITIK TURUN')->width(100),
             Column::make('reason')->title('KET.')->width(100),
             Column::computed('action')
                 ->exportable(false)

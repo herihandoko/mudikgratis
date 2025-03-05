@@ -31,6 +31,9 @@ class MudikPenggunaDataTable extends DataTable
             ->addColumn('kota_tujuan', function ($row) {
                 return $row->kotatujuan->name;
             })
+            ->addColumn('titik_turun', function ($row) {
+                return $row->pointstop->name ?? '-';
+            })
             ->addColumn('jumlah_peserta', function ($row) {
                 return $row->peserta->count();
             })
@@ -44,7 +47,7 @@ class MudikPenggunaDataTable extends DataTable
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
-            ->rawColumns(['status_profile', 'action', 'jumlah_peserta','kota_tujuan']);
+            ->rawColumns(['status_profile', 'action', 'jumlah_peserta', 'kota_tujuan', 'titik_turun']);
     }
 
     /**
@@ -72,9 +75,9 @@ class MudikPenggunaDataTable extends DataTable
             $query->where('status_mudik', $this->request()->get("status_mudik"));
         }
         if ($this->request()->get("status_profile")) {
-            if($this->request()->get("status_profile") == 1){
+            if ($this->request()->get("status_profile") == 1) {
                 $query->where('status_profile', 1);
-            }elseif($this->request()->get("status_profile") == 2){
+            } elseif ($this->request()->get("status_profile") == 2) {
                 $query->where('status_profile', 0);
             }
         }
@@ -117,6 +120,7 @@ class MudikPenggunaDataTable extends DataTable
             Column::make('status_mudik')->title('STATUS MUDIK')->width(100),
             Column::make('jumlah')->title('JUMLAH REQUEST')->width(100),
             Column::make('jumlah_peserta')->title('JUMLAH PESERTA')->width(100),
+            Column::make('titik_turun')->title('TITIK TURUN')->width(100),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
