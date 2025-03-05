@@ -129,7 +129,7 @@ class UserRegisterController extends Controller
             ],
             'tgl_lahir' => $data['tujuan'] == 'kedalam-banten' ? 'required|date_format:Y-m-d|before:today' : [],
             'tempat_lahir' =>  $data['tujuan'] == 'kedalam-banten' ? 'required|max:255' : [],
-            'g-recaptcha-response' =>  ReCaptcha('recaptcha_status') == 1 ? ['required', 'captcha'] : [],
+            // 'g-recaptcha-response' =>  ReCaptcha('recaptcha_status') == 1 ? ['required', 'captcha'] : [],
         ];
 
         $customMessages = [
