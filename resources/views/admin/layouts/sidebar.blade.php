@@ -74,6 +74,11 @@
                                 <a class="nav-link" href="{{ route('admin.mudik-peserta.index') }}">Peserta Gagal</a>
                             </li>
                         @endcan
+                        {{-- @can('mudik-peserta-create') --}}
+                        <li class="{{ ActiveSidebarNew('admin.mudik-peserta.create') }}">
+                            <a class="nav-link" href="{{ route('admin.mudik-peserta.create') }}">Input Peserta</a>
+                        </li>
+                        {{-- @endcan --}}
                         @can('mudik-verifikasi-index')
                             <li class="{{ ActiveSidebarNew('admin.mudik-verifikasi.*') }}">
                                 <a class="nav-link" href="{{ route('admin.mudik-verifikasi.index') }}">Verifikasi</a>

@@ -40,7 +40,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_login',
         'periode_id',
         'uuid',
-        'id_profession'
+        'id_profession',
+        'foto_kk',
+        'foto_ktp',
+        'foto_selfie',
+        'avatar',
+        'is_peserta',
+        'id_rute',
+        'id_profession',
+        'status_profile'
     ];
 
     /**

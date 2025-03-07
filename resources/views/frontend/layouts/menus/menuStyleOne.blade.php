@@ -79,9 +79,21 @@
                                     {{-- <li class="menu-item">
                                         <a href="{{route('user.login')}}">{{trans('frontend.Login')}}</a>
                                     </li> --}}
-                                    <li class="menu-item">
-                                        <a href="{{route('user.register')}}">Daftar</a>
-                                    </li>
+                                    @if(isset($statusMudik))
+                                        @if($statusMudik == 'open')
+                                            <li class="menu-item">
+                                                <a href="{{route('user.register')}}">Daftar</a>
+                                            </li>
+                                        @else    
+                                            <li class="menu-item">
+                                                <a href="{{route('user.login')}}">{{trans('frontend.Login')}}</a>
+                                            </li>
+                                        @endif
+                                    @else
+                                        <li class="menu-item">
+                                            <a href="{{route('user.register')}}">Daftar</a>
+                                        </li>
+                                    @endif
                                 @endguest
                                 </ul>
                             </nav>

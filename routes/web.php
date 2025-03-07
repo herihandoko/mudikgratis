@@ -114,6 +114,11 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
 
+        Route::get('mudik-peserta/provinces', [DependentDropdownController::class, 'provinces'])->name('mudik-peserta.provinces');
+        Route::get('mudik-peserta/cities', [DependentDropdownController::class, 'cities'])->name('mudik-peserta.cities');
+        Route::get('mudik-peserta/districts', [DependentDropdownController::class, 'districts'])->name('mudik-peserta.districts');
+        Route::get('mudik-peserta//villages', [DependentDropdownController::class, 'villages'])->name('mudik-peserta.villages');
+
         // Dashoboard
         Route::get('/',          [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
@@ -252,6 +257,8 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::post('/admin/mudik-verifikasi/bus/store', [MudikVerifikasiController::class, 'bus_store'])->name('mudik-verifikasi.bus.store');
         Route::get('/admin/mudik-verifikasi/combo', [MudikVerifikasiController::class, 'combo'])->name('mudik-verifikasi.combo');
         Route::get('/admin/mudik-provinsi/combo', [MudikProvinsiController::class, 'combo'])->name('mudik-provinsi.combo');
+        Route::get('/admin/mudik-peserta/combo', [MudikPesertaController::class, 'combo'])->name('mudik-peserta.combo');
+        Route::get('/admin/mudik-peserta/pickstop', [MudikPesertaController::class, 'pickstop'])->name('mudik-peserta.pickstop');
 
         /** Survei */
         Route::resource('survei-pertanyaan', SurveiPertanyaanController::class);
