@@ -113,10 +113,10 @@ class MudikPesertaController extends Controller
             $quotaSpareSystem = 0;
             if ($kuotaTersedia == $request->jumlah) {
                 $quotaSpareSystem = 0;
-                User::where('id', $spareKuota->id)->delete();
+                User::where('id', $spareKuota->id)->where('nomor_registrasi', 'spare-system')->delete();
             } else {
                 $quotaSpareSystem = $kuotaTersedia - $request->jumlah;
-                User::where('id', $spareKuota->id)->update([
+                User::where('id', $spareKuota->id)->where('nomor_registrasi', 'spare-system')->update([
                     'jumlah' => $quotaSpareSystem
                 ]);
             }
