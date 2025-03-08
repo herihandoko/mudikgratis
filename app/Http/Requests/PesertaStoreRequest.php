@@ -60,6 +60,11 @@ class PesertaStoreRequest extends FormRequest
             ],
             'tgl_lahir' => 'required|date_format:Y-m-d|before:today',
             'tempat_lahir' =>  'required|max:255',
+            'anggota' => 'required|array',
+            'anggota.*.nik' => 'required|string|max:16',
+            'anggota.*.nama' => 'required|string|max:100',
+            'anggota.*.tanggal_lahir' => 'required|date',
+            'anggota.*.gender' => 'required|in:L,P',
         ];
     }
 }

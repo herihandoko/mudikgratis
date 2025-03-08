@@ -28,7 +28,8 @@ class MudikPesertaController extends Controller
 
     public function create()
     {
-        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
+        $tujuanIds = User::select('tujuan')->where('nomor_registrasi', 'spare-system')->where('jumlah', '>', 0)->where('periode_id', session('id_period'))->get();
+        $tujuan = MudikTujuan::whereIn('id', $tujuanIds)->where('id_period', session('id_period'))->pluck('name', 'id');
         $profession = Profession::pluck('name', 'id');
         $kotaTujuan = MudikTujuanKota::get();
         return view('admin.mudik.pesertaCreate', compact('tujuan', 'profession', 'kotaTujuan'));
@@ -36,14 +37,20 @@ class MudikPesertaController extends Controller
 
     public function combo(Request $request)
     {
-        return MudikTujuanKota::with('tujuan')->where('tujuan_id', $request->id)->get();
+        $kotaIds = User::select('kota_tujuan')->where('tujuan', $request->id)->where('nomor_registrasi', 'spare-system')->where('jumlah', '>', 0)->where('periode_id', session('id_period'))->get();
+        return MudikTujuanKota::with('tujuan')->where('tujuan_id', $request->id)->whereIn('id', $kotaIds)->get();
     }
 
     public function pickstop(Request $request)
     {
         $idKotaTujuan = $request->id;
         $idRutes = MudikKotaHasStop::select('id_rute')->where('id_kota', $idKotaTujuan)->get();
-        return MudikRute::whereIn('id', $idRutes)->get();
+        $kuota = User::select('jumlah')->where('kota_tujuan', $request->id)->where('nomor_registrasi', 'spare-system')->where('jumlah', '>', 0)->where('periode_id', session('id_period'))->first();
+        return response([
+            'success' => true,
+            'stoppoint' => MudikRute::whereIn('id', $idRutes)->get(),
+            'kuota' => $kuota
+        ]);
     }
 
     public function store(PesertaStoreRequest $request)
@@ -51,21 +58,24 @@ class MudikPesertaController extends Controller
         date_default_timezone_set('Asia/Jakarta');
         $password = $this->generatePassword();
 
-        $ttlAnggota = 1;
-        foreach ($request->peserta as $key => $value) {
-            if ($value['nik'] && $value['nama'] && $value['tgl_lahir'] && $value['gender']) {
+
+        $ttlAnggota = 0;
+        foreach ($request->anggota as $key => $value) {
+            if ($value['nik'] && $value['nama'] && $value['tanggal_lahir'] && $value['gender']) {
                 $ttlAnggota++;
             }
         }
-
+        $ttlAnggota = (int)$ttlAnggota;
+        $jumlahRequest = (int)$request->jumlah;
         $spareKuota = User::select('id', 'jumlah')->where('nomor_registrasi', 'spare-system')->where('tujuan', $request->tujuan_id)->where('kota_tujuan', $request->kota_tujuan_id)->where('periode_id', session('id_period'))->first();
+        $kuotaTersedia = 0;
         if ($spareKuota) {
-            $kuotaTersedia = $spareKuota->jumlah;
-            if ($request->jumlah > $spareKuota->jumlah) {
+            $kuotaTersedia = (int)$spareKuota->jumlah;
+            if ($jumlahRequest  > $kuotaTersedia) {
                 toast('Kuota tidak cukup', 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
-            if ($ttlAnggota > $spareKuota->jumlah) {
+            if ($ttlAnggota > $kuotaTersedia) {
                 toast('Jumlah anggota tidak cukup', 'error')->width('300px');
                 return redirect()->back()->withInput();
             }
@@ -73,12 +83,6 @@ class MudikPesertaController extends Controller
             toast('Tidak ada kuota tersedia', 'error')->width('300px');
             return redirect()->back()->withInput();
         }
-
-        if ($ttlAnggota == $request->jumlah) {
-            toast('Jumlah anggota harus sama dengan data anggota', 'error')->width('300px');
-            return redirect()->back()->withInput();
-        }
-
 
         $user = User::create([
             'name' => $request->name,
@@ -111,11 +115,11 @@ class MudikPesertaController extends Controller
         ]);
         if ($user) {
             $quotaSpareSystem = 0;
-            if ($kuotaTersedia == $request->jumlah) {
+            if ($kuotaTersedia == $jumlahRequest) {
                 $quotaSpareSystem = 0;
                 User::where('id', $spareKuota->id)->where('nomor_registrasi', 'spare-system')->delete();
             } else {
-                $quotaSpareSystem = $kuotaTersedia - $request->jumlah;
+                $quotaSpareSystem = $kuotaTersedia - $jumlahRequest;
                 User::where('id', $spareKuota->id)->where('nomor_registrasi', 'spare-system')->update([
                     'jumlah' => $quotaSpareSystem
                 ]);
@@ -136,17 +140,17 @@ class MudikPesertaController extends Controller
             $address->kelurahan = $request->kelurahan;
 
             $address->save();
-            if ($request->peserta) {
-                foreach ($request->peserta as $key => $value) {
-                    if ($value['nik'] && $value['nama'] && $value['tgl_lahir'] && $value['gender']) {
+            if ($request->anggota) {
+                foreach ($request->anggota as $key => $value) {
+                    if ($value['nik'] && $value['nama'] && $value['tanggal_lahir'] && $value['gender']) {
                         $peserta = new Peserta();
                         $peserta->nama_lengkap =  $value['nama'];
                         $peserta->nik = $value['nik'];
-                        $peserta->tgl_lahir = $value['tgl_lahir'];
+                        $peserta->tgl_lahir = $value['tanggal_lahir'];
                         $peserta->jenis_kelamin = $value['gender'];
                         $peserta->user_id = $user->id;
                         $peserta->created_at = date('Y-m-d H:i:s');
-                        $peserta->kategori = $this->categorizeAgeGroup($value['tgl_lahir']);
+                        $peserta->kategori = $this->categorizeAgeGroup($value['tanggal_lahir']);
                         $peserta->kota_tujuan_id = $request->kota_tujuan_id;
                         $peserta->periode_id = session('id_period');
                         $peserta->status = 'dikirim';
@@ -157,7 +161,6 @@ class MudikPesertaController extends Controller
         }
         $notification =  'Tambah peserta mudik berhasil.';
         $notification = ['message' => $notification, 'alert-type' => 'success'];
-        // return redirect()->route('admin.mudik-peserta.create')->with($notification);
         return redirect()->route('admin.mudik-verifikasi.index', ['tujuan_id' => $request->tujuan_id, 'kota_tujuan_id' => $request->kota_tujuan_id, 'status_mudik' => 'dikirim'])->with($notification);
     }
 
