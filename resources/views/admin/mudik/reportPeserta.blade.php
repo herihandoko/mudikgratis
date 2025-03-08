@@ -107,7 +107,7 @@ $nomor = 1;
                 </td>
                 <td
                     style="text-align: center; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px; border-top:solid black 1px; background-color:#bebdbd;">
-                   KOTA/KAB
+                    KOTA TUJUAN
                 </td>
                 <td
                     style="text-align: center; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px; border-top:solid black 1px; background-color:#bebdbd;">
@@ -166,7 +166,7 @@ $nomor = 1;
                     </td>
                     <td
                         style="text-align: left; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px;">
-                        {{ @$row->profile->userCity->name; }}
+                        {{ @$row->KotaTujuan->name }}
                     </td>
                     <td
                         style="text-align: left; border-left:solid black 1px; border-bottom:solid black 1px; padding:5px;">

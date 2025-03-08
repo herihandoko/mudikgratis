@@ -57,7 +57,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
             ["Hari/Tanggal", $formatted],
             ["Bus", isset($this->bus->name) ? $this->bus->name : "-"],
             ["Pendamping", isset($this->bus->pendamping) ? $this->bus->pendamping : "-"],
-            ["NO", "NOMOR KARTU KELUARGA", "NOMOR INDUK KEPENDUDUKAN (NIK)", "NAMA LENGKAP (SESUAI KTP/KK)", "ALAMAT (SESUAI KTP/KK)", "JENIS KELAMIN", "NO TELEPON/HP (WA AKTIF)", "KOTA/KAB", "NOMOR KURSI", "STATUS", "TITIK TURUN", "KET"]
+            ["NO", "NOMOR KARTU KELUARGA", "NOMOR INDUK KEPENDUDUKAN (NIK)", "NAMA LENGKAP (SESUAI KTP/KK)", "ALAMAT (SESUAI KTP/KK)", "JENIS KELAMIN", "NO TELEPON/HP (WA AKTIF)", "KOTA TUJUAN", "NOMOR KURSI", "STATUS", "TITIK TURUN", "KET"]
         ];
     }
 
@@ -134,7 +134,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
             isset($row->profile->address->address) ? $row->profile->address->address : '-',
             $jnsKelamin,
             "\t" . $row->profile->phone,
-            isset($row->profile->userCity->name) ? $row->profile->userCity->name : '-',
+            isset($row->KotaTujuan->name) ? $row->KotaTujuan->name : '-',
             isset($row->nomor_kursi) ? $row->nomor_kursi : '-',
             $row->status,
             $row->profile->pointstop->name ?? '-',
