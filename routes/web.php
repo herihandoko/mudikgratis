@@ -117,7 +117,7 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::get('mudik-peserta/provinces', [DependentDropdownController::class, 'provinces'])->name('mudik-peserta.provinces');
         Route::get('mudik-peserta/cities', [DependentDropdownController::class, 'cities'])->name('mudik-peserta.cities');
         Route::get('mudik-peserta/districts', [DependentDropdownController::class, 'districts'])->name('mudik-peserta.districts');
-        Route::get('mudik-peserta//villages', [DependentDropdownController::class, 'villages'])->name('mudik-peserta.villages');
+        Route::get('mudik-peserta/villages', [DependentDropdownController::class, 'villages'])->name('mudik-peserta.villages');
 
         // Dashoboard
         Route::get('/',          [DashboardController::class, 'index'])->name('dashboard');

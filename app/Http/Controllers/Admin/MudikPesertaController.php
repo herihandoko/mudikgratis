@@ -21,9 +21,11 @@ use Illuminate\Support\Facades\Hash;
 class MudikPesertaController extends Controller
 {
     //
-    public function index(MudikPesertaDataTable $dataTables)
+    public function index(Request $request)
     {
-        return $dataTables->render('admin.mudik.verifikasiIndex');
+        $tujuan = MudikTujuan::where('id_period', session('id_period'))->pluck('name', 'id');
+        $dataTables = new MudikPesertaDataTable();
+        return $dataTables->render('admin.mudik.verifikasiIndex', compact('tujuan', 'request'));
     }
 
     public function create()
