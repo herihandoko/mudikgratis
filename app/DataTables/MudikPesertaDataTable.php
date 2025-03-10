@@ -44,6 +44,9 @@ class MudikPesertaDataTable extends DataTable
                 $button = json_decode(json_encode($button), FALSE);
                 return view('admin.layouts.datatableButtons', compact('button'));
             })
+            ->addColumn('kab_kota', function ($row) {
+                return $row->profile->userCity->name;
+            })
             ->addColumn('kota_tujuan', function ($row) {
                 return $row->KotaTujuan->name;
             })
@@ -108,6 +111,7 @@ class MudikPesertaDataTable extends DataTable
             Column::make('alamat')->title('ALAMAT (SESUAI KTP/KK)')->width(100),
             Column::make('jenis_kelamin')->title('JENIS KELAMIN')->width(100),
             Column::make('phone')->title('NOMOR TELEPON/HP (WA AKTIF)')->width(100),
+            Column::make('kab_kota')->title('KAB/KOTA')->width(100),
             Column::make('kota_tujuan')->title('KOTA TUJUAN')->width(100),
             Column::make('nomor_kursi')->title('NOMOR KURSI')->width(100),
             Column::make('status')->title('STATUS')->width(100),
