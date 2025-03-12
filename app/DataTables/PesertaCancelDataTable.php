@@ -16,10 +16,27 @@ class PesertaCancelDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->editColumn('sent_at', function ($row) {
-                return date('d/m/Y H:i', strtotime($row->sent_at));
+            ->editColumn('jenis_kelamin', function ($row) {
+                if ($row->jenis_kelamin == 'L') {
+                    return 'Laki-Laki';
+                } else {
+                    return 'Perempuan';
+                }
             })
-            ->rawColumns(['sent_at']);
+            ->addColumn('action', function ($action) {
+                $button = [
+                    'delete' => [
+                        'link' => route('admin.mudik-report.destroy', $action->id),
+                        'permission' => 'mudik-report-delete',
+                    ]
+                ];
+                $button = json_decode(json_encode($button), FALSE);
+                return view('admin.layouts.datatableButtons', compact('button'));
+            })
+            ->addColumn('kota_tujuan', function ($row) {
+                return $row->KotaTujuan->name;
+            })
+            ->rawColumns([ 'action', 'status_mudik', 'sent_at']);
     }
 
     /**
@@ -30,7 +47,9 @@ class PesertaCancelDataTable extends DataTable
      */
     public function query(PesertaCancelled $model)
     {
-        $query = $model->where('periode_id', session('id_period'))->newQuery();
+        $query = $model->with('KotaTujuan')
+            ->where('periode_id', session('id_period'))
+            ->newQuery();
         return $query;
     }
 
@@ -48,7 +67,8 @@ class PesertaCancelDataTable extends DataTable
             ->dom('Bfrtip')
             ->orderBy(0)
             ->buttons(
-                Button::make('reset')
+                Button::make('reset'),
+                Button::make('export')
             );
     }
 
@@ -60,12 +80,14 @@ class PesertaCancelDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::make('id')->title('Id')->width(10),
-            Column::make('nama_lengkap')->title('Nama Lengkap')->width(100),
-            Column::make('nik')->title('Nik')->width(100),
-            Column::make('tgl_lahir')->title('Tgl. Lahir')->width(100),
-            Column::make('jenis_kelamin')->title('Jenis Kelamin')->width(100),
-            Column::make('reason')->title('Alasan')->width(100),
+            Column::make('id')->title('ID')->width(10),
+            Column::make('nik')->title('NOMOR INDUK KEPENDUDUKAN (NIK)')->width(100),
+            Column::make('nama_lengkap')->title('NAMA LENGKAP (SESUAI KTP/KK)')->width(100),
+            Column::make('jenis_kelamin')->title('JENIS KELAMIN')->width(100),
+            Column::make('kota_tujuan')->title('KOTA TUJUAN')->width(100),
+            Column::make('nomor_kursi')->title('NOMOR KURSI')->width(100),
+            Column::make('status')->title('STATUS')->width(100),
+            Column::make('reason')->title('KET.')->width(100),
         ];
     }
 
