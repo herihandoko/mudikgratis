@@ -159,6 +159,8 @@ class MudikReportController extends Controller
         unset($dataPeserta['id']);
         $dataPeserta['created_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['created_at']));
         $dataPeserta['updated_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['updated_at']));
+        $dataPeserta['updated_by'] = auth()->user()->id;
+        $dataPeserta['reason'] = 'Dibatalkan oleh ' .  auth()->user()->name . ',dengan alasan permintaan pemudik';
         $id = PesertaCancelled::insert($dataPeserta);
         if ($id) {
             $peserta->delete();

@@ -33,6 +33,8 @@ class MudikPenggunaController extends Controller
                 unset($dataPeserta['id']);
                 $dataPeserta['created_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['created_at']));
                 $dataPeserta['updated_at'] = date('Y-m-d H:i:s');
+                $dataPeserta['updated_by'] = auth()->user()->id;
+                $dataPeserta['reason'] = 'Dibatalkan oleh ' .  auth()->user()->name . ',dengan alasan permintaan pemudik';
                 $id = PesertaCancelled::insert($dataPeserta);
                 if ($id) {
                     Peserta::where('id', $peserta->id)->delete();
@@ -44,6 +46,8 @@ class MudikPenggunaController extends Controller
             $dataUser['email_verified_at'] = date('Y-m-d H:i:s', strtotime($dataUser['email_verified_at']));
             $dataUser['created_at'] = date('Y-m-d H:i:s', strtotime($dataUser['created_at']));
             $dataUser['updated_at'] = date('Y-m-d H:i:s');
+            $dataUser['updated_by'] = auth()->user()->id;
+            $dataUser['reason'] = 'Dibatalkan oleh ' .  auth()->user()->name . ',dengan alasan permintaan pemudik';
             $id = UserInactive::insert($dataUser);
             if ($id) {
                 $user->delete();
