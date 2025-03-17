@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\NotifHistory;
 use App\Models\Peserta;
 use App\Models\PesertaCancelled;
 use Illuminate\Console\Command;
@@ -68,6 +69,15 @@ class CleanCancelledCommand extends Command
             $id = UserInactive::insert($dataUser);
             if ($id) {
                 $dataUser = $user->toArray();
+
+                $notifHistory = new NotifHistory();
+                $notifHistory->recipient_number = $dataUser['phone'];
+                $notifHistory->message  = "Notifikasi Jawara Mudik, \nAccount Jawara Mudik an:" . $dataUser['name'] . " telah berhasil dibatalkan\n\nTerima kasih atas partisipasi Anda dalam mudik gratis\nSalam\nTim Jawara Mudik";
+                $notifHistory->status = 'sent';
+                $notifHistory->created_by = auth()->user()->name;
+                $notifHistory->source = 'send-message';
+                $notifHistory->save();
+
                 User::where('id', $user->id)->delete();
             }
         }

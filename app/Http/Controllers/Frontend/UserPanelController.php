@@ -6,6 +6,7 @@ use App\DataTables\OrderDataTable;
 use App\DataTables\TransactionDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\MudikTujuanKota;
+use App\Models\NotifHistory;
 use App\Models\OrderItem;
 use App\Models\Peserta;
 use App\Models\Profession;
@@ -530,6 +531,15 @@ class UserPanelController extends Controller
             $dataUser['reason'] = 'Dihapus oleh ' .  auth()->user()->name;
             $id = UserInactive::insert($dataUser);
             if ($id) {
+
+                $notifHistory = new NotifHistory();
+                $notifHistory->recipient_number = $dataUser['phone'];
+                $notifHistory->message  = "Notifikasi Jawara Mudik, \nAccount Jawara Mudik Anda berhasil di hapus\n\nTerima kasih";
+                $notifHistory->status = 'sent';
+                $notifHistory->created_by = auth()->user()->name;
+                $notifHistory->source = 'send-message';
+                $notifHistory->save();
+
                 User::where('id', auth()->user()->id)->delete();
             }
         }

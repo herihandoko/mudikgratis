@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\DataTables\MudikPenggunaDataTable;
 use App\Models\MudikPeriod;
 use App\Models\MudikTujuan;
+use App\Models\NotifHistory;
 use App\Models\Peserta;
 use App\Models\PesertaCancelled;
 use App\Models\User;
@@ -37,6 +38,15 @@ class MudikPenggunaController extends Controller
                 $dataPeserta['reason'] = 'Dibatalkan oleh ' .  auth()->user()->name . ',dengan alasan permintaan pemudik';
                 $id = PesertaCancelled::insert($dataPeserta);
                 if ($id) {
+
+                    $notifHistory = new NotifHistory();
+                    $notifHistory->recipient_number = $user->phone;
+                    $notifHistory->message  = "Notifikasi Jawara Mudik, \Peserta Jawara Mudik an:" . $dataPeserta['nama_lengkap'] . " telah berhasil dibatalkan\n\nTerima kasih atas partisipasi Anda dalam mudik gratis\nSalam\nTim Jawara Mudik";
+                    $notifHistory->status = 'sent';
+                    $notifHistory->created_by = auth()->user()->name;
+                    $notifHistory->source = 'send-message';
+                    $notifHistory->save();
+
                     Peserta::where('id', $peserta->id)->delete();
                 }
             }
@@ -50,6 +60,15 @@ class MudikPenggunaController extends Controller
             $dataUser['reason'] = 'Dibatalkan oleh ' .  auth()->user()->name . ',dengan alasan permintaan pemudik';
             $id = UserInactive::insert($dataUser);
             if ($id) {
+
+                $notifHistory = new NotifHistory();
+                $notifHistory->recipient_number = $dataUser['phone'];
+                $notifHistory->message  = "Notifikasi Jawara Mudik, \nAccount Jawara Mudik an:" . $dataUser['name'] . " telah berhasil dibatalkan\n\nTerima kasih atas partisipasi Anda dalam mudik gratis\nSalam\nTim Jawara Mudik";
+                $notifHistory->status = 'sent';
+                $notifHistory->created_by = auth()->user()->name;
+                $notifHistory->source = 'send-message';
+                $notifHistory->save();
+
                 $user->delete();
             }
         }
