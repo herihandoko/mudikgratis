@@ -53,6 +53,7 @@ class CleanCancelledCommand extends Command
             unset($dataPeserta['id']);
             $dataPeserta['created_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['created_at']));
             $dataPeserta['updated_at'] = date('Y-m-d H:i:s', strtotime($dataPeserta['updated_at']));
+            $dataPeserta['status'] = 'dibatalkan';
             $id = PesertaCancelled::insert($dataPeserta);
             if ($id) {
                 Peserta::where('id', $peserta->id)->delete();
@@ -66,6 +67,7 @@ class CleanCancelledCommand extends Command
             $dataUser['email_verified_at'] = date('Y-m-d H:i:s', strtotime($dataUser['email_verified_at']));
             $dataUser['created_at'] = date('Y-m-d H:i:s', strtotime($dataUser['created_at']));
             $dataUser['updated_at'] = date('Y-m-d H:i:s', strtotime($dataUser['updated_at']));
+            $dataUser['status_mudik'] = 'dibatalkan';
             $id = UserInactive::insert($dataUser);
             if ($id) {
                 $dataUser = $user->toArray();

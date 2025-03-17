@@ -58,6 +58,7 @@ class CleanRegisterCommand extends Command
                     $dataUser['email_verified_at'] = date('Y-m-d H:i:s', strtotime($dataUser['email_verified_at']));
                     $dataUser['created_at'] = date('Y-m-d H:i:s', strtotime($dataUser['created_at']));
                     $dataUser['updated_at'] = date('Y-m-d H:i:s', strtotime($dataUser['updated_at']));
+                    $dataUser['status_mudik'] = 'dibatalkan';
                     $id = UserInactive::insert($dataUser);
                     if ($id) {
                         $user->delete();

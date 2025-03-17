@@ -528,6 +528,7 @@ class UserPanelController extends Controller
             $dataUser['created_at'] = date('Y-m-d H:i:s', strtotime($dataUser['created_at']));
             $dataUser['updated_at'] = date('Y-m-d H:i:s', strtotime($dataUser['updated_at']));
             $dataUser['updated_by'] = auth()->user()->id;
+            $dataUser['status_mudik'] = 'dibatalkan';
             $dataUser['reason'] = 'Dihapus oleh ' .  auth()->user()->name;
             $id = UserInactive::insert($dataUser);
             if ($id) {
