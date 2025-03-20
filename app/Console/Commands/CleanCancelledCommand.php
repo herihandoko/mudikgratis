@@ -76,7 +76,7 @@ class CleanCancelledCommand extends Command
                 $notifHistory->recipient_number = $dataUser['phone'];
                 $notifHistory->message  = "Notifikasi Jawara Mudik, \nAccount Jawara Mudik an:" . $dataUser['name'] . " telah berhasil dibatalkan\n\nTerima kasih atas partisipasi Anda dalam mudik gratis\nSalam\nTim Jawara Mudik";
                 $notifHistory->status = 'sent';
-                $notifHistory->created_by = auth()->user()->name;
+                $notifHistory->created_by = $dataUser['name'];
                 $notifHistory->source = 'send-message';
                 $notifHistory->save();
 
