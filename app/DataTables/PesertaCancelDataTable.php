@@ -68,7 +68,7 @@ class PesertaCancelDataTable extends DataTable
             ->orderBy(0)
             ->buttons(
                 Button::make('reset'),
-                Button::make('export')
+                // Button::make('export')
             );
     }
 

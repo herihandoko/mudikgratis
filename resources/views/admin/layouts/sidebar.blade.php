@@ -131,6 +131,9 @@
                                 <a class="nav-link" href="{{ route('admin.survei-report.index') }}">Report</a>
                             </li>
                         @endcan
+                        <li class="{{ ActiveSidebarNew('admin.survei-saran.*') }}">
+                            <a class="nav-link" href="{{ route('admin.survei-saran.index') }}">Saran & Masukan</a>
+                        </li>
                     </ul>
                 </li>
             @endcanany

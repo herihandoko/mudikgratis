@@ -53,7 +53,8 @@ class SendMessageCommand extends Command
             if ($stsUpdate) {
                 $param = [
                     'target' => $value->recipient_number,
-                    'message' => $value->message
+                    'message' => $value->message,
+                    'url' => 'https://jawaramudik.bantenprov.go.id/survei-kepuasan-masyarakat',
                 ];
                 $this->notificationApiService->sendNotification($param);
             }

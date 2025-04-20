@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Correspondent;
 use App\Models\SurveyQuestion;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SurveiReportController extends Controller
 {
@@ -64,5 +65,49 @@ class SurveiReportController extends Controller
         $jumlah = array_sum($nilai);
         $totalResponden = count($nilai);
         return $jumlah / $totalResponden;
+    }
+
+    public function export()
+    {
+        // $tujuans = MudikTujuan::with('provinsis')->where('status', 'active')->where('id_period', session('id_period'))->get();
+        $unsur = SurveyQuestion::where('id_period', session('id_period'))->orderBy('sorting', 'asc')->get();
+        $indikator = [];
+        foreach ($unsur as $key => $item) {
+            $nilai = [];
+            foreach ($item->respondenAnswer as $key => $value) {
+                $nilai[] = $value->nilai;
+            }
+            $indikator['indikator_' . $item->id] = $nilai;
+        }
+
+        $rataRataIndikator = [];
+        $ikmText = '-';
+        $ikm = 0;
+        $jumlahCorespondent = Correspondent::where('id_period', session('id_period'))->count();
+        $ikmColor = '';
+        if ($indikator && $jumlahCorespondent > 0) {
+            foreach ($indikator as $key => $nilai) {
+                $rataRataIndikator[$key] = $this->hitungRataRata($nilai);
+            }
+            $jumlahRataRata = array_sum($rataRataIndikator);
+            $jumlahIndikator = count($rataRataIndikator);
+            $ikm = round($jumlahRataRata / $jumlahIndikator, 2);
+            if ($ikm >= 4) {
+                $ikmText = "Sangat Puas";
+                $ikmColor = "text-success";
+            } elseif ($ikm >= 3) {
+                $ikmText =  "Puas";
+                $ikmColor = "text-success";
+            } elseif ($ikm >= 2) {
+                $ikmText =  "Kurang Puas";
+                $ikmColor = "text-warning";
+            } else {
+                $ikmText =  "Tidak Puas";
+                $ikmColor = "text-danger";
+            }
+        }
+        $pdf = Pdf::loadView('admin.survei.reportIkm', compact('unsur', 'ikm', 'ikmText', 'jumlahCorespondent', 'ikmColor'))->setPaper('letter', 'portrait');;
+        // $pdf = Pdf::loadView('admin.mudik.reportMudik',compact('tujuans'))->setPaper('letter', 'portrait');
+        return $pdf->download('report-index-kepuasan-masyarakat.pdf');
     }
 }

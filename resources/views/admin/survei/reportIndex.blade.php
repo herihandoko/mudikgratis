@@ -9,10 +9,12 @@
             <div class="section-header">
                 <h1>Report Indek Kepuasan Masyarakat ( {{ session('name_period') }} )</h1>
             </div>
-            <a class="btn btn-primary mb-4" href="{{ route('admin.dashboard') }}" role="button"><i
-                    class="fas fa-arrow-alt-circle-left    "></i>{{ trans('admin.Back') }}</a>
+            <a class="btn btn-primary mb-4" href="{{ route('admin.dashboard') }}" role="button"><i class="fas fa-arrow-alt-circle-left    "></i>{{ trans('admin.Back') }}</a>
             <div class="section-body">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="col-md-2"><a target="_blank" href="{{ route('admin.ikm.export') }}" class="btn btn-danger">Cetak PDF</a></div>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 col-sm-12">

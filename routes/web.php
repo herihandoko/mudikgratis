@@ -65,6 +65,7 @@ use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Controllers\Admin\SurveiPertanyaanController;
 use App\Http\Controllers\Admin\SurveiReportController;
 use App\Http\Controllers\Admin\SurveiResponController;
+use App\Http\Controllers\Admin\SurveiSaranController;
 use App\Http\Controllers\Admin\TermsOfUseController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\TransactionController;
@@ -264,6 +265,8 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::resource('survei-pertanyaan', SurveiPertanyaanController::class);
         Route::resource('survei-respon', SurveiResponController::class);
         Route::resource('survei-report', SurveiReportController::class);
+        Route::get('/ikm/export', [SurveiReportController::class, 'export'])->name('ikm.export');
+        Route::resource('survei-saran', SurveiSaranController::class);
 
         Route::get('admin/set-session/{selectedValue}', function ($selectedValue) {
             $period = MudikPeriod::find($selectedValue);
