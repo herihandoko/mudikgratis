@@ -44,10 +44,9 @@ class SaranDataTable extends DataTable
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(0)
-            ->buttons(
-                Button::make('reset'),
-                Button::make('export')
-            );
+            ->parameters([
+                'buttons' => ['excel', 'csv'],
+            ]);
     }
 
     /**
