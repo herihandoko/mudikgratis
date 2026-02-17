@@ -72,7 +72,11 @@
                                                             {{ $val->bus->sum('jumlah_kursi') }} Kursi
                                                         </td>
                                                         <td class="text-right">
-                                                            {{ $val->userKota->sum('jumlah') }} Peserta
+                                                            @if($val->userKota->sum('jumlah') > $val->bus->sum('jumlah_kursi'))
+                                                                <span class="text-danger">0 Peserta</span>
+                                                            @else
+                                                                {{ $val->userKota->sum('jumlah') }} Peserta
+                                                            @endif
                                                         </td>
                                                         @if($val->bus->sum('jumlah_kursi')-$val->userKota->sum('jumlah') < 0)
                                                         <td class="text-right">0 Kursi</td>
@@ -192,7 +196,7 @@
     </section>
     <a href="https://wa.me/6281385582399" class="whatsapp-float" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Chat via WhatsApp" width="50">
-    </a>    
+    </a>
     @push('scripts')
     <link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/datatables.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
