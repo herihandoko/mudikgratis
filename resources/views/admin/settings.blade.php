@@ -76,6 +76,11 @@ $page_title = trans('admin.Admin | Settings');
                                             href="#factory-settings" role="tab" aria-controls="factory-settings"
                                             aria-selected="false">{{ trans('admin.Factory Settings') }}</a>
                                     </li>
+                                    <li class="nav-item mb-2">
+                                        <a class="nav-link border" id="whatsapp-settings-tab" data-toggle="tab"
+                                            href="#whatsapp-settings" role="tab" aria-controls="whatsapp-settings"
+                                            aria-selected="false">{{ trans('admin.WhatsApp Settings') }}</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-md-9">
@@ -1280,6 +1285,46 @@ $page_title = trans('admin.Admin | Settings');
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="whatsapp-settings" role="tabpanel"
+                                        aria-labelledby="whatsapp-settings-tab">
+                                        <div class="alert alert-info mb-4" role="alert">
+                                            <i class="fas fa-info-circle"></i>
+                                            {{ trans('admin.WhatsApp Settings Info') }}
+                                            <a href="https://fonnte.com/" target="_blank" rel="noopener noreferrer" class="alert-link">https://fonnte.com/</a>
+                                        </div>
+                                        <form action="{{ route('admin.whatsappsettings') }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="card border">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label>{{ trans('admin.WhatsApp Base URL') }}</label>
+                                                                <input type="url" class="form-control" name="whatsapp_base_url"
+                                                                    value="{{ GetSetting('whatsapp_base_url') }}"
+                                                                    placeholder="https://api.example.com">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label>{{ trans('admin.WhatsApp Token') }}</label>
+                                                                <input type="text" class="form-control" name="whatsapp_token"
+                                                                    value="{{ GetSetting('whatsapp_token') }}"
+                                                                    placeholder="Bearer your-token">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <button type="submit" class="btn btn-primary">
+                                                                <i class="fas fa-save"></i> {{ trans('admin.Update') }}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
