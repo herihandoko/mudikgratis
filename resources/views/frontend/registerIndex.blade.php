@@ -30,6 +30,7 @@
                             <p>{{ $period->name }}</p>
                             <form name="login-form" class="clearfix" method="POST" action="{{ route('user.register') }}">
                                 @csrf
+                                <p class="text-muted small mb-3"><span style="color:red;">*</span> Wajib diisi</p>
                                 @error('error')
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         <strong>{{ trans('frontend.Error!') }}</strong> {{ $message }}.
@@ -84,16 +85,13 @@
                                     </div>
                                 @enderror
 
-                                @error('g-recaptcha-response')
+                                @error('email')
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>{{ trans('frontend.Error!') }}</strong>
-                                        @if ($errors->first('g-recaptcha-response'))
-                                            {{ trans('frontend.Captcha Required!') }}
-                                        @endif.
+                                        <strong>{{ trans('frontend.Error!') }}</strong> {{ $message }}.
                                     </div>
                                 @enderror
 
-                                @error('email')
+                                @error('phone')
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         <strong>{{ trans('frontend.Error!') }}</strong> {{ $message }}.
                                     </div>
@@ -134,18 +132,26 @@
                                     </div>
                                 </div>
                                 <hr>
-                                
+
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
                                         <label for="form_username_no_kk">Nomor Kartu Keluarga (KK) <span  style="margin-left:5px; color:red;">*</span></label>
-                                        <input id="form_username_no_kk" name="no_kk" class="form-control" type="text" required value="{{ old('no_kk') }}">
+                                        <input id="form_username_no_kk" name="no_kk" class="form-control {{ $errors->has('no_kk') ? 'is-invalid' : '' }}" type="text" required value="{{ old('no_kk') }}" pattern="[0-9]{16}" minlength="16" maxlength="16" inputmode="numeric" title="Nomor KK harus 16 digit angka" placeholder="16 digit nomor KK">
+                                        @error('no_kk')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                        <span style="color:#6c757d; font-size:12px;">Nomor KK 16 digit (angka saja)</span>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
                                         <label for="form_username_nik">Nomor Induk Kependudukan (NIK) <span style="margin-left:5px; color:red;">*</span></label>
-                                        <input id="form_username_nik" name="nik" class="form-control" type="text" required value="{{ old('nik') }}">
+                                        <input id="form_username_nik" name="nik" class="form-control {{ $errors->has('nik') ? 'is-invalid' : '' }}" type="text" required value="{{ old('nik') }}" pattern="[0-9]{16}" minlength="16" maxlength="16" inputmode="numeric" title="NIK harus 16 digit angka" placeholder="16 digit NIK sesuai KTP">
+                                        @error('nik')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                        <span style="color:#6c757d; font-size:12px;">NIK 16 digit (angka saja, sesuai KTP)</span>
                                     </div>
                                 </div>
 
@@ -174,48 +180,40 @@
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
                                         <label for="form_username_email">{{ trans('frontend.Email') }} <span style="margin-left:5px; color:red;">*</span></label>
-                                        <input id="form_username_email" name="email" class="form-control" type="text" required value="{{ old('email') }}">
+                                        <input id="form_username_email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" required value="{{ old('email') }}" placeholder="contoh@email.com" autocomplete="email" title="Masukkan alamat email yang valid">
+                                        @error('email')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                        <span style="color:#6c757d; font-size:12px;">Contoh: nama@domain.com</span>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="mb-3 col-md-12">
                                         <label for="form_username_phone">{{ trans('frontend.Phone (Optional)') }} <span style="margin-left:5px; color:red;">*</span></label>
-                                        <input id="form_username_phone" name="phone" class="form-control" type="text" required value="{{ old('phone') }}" placeholder="08138XXXXXX">
-                                        <span style="margin-left:5px; color:red; font-size:10px;">** Pastikan Nomor Telepon Anda aktif dan dapat terhubung dengan whatsapp.</span>
+                                        <input id="form_username_phone" name="phone" class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" type="tel" required value="{{ old('phone') }}" placeholder="08138XXXXXX" pattern="[0-9]{9,15}" minlength="9" maxlength="15" inputmode="numeric" title="Nomor telepon 9-15 digit (angka saja)">
+                                        @error('phone')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                        <span style="color:#6c757d; font-size:12px;">Nomor telepon 9-15 digit (angka saja). Contoh: 08123456789</span>
+                                        <span style="margin-left:5px; color:red; font-size:10px;">** Pastikan Nomor Telepon Anda aktif dan dapat dihubungi.</span>
                                     </div>
                                 </div>
-                                {{-- <hr> --}}
-                                
-                                {{-- <div class="row">
-
-                                    <div class="mb-3 col-md-6">
-                                        <label for="form_password">{{ trans('frontend.Password') }}</label>
-                                        <input id="form_password" name="password" class="form-control" type="password">
+                                <div class="row">
+                                    <div class="mb-3 col-md-12">
+                                        <label for="form_password">{{ trans('frontend.Password') }} <span style="margin-left:5px; color:red;">*</span></label>
+                                        <input id="form_password" name="password" class="form-control" type="password" required minlength="8" autocomplete="new-password">
+                                        <span style="color:#6c757d; font-size:12px;">Minimal 8 karakter</span>
                                     </div>
-
-                                    <div class="mb-3 col-md-6">
-                                        <label for="form_password_confirmation">{{ trans('frontend.Confirm Password') }}</label>
-                                        <input id="form_password_confirmation" name="password_confirmation" class="form-control" type="password">
-                                    </div>
-
-                                </div> --}}
-                                @if (ReCaptcha('recaptcha_status') == 1)
-                                    <div class="row">
-                                        <div class="mb-3 col-md-12">
-                                            <div
-                                                class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
-                                                <label class="control-label">Captcha</label>
-                                                <div class="pull-center">
-                                                    {!! app('captcha')->display() !!}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                                <div class="checkbox mt-15">
-                                    <label for="form_checkbox"><input id="form_checkbox" name="form_checkbox" type="checkbox">{{ trans('frontend.Remember me') }}</label>
                                 </div>
+
+                                <div class="row">
+                                    <div class="mb-3 col-md-12">
+                                        <label for="form_password_confirmation">Konfirmasi Password <span style="margin-left:5px; color:red;">*</span></label>
+                                        <input id="form_password_confirmation" name="password_confirmation" class="form-control" type="password" required minlength="8" autocomplete="new-password">
+                                    </div>
+                                </div>
+
                                 <div class="mb-3 tm-sc-button mt-10">
                                     <button type="submit" class="btn btn-dark w-100">{{ trans('frontend.Register') }}</button>
                                 </div>

@@ -47,8 +47,7 @@ class UserRegisterController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = RouteServiceProvider::USERPROFILE;
-    protected $redirectTo = RouteServiceProvider::USERLOGIN;
+    protected $redirectTo = RouteServiceProvider::USERPROFILE;
     protected $notificationApiService;
 
     /**
@@ -106,16 +105,16 @@ class UserRegisterController extends Controller
             'no_kk' => [
                 'required',
                 'string',
-                'min:16',
-                'max:16',
+                'regex:/^[0-9]{16}$/',
+                'size:16',
                 new UserKkRule($period->id),
                 new KartuKeluargaRule($data['tujuan'])
             ],
             'nik' => [
                 'required',
                 'string',
-                'min:16',
-                'max:16',
+                'regex:/^[0-9]{16}$/',
+                'size:16',
                 new UserNikRule($period->id)
             ],
             'tujuan' => ['required'],
@@ -129,13 +128,24 @@ class UserRegisterController extends Controller
             ],
             'tgl_lahir' => $data['tujuan'] == 'kedalam-banten' ? 'required|date_format:Y-m-d|before:today' : [],
             'tempat_lahir' =>  $data['tujuan'] == 'kedalam-banten' ? 'required|max:255' : [],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
             // 'g-recaptcha-response' =>  ReCaptcha('recaptcha_status') == 1 ? ['required', 'captcha'] : [],
         ];
 
         $customMessages = [
             'required' => 'Data :attribute wajib diisi',
             'unique' => 'Data :attribute sudah ada',
+            'email.email' => 'Format email tidak valid. Gunakan format seperti: nama@domain.com',
             'email' => 'Data :attribute kurang tepat',
+            'password.min' => 'Password minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'phone.regex' => 'Nomor telepon hanya boleh berisi angka, 9-15 digit.',
+            'phone.min' => 'Nomor telepon minimal 9 digit.',
+            'phone.max' => 'Nomor telepon maksimal 15 digit.',
+            'no_kk.regex' => 'Nomor Kartu Keluarga harus 16 digit angka.',
+            'no_kk.size' => 'Nomor Kartu Keluarga harus 16 digit.',
+            'nik.regex' => 'NIK harus 16 digit angka.',
+            'nik.size' => 'NIK harus 16 digit.',
         ];
 
         return Validator::make($data, $validation, $customMessages);
@@ -150,7 +160,7 @@ class UserRegisterController extends Controller
     protected function create(array $data)
     {
         date_default_timezone_set('Asia/Jakarta');
-        $password = $this->generatePassword();
+        $password = $data['password'];
         $period = MudikPeriod::where('status', 'active')->first();
         $mudikTujuan = MudikTujuan::where('id_period', $period->id)->where('code', $data['tujuan'])->where('status', 'active')->first();
         $user = User::create([
@@ -194,7 +204,7 @@ class UserRegisterController extends Controller
             $usr->status_wa = 1;
             $usr->save();
         }
-        alert()->success('Pendaftaran Mudik Bersama Berhasil, silahkan lengkapi profile Anda sebelum ' . date('d M Y H:i', strtotime('1 hour')) . ' dan login dengan username dan password yang telah dikirim ke no whatsapp Anda!');
+        // alert()->success('Pendaftaran Mudik Bersama Berhasil, silahkan lengkapi profile Anda sebelum ' . date('d M Y H:i', strtotime('1 hour')) . ' dan login dengan username dan password yang telah dikirim ke no whatsapp Anda!');
         return $user;
     }
 

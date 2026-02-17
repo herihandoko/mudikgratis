@@ -52,19 +52,25 @@
                             <form action="{{ route('user.peserta.store_cancel') }}" method="post" enctype="multipart/form-data" id="form-pembatalan">
                                 @csrf
                                 <div class="form-group row mb-2">                       
-                                    <label class="col-lg-3 col-form-label text-sm-left text-md-right col-sm-12" for="reason">Peserta yang dibatalkan <span class="text-danger">*</span></label>
+                                    <label class="col-lg-3 col-form-label text-sm-left text-md-right col-sm-12" for="peserta_id">Peserta yang dibatalkan <span class="text-danger">*</span></label>
                                     <div class="col-lg-9 col-sm-12">
                                         @foreach ($peserta as $key => $item)
-                                            <input type="checkbox" name="peserta_id[]" value="{{ $item->id }}"> {{ $item->nama_lengkap }} <br>
+                                            <input type="checkbox" name="peserta_id[]" value="{{ $item->id }}" id="peserta_{{ $item->id }}"> <label for="peserta_{{ $item->id }}">{{ $item->nama_lengkap }}</label><br>
                                         @endforeach
-                                        <div class="error" id="nik-error" style="color:red"></div>
+                                        <small class="text-muted">Pilih minimal 1 peserta</small>
+                                        @error('peserta_id')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-group row mb-2">                       
                                     <label class="col-lg-3 col-form-label text-sm-left text-md-right col-sm-12" for="reason">Alasan Pembatalan <span class="text-danger">*</span></label>
                                     <div class="col-lg-9 col-sm-12">
-                                        <textarea class="form-control" name="reason" rows="4"></textarea>
-                                        <div class="error" id="nik-error" style="color:red"></div>
+                                        <textarea class="form-control {{ $errors->has('reason') ? 'is-invalid' : '' }}" name="reason" id="reason" rows="4" required minlength="4" maxlength="255" placeholder="Isi alasan pembatalan (min. 4 karakter)">{{ old('reason') }}</textarea>
+                                        <small class="text-muted">Wajib diisi sebelum kirim (min. 4 karakter)</small>
+                                        @error('reason')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
@@ -91,20 +97,40 @@
     $(document).ready(function() {
         $('button.btn-cancel-mudik').click(function(e){
             e.preventDefault();
+            var checked = $('input[name="peserta_id[]"]:checked').length;
+            var reason = $.trim($('#reason').val());
+            if (checked === 0) {
                 Swal.fire({
-                    title: "Konfirmasi",
-                    text: "Apakah Anda yakin ingin melakukan pembatalan dan penghapusan data nudik?",
+                    title: "Perhatian",
+                    text: "Pilih minimal 1 peserta yang dibatalkan.",
                     icon: "warning",
-                    showCancelButton: true,
                     confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, Hapus!",
-                    cancelButtonText: "Batal",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('form#form-pembatalan').submit();
-                    }
                 });
+                return;
+            }
+            if (reason.length < 4) {
+                Swal.fire({
+                    title: "Perhatian",
+                    text: "Alasan pembatalan wajib diisi (minimal 4 karakter).",
+                    icon: "warning",
+                    confirmButtonColor: "#3085d6",
+                });
+                return;
+            }
+            Swal.fire({
+                title: "Konfirmasi",
+                text: "Apakah Anda yakin ingin melakukan pembatalan dan penghapusan data mudik?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('form#form-pembatalan').submit();
+                }
+            });
         });
     });
     </script>
