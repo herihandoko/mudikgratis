@@ -41,9 +41,24 @@
                     <div class="col-md-10">
                         <div class="p-4 mt-4 mb-4 border">
                             @if ($user->status_profile == 0 || $user->status_profile == null)
-                                <div class="alert alert-danger" role="alert"> Anda belum memiliki tiket mudik. Silahkan
-                                    lengkapi data mudik Anda dan jangan lupa klik button <b>{{ trans('frontend.Save') }}</b>
-                                    untuk mendapatkan tiket mudik.<b><span id="demo"></span></b>
+                                <div class="alert alert-info border-0 shadow-sm mb-4" role="alert" style="border-left: 4px solid #0dcaf0 !important;">
+                                    <div class="d-flex align-items-start">
+                                        <span class="me-3 fs-4" style="opacity: 0.9;">📋</span>
+                                        <div class="flex-grow-1">
+                                            <h6 class="alert-heading mb-2 fw-bold text-dark">Lengkapi Profil Mudik Anda sebelum input data anggota peserta mudik</h6>
+                                            <p class="mb-2 small">Silakan lengkapi data mudik Anda sebagai <strong>persyaratan administrasi</strong>. Data yang Anda isi akan digunakan untuk <strong>proses verifikasi</strong> dan pendaftaran tiket mudik.</p>
+                                            <ul class="mb-2 small ps-3">
+                                                <li>Pastikan semua kolom wajib (*) terisi dengan benar.</li>
+                                                <li>Setelah data lengkap, tim kami akan melakukan <strong>verifikasi</strong> sebelum Anda dinyatakan lolos.</li>
+                                                <li>Jangan lupa klik tombol <strong>{{ trans('frontend.Save') }}</strong> setelah mengisi data untuk mendapatkan tiket mudik.</li>
+                                            </ul>
+                                            <p class="mb-0 small d-flex align-items-center">
+                                                <span class="me-1">🔒</span>
+                                                <span><strong>Data Anda aman</strong> — disimpan dan diproses dengan aman serta terenkripsi.</span>
+                                            </p>
+                                            <b><span id="demo"></span></b>
+                                        </div>
+                                    </div>
                                 </div>
                             @endif
                             @if ($user->status_profile == 1 && $user->status_mudik == 'ditolak')
@@ -85,7 +100,7 @@
                                         </div>
                                         <div class="form-group mb-2">
                                             <label for="">{{ trans('frontend.Phone') }} <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="phone" required value="{{ @$user->phone ?: old('phone') }}">
+                                            <input type="text" class="form-control" name="phone" required value="{{ @$user->phone ?: old('phone') }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

@@ -28,12 +28,8 @@ class UserKkRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $userExist = User::where('no_kk', $value)->where('periode_id', $this->idPeriode)->exists();
-        if ($userExist) {
-            return false;
-        } else {
-            return true;
-        }
+        $noKk = trim((string) $value);
+        return ! User::where('no_kk', $noKk)->where('periode_id', $this->idPeriode)->exists();
     }
 
     /**

@@ -28,12 +28,11 @@ class UserPhoneRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $userExist = User::where('phone', $value)->where('periode_id', $this->idPeriode)->exists();
-        if ($userExist) {
-            return false;
-        } else {
-            return true;
-        }
+        $normalized = ltrim((string) $value, '0');
+        $userExist = User::where('periode_id', $this->idPeriode)->get()->contains(function ($user) use ($normalized) {
+            return ltrim($user->phone ?? '', '0') === $normalized;
+        });
+        return ! $userExist;
     }
 
     /**

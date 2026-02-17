@@ -67,7 +67,7 @@ $page_title = 'Input Peserta Mudik';
                             <div class="mb-3 col-md-12">
                                 <label for="form_username_phone">{{ trans('frontend.Phone (Optional)') }} <span style="margin-left:5px; color:red;">*</span></label>
                                 <input id="form_username_phone" name="phone" class="form-control" type="text"  value="{{ old('phone') }}" placeholder="08138XXXXXX" required>
-                                <span style="margin-left:5px; color:red; font-size:10px;">** Pastikan Nomor Telepon Anda aktif dan dapat terhubung dengan whatsapp.</span>
+                                <span style="margin-left:5px; color:red; font-size:10px;">** Pastikan Nomor Telepon Anda aktif dan dapat dihubungi.</span>
                             </div>
                         </div>
                         <h3 class="mt-4">{{ trans('frontend.Address') }}</h3>
@@ -186,16 +186,16 @@ $page_title = 'Input Peserta Mudik';
                         </div>
                         <div class="col-md-3 col-xs-12">
                             <input type="text" name="anggota[${i}][nama]" placeholder="Nama Lengkap" class="form-control nama" required>
-                        </div>     
+                        </div>
                         <div class="col-md-3 col-xs-12">
-                            <input type="date" name="anggota[${i}][tanggal_lahir]" class="form-control tanggal_lahir" required> 
-                        </div>    
+                            <input type="date" name="anggota[${i}][tanggal_lahir]" class="form-control tanggal_lahir" required>
+                        </div>
                         <div class="col-md-3 col-xs-12">
                             <select name="anggota[${i}][gender]" class="form-control gender" required>
                                 <option value="L">Laki-Laki</option>
                                 <option value="P">Perempuan</option>
                             </select>
-                        </div>    
+                        </div>
                     </div>
                 `;
                 anggotaContainer.append(anggotaRow);
@@ -222,8 +222,8 @@ $page_title = 'Input Peserta Mudik';
                 firstAnggota.find(".gender").val("L").trigger("change");;
             }
         });
-        
-        
+
+
         $('#kota_tujuan_id').on('change', function() {
             $.ajax({
                 url: '{{ route('admin.mudik-peserta.pickstop') }}',

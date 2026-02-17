@@ -99,6 +99,9 @@ class UserPanelController extends Controller
             'profession' => 'required|integer',
         ];
 
+        if ($request->hasFile('avatar')) {
+            $attributes['avatar'] = 'image|mimes:jpg,jpeg,png|max:2048';
+        }
         if ($request->hasFile('foto_ktp')) {
             $attributes['foto_ktp'] = 'required|max:2000|mimes:jpg,jpeg,png,JPG,JPEG,PNG';
         }
@@ -109,7 +112,12 @@ class UserPanelController extends Controller
             $attributes['foto_selfie'] = 'required|max:2000|mimes:jpg,jpeg,png,JPG,JPEG,PNG';
         }
 
-        $validator = Validator::make($request->all(), $attributes);
+        $messages = [
+            'avatar.image' => 'Avatar harus berupa file gambar.',
+            'avatar.mimes' => 'Avatar hanya boleh format jpg, jpeg, atau png.',
+            'avatar.max' => 'Ukuran avatar maksimal 2MB.',
+        ];
+        $validator = Validator::make($request->all(), $attributes, $messages);
 
         if ($validator->fails()) {
             if ($validator->errors()->has('no_kk')) {
@@ -143,6 +151,11 @@ class UserPanelController extends Controller
 
             if ($validator->errors()->has('id_rute')) {
                 toast(trans('Kota pemberhentian wajib disi'), 'error')->width('300px');
+                return redirect()->back()->withInput();
+            }
+
+            if ($validator->errors()->has('avatar')) {
+                toast($validator->errors()->first('avatar'), 'error')->width('350px');
                 return redirect()->back()->withInput();
             }
 
@@ -560,18 +573,24 @@ class UserPanelController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'reason' => 'required|min:4|max:255',
-            'peserta_id'   => ['required', 'array'], // Wajib dikirim sebagai array
-            'peserta_id.*' => ['required', 'integer']
+            'peserta_id'   => ['required', 'array', 'min:1'],
+            'peserta_id.*' => ['required', 'integer'],
+        ], [
+            'reason.required' => 'Alasan pembatalan wajib diisi.',
+            'reason.min' => 'Alasan pembatalan minimal 4 karakter.',
+            'peserta_id.required' => 'Pilih minimal 1 peserta yang dibatalkan.',
+            'peserta_id.min' => 'Pilih minimal 1 peserta yang dibatalkan.',
         ]);
         if ($validator->fails()) {
             if ($validator->errors()->has('peserta_id')) {
-                toast('Silahkan pilih peserta yang dibatalkan', 'error')->width('300px');
-                return redirect()->back()->withInput();
+                toast($validator->errors()->first('peserta_id'), 'error')->width('350px');
+                return redirect()->back()->withErrors($validator)->withInput();
             }
             if ($validator->errors()->has('reason')) {
-                toast('Silahkan isi alasan pembatalan', 'error')->width('300px');
-                return redirect()->back()->withInput();
+                toast($validator->errors()->first('reason'), 'error')->width('350px');
+                return redirect()->back()->withErrors($validator)->withInput();
             }
+            return redirect()->back()->withErrors($validator)->withInput();
         }
         // dd($request->peserta_id);
         $user = User::find(auth()->user()->id);

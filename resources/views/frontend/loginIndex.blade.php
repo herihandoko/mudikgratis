@@ -35,15 +35,6 @@ $page_title =  'Login';
                                         <strong>{{trans('frontend.Error!')}}</strong> {{$message}}.
                                     </div>
                                 @enderror
-                                @error('g-recaptcha-response')
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>{{trans('frontend.Error!')}}</strong>
-                                        @if ($errors->first('g-recaptcha-response'))
-                                            {{trans('frontend.Captcha Required!')}}
-                                        @endif.
-                                    </div>
-                                @enderror
-
                                 @error('phone')
                                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                         <strong>{{trans('frontend.Error!')}}</strong> {{$message}}.
@@ -66,20 +57,6 @@ $page_title =  'Login';
                                         <input id="form_password" name="password" class="form-control" type="password" @if (env('DEMO_MODE')) value="1234" @endif >
                                     </div>
                                 </div>
-
-                                @if (ReCaptcha('recaptcha_status') == 1)
-                                    <div class="row">
-                                        <div class="mb-3 col-md-12">
-                                            <div
-                                                class="form-group{{$errors->has('g-recaptcha-response') ? ' has-error' : ''}}">
-                                                <label class="control-label">Captcha</label>
-                                                <div class="pull-center">
-                                                    {!! app('captcha')->display() !!}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
 
                                 <div class="checkbox mt-15">
                                     <label for="form_checkbox">
