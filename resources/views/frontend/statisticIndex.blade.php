@@ -81,7 +81,7 @@
                                                                     </td>
                                                                     <td class="text-right">
                                                                         @if($val->userKota->sum('jumlah') > $val->bus->sum('jumlah_kursi'))
-                                                                            <span class="text-danger">0 Peserta</span>
+                                                                            {{ $val->bus->sum('jumlah_kursi') }} Peserta
                                                                         @else
                                                                             {{ $val->userKota->sum('jumlah') }} Peserta
                                                                         @endif
