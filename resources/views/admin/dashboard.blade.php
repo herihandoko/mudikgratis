@@ -202,7 +202,11 @@
                                                                 {{ $val->bus->sum('jumlah_kursi') }} Kursi
                                                             </td>
                                                             <td class="text-right">
-                                                                {{ $val->userKota->sum('jumlah') }} Peserta
+                                                                @if($val->userKota->sum('jumlah') > $val->bus->sum('jumlah_kursi'))
+                                                                    <span class="text-danger">0 Peserta</span>
+                                                                @else
+                                                                    {{ $val->userKota->sum('jumlah') }} Peserta
+                                                                @endif
                                                             </td>
                                                             @if ($val->bus->sum('jumlah_kursi') - $val->userKota->sum('jumlah') < 0)
                                                                 <td class="text-right">0 Kursi</td>
