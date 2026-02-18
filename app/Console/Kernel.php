@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('notif:twibbonize')->everyMinute();
         $schedule->command('users:delete-unconfirmed')->everyMinute();
-        // $schedule->command('kuota:synch')->everyMinute();
+        $schedule->command('kuota:synch')->everyFiveMinutes();
         $schedule->command('waiting:notif')->hourly();
         $schedule->command('peserta:status')->everyFiveMinutes();
         $schedule->command('users:cancelled')->everyFiveMinutes();
