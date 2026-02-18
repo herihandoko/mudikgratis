@@ -60,7 +60,7 @@
                             @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')
                                 <div class="alert alert-success mt-2" role="alert">
                                     Selamat Data Peserta Mudik Anda Sudah tersimpan dengan Nomor Registrasi <b>{{ $user->nomor_registrasi }}</b>.<br>
-                                    <b>Informasi:</b><br> Yth. Bapak/Ibu Peserta Mudik Gratis Tahun 2025 Sehubungan pencocokan data peserta Mudik Gratis tahun 2025 telah dilaksanakan oleh panitia melalui data yang tersimpan dalam aplikasi jawaramudik.bantenprov.go.id, maka tidak lagi diperlukan kehadiran Bapak/Ibu dalam acara Verifikasi peserta pada tanggal 03-25 Maret 2025. <br>Demikian atas perhatian dan kerjasamanya, diucapkan terima kasih. <br>Untuk informasi lebih lanjut dapat menghubungi Call Centre di 0813 8558 2399
+                                    <b>Informasi:</b><br> Yth. Bapak/Ibu Peserta Mudik Gratis Tahun 2026 Sehubungan Verifikasi data peserta Mudik Gratis tahun 2026 telah dilaksanakan oleh panitia melalui data yang tersimpan dalam aplikasi jawaramudik.bantenprov.go.id. pastikan nomor Handphone selalu aktif untuk menyampaikan informasi lebih lanjut <br>Demikian atas perhatian dan kerjasamanya, diucapkan terima kasih. <br>Untuk informasi lebih lanjut dapat menghubungi Call Centre di 0813 8558 2399
                                 </div>
                             @endif
                             @if ($user->status_profile == 1 && $user->status_mudik == 'ditolak')
@@ -92,7 +92,7 @@
                                 </div>
                             @endif
                             {{-- <table class="table table-bordered w-100 mt-4 mb-4"> --}}
-                            <table cellspacing="0" cellpadding="0" class="table table-condensed table-striped table-statistic">        
+                            <table cellspacing="0" cellpadding="0" class="table table-condensed table-striped table-statistic">
                                 <thead class="thead-inverse">
                                     <tr>
                                         <th>#</th>
@@ -125,10 +125,10 @@
                                                 <td>
                                                     @if($peserta->status == 'dibatalkan')
                                                         <span class="badge bg-danger"> {{ ucwords($peserta->status) }} </span>
-                                                    @elseif($peserta->status == 'belum dikirim')    
+                                                    @elseif($peserta->status == 'belum dikirim')
                                                         <span class="badge bg-warning"> {{ ucwords($peserta->status) }} </span>
-                                                    @elseif($peserta->status == 'dikirim')    
-                                                        <span class="badge bg-info"> Menunggu Verifikasi</span>        
+                                                    @elseif($peserta->status == 'dikirim')
+                                                        <span class="badge bg-info"> Menunggu Verifikasi</span>
                                                     @else
                                                         @if($peserta->status)
                                                             <span class="badge bg-success"> {{ ucwords($peserta->status) }} </span>

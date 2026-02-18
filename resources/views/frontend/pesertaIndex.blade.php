@@ -66,7 +66,7 @@
                             @if ($user->status_profile == 1 && $user->status_mudik == 'diterima')
                             <div class="alert alert-success mt-2" role="alert">
                                 Selamat Data Peserta Mudik Anda Sudah tersimpan dengan Nomor Registrasi <b>{{ $user->nomor_registrasi }}</b>.<br>
-                                <b>Informasi:</b><br> Yth. Bapak/Ibu Peserta Mudik Gratis Tahun 2025 Sehubungan pencocokan data peserta Mudik Gratis tahun 2025 telah dilaksanakan oleh panitia melalui data yang tersimpan dalam aplikasi jawaramudik.bantenprov.go.id, maka tidak lagi diperlukan kehadiran Bapak/Ibu dalam acara Verifikasi peserta pada tanggal 03-25 Maret 2025. <br>Demikian atas perhatian dan kerjasamanya, diucapkan terima kasih. <br>Untuk informasi lebih lanjut dapat menghubungi Call Centre di 0813 8558 2399
+                                <b>Informasi:</b><br> Yth. Bapak/Ibu Peserta Mudik Gratis Tahun 2026 Sehubungan Verifikasi data peserta Mudik Gratis tahun 2026 telah dilaksanakan oleh panitia melalui data yang tersimpan dalam aplikasi jawaramudik.bantenprov.go.id. pastikan nomor Handphone selalu aktif untuk menyampaikan informasi lebih lanjut <br>Demikian atas perhatian dan kerjasamanya, diucapkan terima kasih. <br>Untuk informasi lebih lanjut dapat menghubungi Call Centre di 0813 8558 2399
                             </div>
                             @endif
                             @if ($user->status_profile == 1 && $user->status_mudik == 'ditolak')
@@ -106,7 +106,7 @@
                                 </div>
                             @endif
                             @if(!$stskirim)
-                                <div class="alert alert-danger" role="alert"> 
+                                <div class="alert alert-danger" role="alert">
                                     <b>Silahkan lengkapi daftar peserta mudik Anda, sebelum dikirim! ( {{ auth()->user()->jumlah }} Orang)</b>, dengan klik button Tambah Peserta
                                 </div>
                             @endif
@@ -148,16 +148,16 @@
                                                 <td>
                                                     @if($peserta->status == 'dibatalkan')
                                                         <span class="badge bg-danger"> {{ ucwords($peserta->status) }} </span>
-                                                    @elseif($peserta->status == 'belum dikirim')    
+                                                    @elseif($peserta->status == 'belum dikirim')
                                                         <span class="badge bg-warning"> {{ ucwords($peserta->status) }} </span>
                                                     @elseif($peserta->status == 'dikirim')
-                                                        @if($user->status_mudik == 'ditolak')    
-                                                            <span class="badge bg-info"> Ditolak</span>  
-                                                        @elseif($user->status_mudik == 'waiting')   
+                                                        @if($user->status_mudik == 'ditolak')
+                                                            <span class="badge bg-info"> Ditolak</span>
+                                                        @elseif($user->status_mudik == 'waiting')
                                                             <span class="badge bg-warning"> Belum Dikirim </span>
                                                         @else
-                                                            <span class="badge bg-info"> Menunggu Verifikasi</span>  
-                                                        @endif  
+                                                            <span class="badge bg-info"> Menunggu Verifikasi</span>
+                                                        @endif
                                                     @else
                                                         @if($peserta->status)
                                                             <span class="badge bg-success"> {{ ucwords($peserta->status) }} </span>
@@ -169,7 +169,7 @@
                                                 @if ($user->status_profile == 1 && ($user->status_mudik !== 'diterima' && $user->status_mudik !== 'dikirim'))
                                                     <td>
                                                         <a href="{{ route('user.peserta.edit', $peserta->id) }}" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                                                        <a href="javascript;" class="btn btn-danger btn-xs btn-delete-peserta" data-value="{{ $peserta->id }}"><i class="fa fa-times"></i> Hapus</a> 
+                                                        <a href="javascript;" class="btn btn-danger btn-xs btn-delete-peserta" data-value="{{ $peserta->id }}"><i class="fa fa-times"></i> Hapus</a>
                                                         {{-- <a href="{{ route('user.peserta.delete', ['uid' => $peserta->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> Hapus</a> --}}
                                                     </td>
                                                 @endif
