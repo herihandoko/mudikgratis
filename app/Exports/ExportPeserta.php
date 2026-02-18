@@ -52,7 +52,7 @@ class ExportPeserta implements FromCollection, WithHeadings, WithEvents, WithMap
         $created_at = isset($this->kota->tgl_keberangkatan) ? Carbon::parse($this->kota->tgl_keberangkatan) : "-";
         $formatted = isset($this->kota->tgl_keberangkatan) ? $created_at->translatedFormat('l, d F Y H:i') : "-";
         return [
-            ["DAFTAR PESERTA MUDIK GRATIS BERSAMA PEMERINTAH PROVINSI BANTEN TAHUN 2025/1446H"],
+            ["DAFTAR PESERTA MUDIK GRATIS BERSAMA PEMERINTAH PROVINSI BANTEN TAHUN 2026/1447H"],
             [isset($this->kota->name) ? strtoupper($this->kota->name . ', ' . $this->kota->provinsi->name) : "-"],
             ["Hari/Tanggal", $formatted],
             ["Bus", isset($this->bus->name) ? $this->bus->name : "-"],

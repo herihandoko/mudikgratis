@@ -81,9 +81,9 @@ class MudikVerifikasiController extends Controller
                 }
                 $tujuan = MudikTujuan::find($user->tujuan);
                 if ($tujuan->code == 'kedalam-banten') {
-                    $message = "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nPeserta Mudik yang di nyatakan Lolos Verifikasi akan dihubungi langsung oleh petugas Verifikator pada tanggal *03 Maret s/d 25 Maret 2025*. Pastikan Nomor Handphone/Whatsapp anda aktif\n\n============================= \n\nTerima kasih";
+                    $message = "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nPeserta Mudik yang di nyatakan Lolos Verifikasi akan dihubungi langsung oleh petugas Verifikator pada tanggal *18 Februari s/d 15 Maret 2026*. Pastikan Nomor Handphone/Whatsapp anda aktif\n\n============================= \n\nTerima kasih";
                 } else {
-                    $message = "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nPeserta Mudik yang di nyatakan Lolos Verifikasi akan dihubungi langsung oleh petugas Verifikator pada tanggal *03 Maret s/d 25 Maret 2025*. Pastikan Nomor Handphone/Whatsapp anda aktif\n\n============================= \n\nTerima kasih";
+                    $message = "[Status Mudik Bersama Diterima] - Jawara Mudik \Selamat!, Data peserta mudik Anda sudah tersimpan dengan Nomor Registrasi *" . $nomorRegistrasi . "*.\nPeserta Mudik yang di nyatakan Lolos Verifikasi akan dihubungi langsung oleh petugas Verifikator pada tanggal *18 Februari s/d 15 Maret 2026*. Pastikan Nomor Handphone/Whatsapp anda aktif\n\n============================= \n\nTerima kasih";
                 }
                 $param = [
                     'target' => $user->phone,

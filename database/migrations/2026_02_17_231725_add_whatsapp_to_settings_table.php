@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AddWhatsappToSettingsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('settings', function (Blueprint $table) {
+            $table->string('whatsapp_token')->nullable()->after('preloader_style');
+            $table->string('whatsapp_base_url')->nullable()->after('whatsapp_token');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('settings', function (Blueprint $table) {
+            $table->dropColumn(['whatsapp_token', 'whatsapp_base_url']);
+        });
+    }
+}

@@ -276,4 +276,16 @@ class SettingsController extends Controller
         $notification = ['message' => $notification, 'alert-type' => 'success'];
         return redirect()->back()->with($notification);
     }
+
+    public function savewhatsappsettings(Request $request)
+    {
+        $general = Setting::first();
+        $general->whatsapp_token = $request->whatsapp_token;
+        $general->whatsapp_base_url = $request->whatsapp_base_url;
+        $general->save();
+
+        $notification = trans('admin.Updated Successfully');
+        $notification = ['message' => $notification, 'alert-type' => 'success'];
+        return redirect()->back()->with($notification);
+    }
 }

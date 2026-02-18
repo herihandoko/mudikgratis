@@ -48,7 +48,7 @@
                                 <tr>
                                     <td>Alamat</td>
                                     <td colspan="2" rowspan="3">
-                                        {{ $user->address->address }}
+                                        {{ optional($user->address)->address ?? '-' }}
                                     </td>
                                 </tr>
                             </tbody>

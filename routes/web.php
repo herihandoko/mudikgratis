@@ -155,6 +155,7 @@ Route::group(['middleware' => ['XSS', 'HtmlSpecialchars', 'visitor']], function 
         Route::put('/analytics/settings',   [SettingsController::class, 'saveanalyticstsettings'])->name('analyticssettings');
         Route::put('/email/settings',       [SettingsController::class, 'savemailsettings'])->name('mailsettings');
         Route::put('/google-map/settings',  [SettingsController::class, 'mapsettings'])->name('mapsettings');
+        Route::put('/whatsapp/settings',  [SettingsController::class, 'savewhatsappsettings'])->name('whatsappsettings');
 
         Route::get('/backup',      [UserDataController::class, 'backup'])->name('backup');
         Route::post('/restore',     [UserDataController::class, 'restore'])->name('restore');
